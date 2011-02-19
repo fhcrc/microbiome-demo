@@ -1,7 +1,7 @@
 {
   "files": {
     "profile": "bacteria16S_508_mod5.cm", 
-    "xphylo_model_file": "phylo_model.json", 
+    "phylo_model_file": "phylo_model.json", 
     "taxonomy": "tax_table.csv", 
     "aln_fasta": "bv_refs_aln.fasta", 
     "tree_file": "RAxML_result.bv_refs_aln", 
