@@ -1,0 +1,87 @@
+IMPORTANT WARNING: Alignment column 283 contains only undetermined values which will be treated as missing data
+IMPORTANT WARNING: Alignment column 348 contains only undetermined values which will be treated as missing data
+IMPORTANT WARNING: Alignment column 651 contains only undetermined values which will be treated as missing data
+IMPORTANT WARNING: Alignment column 1002 contains only undetermined values which will be treated as missing data
+IMPORTANT WARNING: Alignment column 1064 contains only undetermined values which will be treated as missing data
+IMPORTANT WARNING: Alignment column 1253 contains only undetermined values which will be treated as missing data
+IMPORTANT WARNING: Alignment column 1279 contains only undetermined values which will be treated as missing data
+IMPORTANT WARNING: Alignment column 1339 contains only undetermined values which will be treated as missing data
+IMPORTANT WARNING: Alignment column 1341 contains only undetermined values which will be treated as missing data
+IMPORTANT WARNING: Alignment column 1623 contains only undetermined values which will be treated as missing data
+IMPORTANT WARNING: Alignment column 1641 contains only undetermined values which will be treated as missing data
+IMPORTANT WARNING: Alignment column 1700 contains only undetermined values which will be treated as missing data
+IMPORTANT WARNING: Alignment column 1701 contains only undetermined values which will be treated as missing data
+IMPORTANT WARNING: Alignment column 1702 contains only undetermined values which will be treated as missing data
+
+IMPORTANT WARNING
+Found 14 columns that contain only undetermined values which will be treated as missing data.
+Normally these columns should be excluded from the analysis.
+
+An alignment file with undetermined columns removed has already
+been printed to file bv_refs_aln.phy.reduced
+
+
+This is RAxML version 7.2.7 released by Alexandros Stamatakis in August 2010.
+
+With greatly appreciated code contributions by:
+Andre Aberer (TUM)
+Simon Berger (TUM)
+John Cazes (TACC)
+Michael Ott (TUM)
+Nick Pattengale (UNM)
+Wayne Pfeiffer (SDSC)
+
+
+Alignment has 1912 distinct alignment patterns
+
+Proportion of gaps and completely undetermined characters in this alignment: 39.53%
+
+RAxML rapid hill-climbing mode
+
+Using 1 distinct models/data partitions with joint branch length optimization
+
+
+Executing 1 inferences on the original alignment using 1 distinct randomized MP trees
+
+All free model parameters will be estimated by RAxML
+GAMMA model of rate heteorgeneity, ML estimate of alpha-parameter
+
+GAMMA Model parameters will be estimated up to an accuracy of 0.1000000000 Log Likelihood units
+
+Partition: 0
+Alignment Patterns: 1912
+Name: No Name Provided
+DataType: DNA
+Substitution Matrix: GTR
+
+
+
+
+RAxML was called as follows:
+
+raxmlHPC-PTHREADS-SSE3 -T 4 -m GTRGAMMA -n bv_refs_aln -s bv_refs_aln.phy 
+
+
+Testing which likelihood implementation to use
+Standard Implementation full tree traversal time: 0.402313
+Subtree Equality Vectors for gap columns full tree traversal time: 0.283707
+... using SEV-based implementation
+
+Inference[0]: Time 1157.552664 GAMMA-based likelihood -88234.221219, best rearrangement setting 5
+alpha[0]: 0.433838 rates[0] ac ag at cg ct gt: 0.797326 1.815257 1.231737 0.715779 2.763745 1.000000 
+
+
+Conducting final model optimizations on all 1 trees under GAMMA-based models ....
+
+Inference[0] final GAMMA-based Likelihood: -88233.040338 tree written to file /home/bvdiversity/data/ref_out/RAxML_result.bv_refs_aln
+
+
+Starting final GAMMA-based thorough Optimization on tree 0 likelihood -88233.040338 .... 
+
+Final GAMMA-based Score of best tree -88233.040338
+
+Program execution info written to /home/bvdiversity/data/ref_out/RAxML_info.bv_refs_aln
+Best-scoring ML tree written to: /home/bvdiversity/data/ref_out/RAxML_bestTree.bv_refs_aln
+
+Overall execution time: 1766.256894 secs or 0.490627 hours or 0.020443 days
+
