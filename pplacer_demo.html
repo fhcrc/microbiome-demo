@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-eqiv='content-type' content='text/html;charset=utf-8'>
+    <title>pplacer_demo.sh</title>
+    <link rel=stylesheet href="src/docco.css">
+</head>
+<body>
+<div id=container>
+    <div id=background></div>
+    <table cellspacing=0 cellpadding=0>
+    <thead>
+      <tr>
+        <th class=docs><h1>pplacer_demo.sh</h1></th>
+        <th class=code></th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr><td class='docs'><p>This is a demonstration for the use of the pplacer suite of programs. It
+covers the use of placement, visualization, classification, and comparison.
+If you are looking at this file in a web browser after processing with
+<a href="http://rtomayko.github.com/shocco/">shocco</a>, the left column will describe
+what is going on in the right column.</p>
+
+<p>It is assumed that you have installed the
+<a href="http://matsen.fhcrc.org/pplacer/download.html">pplacer software</a>,
+and that you have java installed. So far, the software is only compiled for
+OS X and linux. A reasonably recent laptop with 2GB of memory should be able
+to run this code just fine if you don't have too many other things open.</p>
+
+<p>For the purposes of this demo, we have a little script function <code>aptx</code> to
+run archaeopteryx from within this script (not necessary if you would rather
+just use the archaeopteryx user interface).</p>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>We also have a little <code>pause</code> function to pause between steps (also ignore).</p>
+
+</td><td class=code><div class=highlight><pre>
+<span class="c">#!/bin/bash -eu</span>
+aptx<span class="o">()</span> <span class="o">{</span>
+  java -jar bin/forester.jar -c bin/_aptx_configuration_file <span class="nv">$1</span>
+<span class="o">}</span>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<h2>Running pplacer</h2>
+
+</td><td class=code><div class=highlight><pre>
+pause<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">echo</span> <span class="s2">&quot;Please press return to continue...&quot;</span>
+  <span class="nb">read</span>
+<span class="o">}</span>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>This makes p4z1r2.place, which is a "place" file.
+Place files contain information about collections of phylogenetic placements
+on a tree. You may notice that one of the arguments to this command is
+<code>vaginal_16s.refpkg</code>, which is a "reference package". Reference packages are
+simply an organized collection of files including a reference tree, reference
+alignment, and taxonomic information. We haven't done the alignment in this
+tutorial, because that would require another external dependency, but there
+are scripts which appropriately wrap HMMER and Infernal in the latest version
+of pplacer.</p>
+
+</td><td class=code><div class=highlight><pre>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>Now run placeviz to make a phyloXML format visualization, and run
+archaeopteryx to look at it. Note that placeviz can be run without the
+reference package specification, e.g.:</p>
+
+<pre><code>placeviz p4z1r36.place
+</code></pre>
+
+<p>but in that case there won't be any taxonomic information in the
+visualizations.</p>
+
+</td><td class=code><div class=highlight><pre>
+<span class="c">#pplacer -c vaginal_16s.refpkg -r src/refalign.p4z1r36.fasta src/p4z1r36.fasta</span>
+pause
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p><code>mokaphy</code> is our tool for comparing collections of phylogenetic placements.
+It has a lot of different subcommands, which you can learn about with online
+help like so. (Note that the <code>read</code> in this script is just so that the shell
+will pause before spitting out the next bunch of text).</p>
+
+</td><td class=code><div class=highlight><pre>
+placeviz -c vaginal_16s.refpkg p4z1r36.place
+aptx p4z1r36.xml
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p><code>kr</code> is the command to calculate things using the 
+<a href="http://arxiv.org/abs/1005.1699">Kantorovich-Rubinstein metric</a>
+which is a generalization of UniFrac. It simply takes in .place files and
+spits out numbers. You can run it with the <code>--list-out</code> option to make
+tabular output appropriate for R or SQL.</p>
+
+</td><td class=code><div class=highlight><pre>
+mokaphy --cmds
+pause
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p><code>mokaphy</code> do a special kind of principal components analysis (PCA), called
+"edge PCA". Edge PCA takes the special structure of phylogenetic placement
+data into account. Consequently, it is possible to visualize the principal
+component eigenvectors, and it can find consistent differences between
+samples which may not be so far apart in the tree. The <code>pca.trans</code> file
+contains the samples projected onto principal coordinate axes. You can 
+see an example of edge PCA in our XXX upcoming paper.</p>
+
+</td><td class=code><div class=highlight><pre>
+mokaphy kr src/*.place
+pause
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p><code>mokaphy</code> can also cluster place files using its own variant of hierarchical
+clustering called squash clustering. One nice thing about squash clustering
+is that you can see what the internal nodes of the clustering tree signify.
+The clustering is done with the <code>cluster</code> subcommand, which makes a directory
+containing <code>cluster.tre</code>, which is the clustering tree, and then a
+subdirectory <code>mass_trees</code> which contain all of the mass averages for the
+internal nodes of the tree.</p>
+
+</td><td class=code><div class=highlight><pre>
+mokaphy pca -o pca -c vaginal_16s.refpkg src/*.place
+cat pca.trans
+aptx pca.xml
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>There is also a way using mokaphy to collect all of these together into named
+units to ease visualization of the mass distributions corresponding to
+internal nodes of cluster trees.</p>
+
+</td><td class=code><div class=highlight><pre>
+mokaphy cluster -o my_cluster src/*.place
+aptx my_cluster/mass_trees/0006.phy.fat.xml my_cluster/cluster.tre 
+
+</pre></div></td></tr><tr><td class=docs>
+
+</td><td class=code><div class=highlight><pre>
+aptx src/clusters_0121.xml
+
+
+
+</pre></div></td></tr><tr><td class=docs>
+</td><td class=code><div class=highlight><pre></td><td class='code'></td></tr>
+    </tbody>
+    </table>
+</div>
+</body>
+</html>
