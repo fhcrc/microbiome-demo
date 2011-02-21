@@ -36,8 +36,8 @@ pause() {
 # tutorial, because that would require another external dependency, but there
 # are scripts which appropriately wrap HMMER and Infernal in the latest version
 # of pplacer.
-#pplacer -c vaginal_16s.refpkg -r src/refalign.p4z1r36.fasta src/p4z1r36.fasta
-pause
+# pplacer -c vaginal_16s.refpkg -r src/refalign.p4z1r36.fasta src/p4z1r36.fasta
+# pause
 
 # Now run placeviz to make a phyloXML format visualization, and run
 # archaeopteryx to look at it. Note that placeviz can be run without the
@@ -47,7 +47,7 @@ pause
 #
 # but in that case there won't be any taxonomic information in the
 # visualizations.
-placeviz -c vaginal_16s.refpkg p4z1r36.place
+placeviz fat -c vaginal_16s.refpkg p4z1r36.place
 aptx p4z1r36.xml
 
 # `mokaphy` is our tool for comparing collections of phylogenetic placements.
