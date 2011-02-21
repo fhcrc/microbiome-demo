@@ -25,32 +25,39 @@ what is going on in the right column.</p>
 <p>It is assumed that you have installed the
 <a href="http://matsen.fhcrc.org/pplacer/download.html">pplacer software</a>,
 and that you have java installed. So far, the software is only compiled for
-OS X and linux. A reasonably recent laptop with 2GB of memory should be able
-to run this code just fine if you don't have too many other things open.</p>
+mac OS X and linux. A reasonably recent laptop with 2GB of memory should be
+able to run this code just fine if you don't have too many other things open.</p>
+
+</td><td class=code><div class=highlight><pre>
+<span class="c">#!/bin/bash -eu</span>
+
+</pre></div></td></tr><tr><td class=docs>
 
 <p>For the purposes of this demo, we have a little script function <code>aptx</code> to
 run archaeopteryx from within this script (not necessary if you would rather
 just use the archaeopteryx user interface).</p>
 
-</pre></div></td></tr><tr><td class=docs>
-
-<p>We also have a little <code>pause</code> function to pause between steps (also ignore).</p>
-
 </td><td class=code><div class=highlight><pre>
-<span class="c">#!/bin/bash -eu</span>
 aptx<span class="o">()</span> <span class="o">{</span>
   java -jar bin/forester.jar -c bin/_aptx_configuration_file <span class="nv">$1</span>
 <span class="o">}</span>
 
 </pre></div></td></tr><tr><td class=docs>
 
-<h2>Running pplacer</h2>
+<p>We also have a little <code>pause</code> function to pause between steps (also ignore).</p>
 
 </td><td class=code><div class=highlight><pre>
 pause<span class="o">()</span> <span class="o">{</span>
   <span class="nb">echo</span> <span class="s2">&quot;Please press return to continue...&quot;</span>
   <span class="nb">read</span>
 <span class="o">}</span>
+
+
+</pre></div></td></tr><tr><td class=docs>
+
+<h2>Phylogenetic placement</h2>
+
+</td><td class=code><div class=highlight><pre>
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -59,10 +66,28 @@ Place files contain information about collections of phylogenetic placements
 on a tree. You may notice that one of the arguments to this command is
 <code>vaginal_16s.refpkg</code>, which is a "reference package". Reference packages are
 simply an organized collection of files including a reference tree, reference
-alignment, and taxonomic information. We haven't done the alignment in this
+alignment, and taxonomic information. They are optional at this point, but we
+have found them to be quite useful. The other arguments include <code>-r</code> which is
+our reference alignment, and the anonymous argument, which contains the reads
+to be placed.</p>
+
+</td><td class=code><div class=highlight><pre>
+pplacer -c vaginal_16s.refpkg -r src/refalign.p4z1r36.fasta src/p4z1r36.fasta
+pause
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>We haven't done the alignment in this
 tutorial, because that would require another external dependency, but there
 are scripts which appropriately wrap HMMER and Infernal in the latest version
 of pplacer.</p>
+
+</td><td class=code><div class=highlight><pre>
+
+
+</pre></div></td></tr><tr><td class=docs>
+
+<h2>Visualization</h2>
 
 </td><td class=code><div class=highlight><pre>
 
@@ -79,8 +104,34 @@ reference package specification, e.g.:</p>
 visualizations.</p>
 
 </td><td class=code><div class=highlight><pre>
-<span class="c">#pplacer -c vaginal_16s.refpkg -r src/refalign.p4z1r36.fasta src/p4z1r36.fasta</span>
+placeviz fat -c vaginal_16s.refpkg p4z1r36.place
+aptx p4z1r36.xml
+
+
+</pre></div></td></tr><tr><td class=docs>
+
+<h2>Classification</h2>
+
+</td><td class=code><div class=highlight><pre>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>Next we run placeutil's <code>classify</code> subcommand to classify the reads. The
+columns are as follows: read name, attempted rank for classification, actual
+rank for classification, taxonomic identifier, and confidence.
+We use <code>head</code> here just to get the first 30 lines so that you can look at
+them.</p>
+
+</td><td class=code><div class=highlight><pre>
+placeutil classify -c vaginal_16s.refpkg p4z1r36.place
+head -n 30 p4z1r36.class.sql
 pause
+
+</pre></div></td></tr><tr><td class=docs>
+
+<h2>Statistical comparison</h2>
+
+</td><td class=code><div class=highlight><pre>
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -90,8 +141,8 @@ help like so. (Note that the <code>read</code> in this script is just so that th
 will pause before spitting out the next bunch of text).</p>
 
 </td><td class=code><div class=highlight><pre>
-placeviz -c vaginal_16s.refpkg p4z1r36.place
-aptx p4z1r36.xml
+mokaphy --cmds
+pause
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -102,7 +153,7 @@ spits out numbers. You can run it with the <code>--list-out</code> option to mak
 tabular output appropriate for R or SQL.</p>
 
 </td><td class=code><div class=highlight><pre>
-mokaphy --cmds
+mokaphy kr src/*.place
 pause
 
 </pre></div></td></tr><tr><td class=docs>
@@ -116,8 +167,9 @@ contains the samples projected onto principal coordinate axes. You can
 see an example of edge PCA in our XXX upcoming paper.</p>
 
 </td><td class=code><div class=highlight><pre>
-mokaphy kr src/*.place
-pause
+mokaphy pca -o pca -c vaginal_16s.refpkg src/*.place
+cat pca.trans
+aptx pca.xml
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -130,29 +182,27 @@ subdirectory <code>mass_trees</code> which contain all of the mass averages for 
 internal nodes of the tree.</p>
 
 </td><td class=code><div class=highlight><pre>
-mokaphy pca -o pca -c vaginal_16s.refpkg src/*.place
-cat pca.trans
-aptx pca.xml
-
-</pre></div></td></tr><tr><td class=docs>
-
-<p>There is also a way using mokaphy to collect all of these together into named
-units to ease visualization of the mass distributions corresponding to
-internal nodes of cluster trees.</p>
-
-</td><td class=code><div class=highlight><pre>
 mokaphy cluster -o my_cluster src/*.place
 aptx my_cluster/mass_trees/0006.phy.fat.xml my_cluster/cluster.tre 
 
 </pre></div></td></tr><tr><td class=docs>
 
+<p>There is also a way using mokaphy to collect all of these together into named
+units to ease visualization of the mass distributions corresponding to
+internal nodes of cluster trees. Here we just view one of those
+visualizations.</p>
+
 </td><td class=code><div class=highlight><pre>
 aptx src/clusters_0121.xml
 
 
+</td><td class=code><div class=highlight><pre>
+</pre></div></td></tr><tr><td class=docs>
 
 </pre></div></td></tr><tr><td class=docs>
-</td><td class=code><div class=highlight><pre></td><td class='code'></td></tr>
+</td><td class=code><div class=highlight><pre>
+
+</pre></div></td></tr><tr><td class=docs></td><td class='code'></td></tr>
     </tbody>
     </table>
 </div>
