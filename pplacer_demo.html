@@ -62,7 +62,9 @@ simply an organized collection of files including a reference tree, reference
 alignment, and taxonomic information. We haven't done the alignment in this
 tutorial, because that would require another external dependency, but there
 are scripts which appropriately wrap HMMER and Infernal in the latest version
-of pplacer.</p>
+of pplacer.
+pplacer -c vaginal_16s.refpkg -r src/refalign.p4z1r36.fasta src/p4z1r36.fasta
+pause</p>
 
 </td><td class=code><div class=highlight><pre>
 
@@ -79,8 +81,18 @@ reference package specification, e.g.:</p>
 visualizations.</p>
 
 </td><td class=code><div class=highlight><pre>
-<span class="c">#pplacer -c vaginal_16s.refpkg -r src/refalign.p4z1r36.fasta src/p4z1r36.fasta</span>
-pause
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>Next we run placeutil's <code>classify</code> subcommand to classify the reads. The
+columns are as follows: read name, attempted rank for classification, actual
+rank for classification, taxonomic identifier, and confidence.
+We use <code>head</code> here just to get the first 30 lines so that you can look at
+them.</p>
+
+</td><td class=code><div class=highlight><pre>
+placeviz fat -c vaginal_16s.refpkg p4z1r36.place
+aptx p4z1r36.xml
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -90,8 +102,9 @@ help like so. (Note that the <code>read</code> in this script is just so that th
 will pause before spitting out the next bunch of text).</p>
 
 </td><td class=code><div class=highlight><pre>
-placeviz -c vaginal_16s.refpkg p4z1r36.place
-aptx p4z1r36.xml
+placeutil classify -c vaginal_16s.refpkg p4z1r36.place
+head -n 30 p4z1r36.class.sql
+pause
 
 </pre></div></td></tr><tr><td class=docs>
 

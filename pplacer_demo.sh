@@ -8,8 +8,8 @@
 # It is assumed that you have installed the 
 # [pplacer software](http://matsen.fhcrc.org/pplacer/download.html),
 # and that you have java installed. So far, the software is only compiled for
-# OS X and linux. A reasonably recent laptop with 2GB of memory should be able
-# to run this code just fine if you don't have too many other things open.
+# mac OS X and linux. A reasonably recent laptop with 2GB of memory should be
+# able to run this code just fine if you don't have too many other things open.
 #
 # For the purposes of this demo, we have a little script function `aptx` to
 # run archaeopteryx from within this script (not necessary if you would rather
@@ -49,6 +49,15 @@ pause() {
 # visualizations.
 placeviz fat -c vaginal_16s.refpkg p4z1r36.place
 aptx p4z1r36.xml
+
+# Next we run placeutil's `classify` subcommand to classify the reads. The
+# columns are as follows: read name, attempted rank for classification, actual
+# rank for classification, taxonomic identifier, and confidence.
+# We use `head` here just to get the first 30 lines so that you can look at
+# them.
+placeutil classify -c vaginal_16s.refpkg p4z1r36.place
+head -n 30 p4z1r36.class.sql
+pause
 
 # `mokaphy` is our tool for comparing collections of phylogenetic placements.
 # It has a lot of different subcommands, which you can learn about with online

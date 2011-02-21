@@ -2,6 +2,7 @@ my_cluster
 *.edgediff
 *.rot
 *.trans
+*.sql
 p4z1r36.place
 p4z1r36.xml
 pca.xml
