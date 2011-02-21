@@ -10,7 +10,7 @@
 # and that you have java installed. So far, the software is only compiled for
 # mac OS X and linux. A reasonably recent laptop with 2GB of memory should be
 # able to run this code just fine if you don't have too many other things open.
-#
+
 # For the purposes of this demo, we have a little script function `aptx` to
 # run archaeopteryx from within this script (not necessary if you would rather
 # just use the archaeopteryx user interface).
@@ -24,20 +24,30 @@ pause() {
   read
 }
 
-# Running pplacer
-# ---------------
+
+# Phylogenetic placement
+# ----------------------
 
 # This makes p4z1r2.place, which is a "place" file.
 # Place files contain information about collections of phylogenetic placements
 # on a tree. You may notice that one of the arguments to this command is
 # `vaginal_16s.refpkg`, which is a "reference package". Reference packages are
 # simply an organized collection of files including a reference tree, reference
-# alignment, and taxonomic information. We haven't done the alignment in this
+# alignment, and taxonomic information. They are optional at this point, but we
+# have found them to be quite useful. The other arguments include `-r` which is
+# our reference alignment, and the anonymous argument, which contains the reads
+# to be placed.
+pplacer -c vaginal_16s.refpkg -r src/refalign.p4z1r36.fasta src/p4z1r36.fasta
+pause
+
+# We haven't done the alignment in this
 # tutorial, because that would require another external dependency, but there
 # are scripts which appropriately wrap HMMER and Infernal in the latest version
 # of pplacer.
-# pplacer -c vaginal_16s.refpkg -r src/refalign.p4z1r36.fasta src/p4z1r36.fasta
-# pause
+
+
+# Visualization
+# -------------
 
 # Now run placeviz to make a phyloXML format visualization, and run
 # archaeopteryx to look at it. Note that placeviz can be run without the
@@ -50,6 +60,10 @@ pause() {
 placeviz fat -c vaginal_16s.refpkg p4z1r36.place
 aptx p4z1r36.xml
 
+
+# Classification
+# --------------
+
 # Next we run placeutil's `classify` subcommand to classify the reads. The
 # columns are as follows: read name, attempted rank for classification, actual
 # rank for classification, taxonomic identifier, and confidence.
@@ -58,6 +72,9 @@ aptx p4z1r36.xml
 placeutil classify -c vaginal_16s.refpkg p4z1r36.place
 head -n 30 p4z1r36.class.sql
 pause
+
+# Statistical comparison
+# ----------------------
 
 # `mokaphy` is our tool for comparing collections of phylogenetic placements.
 # It has a lot of different subcommands, which you can learn about with online
@@ -97,6 +114,6 @@ aptx my_cluster/mass_trees/0006.phy.fat.xml my_cluster/cluster.tre
 
 # There is also a way using mokaphy to collect all of these together into named
 # units to ease visualization of the mass distributions corresponding to
-# internal nodes of cluster trees.
+# internal nodes of cluster trees. Here we just view one of those
+# visualizations.
 aptx src/clusters_0121.xml
-
