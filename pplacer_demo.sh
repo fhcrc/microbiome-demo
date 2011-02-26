@@ -1,4 +1,4 @@
-#!/bin/bash -eu
+#!/bin/sh -eu
 # This is a demonstration for the use of the pplacer suite of programs. It
 # covers the use of placement, visualization, classification, and comparison.
 # If you are looking at this file in a web browser after processing with
@@ -18,10 +18,17 @@ aptx() {
   java -jar bin/forester.jar -c bin/_aptx_configuration_file $1
 }
 
-# We also have a little `pause` function to pause between steps (also ignore).
+# A little `pause` function to pause between steps (also ignore).
 pause() {
   echo "Please press return to continue..."
   read
+}
+
+# Make sure that guppy can be found.
+which guppy > /dev/null 2>&1 || {
+  echo "Couldn't find guppy. \
+There is a download script in the bin directory for you to use."
+  exit 1
 }
 
 
