@@ -1,4 +1,4 @@
-#!/bin/sh -eu
+#!/bin/bash -eu
 # This is a demonstration for the use of the pplacer suite of programs. It
 # covers the use of placement, visualization, classification, and comparison.
 # If you are looking at this file in a web browser after processing with
@@ -25,11 +25,11 @@ pause() {
 }
 
 # Make sure that guppy can be found.
-which guppy > /dev/null 2>&1 || {
-  echo "Couldn't find guppy. \
-There is a download script in the bin directory for you to use."
-  exit 1
-}
+#which guppy > /dev/null 2>&1 || {
+#  echo "Couldn't find guppy. \
+#There is a download script in the bin directory for you to use."
+#  exit 1
+#}
 
 
 # Phylogenetic placement
