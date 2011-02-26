@@ -1,11 +1,11 @@
-#!/bin/sh
+#!/bin/sh -eu
 
 PREFIX=pplacer_v1.1
 
 case `uname -s` in
 Linux)
   echo "Downloading linux binaries..."
-  curl -O "http://matsen.fhcrc.org/pplacer/builds/${PREFIX}_Linux.2.6.5-7.324-smp.tar.gz"
+  wget "http://matsen.fhcrc.org/pplacer/builds/${PREFIX}_Linux.2.6.5-7.324-smp.tar.gz"
   ;;
 Darwin)
   echo "Downloading OS X binaries..."
@@ -18,7 +18,8 @@ esac
 
 tar -xzf ${PREFIX}*.tar.gz
 
-echo ""
-echo "pplacer and guppy have been downloaded in this directory. \
-Now put them in your path (if you don't know what that means, get help)."
-
+cat <<EOF
+pplacer and guppy have been downloaded in this directory.
+Now put them in your path, e.g. with:
+export PATH=\$PATH:\`pwd\`/\`echo pplacer_*/\`
+EOF
