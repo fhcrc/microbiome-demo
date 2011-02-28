@@ -9,15 +9,14 @@ This is a collection of files used to demonstrate the use of a phylogenetic plac
 ## Running
 
 If you have [installed pplacer](http://matsen.fhcrc.org/pplacer/download.html)
-then you should just be able to run pplacer_demo.sh. This script was meant to
-be read, and pplacer_demo.html is a marked up version of it. You can see it
-[online](http://fhcrc.github.com/microbiome-demo/)
-as well.
+then you should just be able to run `pplacer_demo.sh`. This script was meant to
+be read, and `pplacer_demo.html` is a marked up version of it. You can see it
+[online](http://fhcrc.github.com/microbiome-demo/) as well.
 
 
 ## Authors
 
-Noah Hoffman and Erick Matsen.
+Noah Hoffman, Aaron Gallagher and Erick Matsen.
 
 
 ## Acknowledgements
