@@ -145,3 +145,29 @@ aptx my_cluster/mass_trees/0006.phy.fat.xml my_cluster/cluster.tre
 # internal nodes of cluster trees. Here we just view one of those
 # visualizations.
 aptx src/clusters_0121.xml
+
+# `guppy classify` can also emit .sqlite files, which can be run through
+# `sqlite3` to build a database of placements, which can be correlated with the
+# taxonomic data via SQL.
+guppy classify --sqlite -c vaginal_16s.refpkg src/*.json
+
+# `guppy taxtable` must first be used to create the schema for the database,
+# and populate it with the taxonomic data from the reference package.
+guppy taxtable -c vaginal_16s.refpkg | sqlite3 sqlite.db
+
+# After that, the .sqlite files can be used to populate the database with the
+# placements.
+cat *.sqlite | sqlite3 sqlite.db
+
+# And at that point, one can write SQL queries against the sqlite3 database.
+sqlite3 -header -column sqlite.db "
+    SELECT taxa.tax_name,
+           taxa.rank,
+           COUNT(*) AS n_placements
+    FROM   taxa
+           JOIN placements USING (tax_id)
+    GROUP  BY taxa.tax_name,
+              taxa.rank
+    ORDER  BY n_placements
+"
+pause
