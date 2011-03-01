@@ -1,4 +1,5 @@
 #!/bin/bash -eu
+
 # This is a demonstration for the use of the pplacer suite of programs. It
 # covers the use of placement, visualization, classification, and comparison.
 # If you are looking at this file in a web browser after processing with
@@ -15,7 +16,7 @@
 # run archaeopteryx from within this script (not necessary if you would rather
 # just use the archaeopteryx user interface).
 aptx() {
-  java -jar bin/forester.jar -c bin/_aptx_configuration_file $1
+    java -jar bin/forester.jar -c bin/_aptx_configuration_file $1 
 }
 
 # A little `pause` function to pause between steps (also ignore).
@@ -23,6 +24,9 @@ pause() {
   echo "Please press return to continue..."
   read
 }
+
+# echo commands
+set -o verbose
 
 # Make sure that guppy can be found.
 #which guppy > /dev/null 2>&1 || {
@@ -64,7 +68,7 @@ pause
 # but in that case there won't be any taxonomic information in the
 # visualizations.
 guppy fat -c vaginal_16s.refpkg p4z1r36.json
-aptx p4z1r36.xml
+aptx p4z1r36.xml &
 
 
 # Classification
@@ -77,6 +81,25 @@ aptx p4z1r36.xml
 guppy classify -c vaginal_16s.refpkg p4z1r36.json
 head -n 30 p4z1r36.class.tab
 pause
+
+# We can quickly explore the classification results by importing them
+# into a sql database. First, we create a table containing the tax_ids
+# and taxonomic names.
+guppy taxtable -c vaginal_16s.refpkg | sqlite3 taxtable.db
+
+# Next we insert placement and classification results from multiple
+# files into our database.
+guppy classify -c vaginal_16s.refpkg --sqlite src/*.json
+cat *.sqlite | sqlite3 taxtable.db
+sqlite3 -header -column taxtable.db "select * from placements limit 10"
+sqlite3 -header -column taxtable.db "select * from taxa limit 10"
+pause
+
+# Now we can use sql statements to explore the results.
+
+# how many sequences per input file?
+
+# how many sequences were classified to the species level in each input file?
 
 # Statistical comparison
 # ----------------------
@@ -105,7 +128,7 @@ pause
 # example of edge PCA in our XXX upcoming paper.
 guppy pca -o pca -c vaginal_16s.refpkg src/*.json
 cat pca.trans
-aptx pca.xml
+aptx pca.xml &
 
 # `guppy` can also cluster place files using its own variant of hierarchical
 # clustering called squash clustering. One nice thing about squash clustering
