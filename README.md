@@ -36,8 +36,8 @@ QIIME users: the password is `qiime`.
 ## Running
 
 Simply execute the script `pplacer_demo.sh`. This script was meant to be read,
-and `pplacer_demo.html` is a marked up version of it. You can also read it
-[online](http://fhcrc.github.com/microbiome-demo/).
+and [pplacer_demo.html](http://fhcrc.github.com/microbiome-demo/) is a marked
+up version of it. 
 
 
 ## Authors

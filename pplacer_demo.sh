@@ -7,16 +7,24 @@
 # what is going on in the right column.
 #
 # It is assumed that java is available and that you have installed `pplacer`
-# and `guppy`. See the README for details.
+# and `guppy`. See the [README](https://github.com/fhcrc/microbiome-demo)
+# for details.
+
+
+# Getting set up (for this demo)
+# ------------------------------
+
+# We start with a couple of little functions to make this script run smoothly.
+# You can safely ignore them.
 
 # For the purposes of this demo, we have a little script function `aptx` to
-# run archaeopteryx from within this script (not necessary if you would rather
-# just use the archaeopteryx user interface).
+# run archaeopteryx from within this script (you can also open them directly
+# from the archaeopteryx user interface if you prefer).
 aptx() {
     java -jar bin/forester.jar -c bin/_aptx_configuration_file $1 
 }
 
-# A little `pause` function to pause between steps (also ignore).
+# A little `pause` function to pause between steps.
 pause() {
   echo "Please press return to continue..."
   read
@@ -55,11 +63,20 @@ set -o verbose
 
 # guppy
 # -----
-# `guppy` is our tool for doing everything with phylogenetic placements.  It
-# has a lot of different subcommands, which you can learn about with online
-# help like so. (Note that the `read` in this script is just so that the shell
-# will pause before spitting out the next bunch of text).
+
+# `guppy` is our Swiss army knife for phylogenetic placements.  It has a lot of
+# different subcommands, which you can learn about with online help by invoking
+# the `--cmds` option.
 guppy --cmds
+pause
+
+
+# These subcommands are used by writing out the name of the subcommand like
+#
+#     guppy SUBCOMMAND [options] [files]
+# 
+# For example, we can get help for the `fat` subcommand.
+guppy fat --help
 pause
 
 
@@ -76,7 +93,6 @@ pause
 # visualizations.
 # [Here](http://matsen.fhcrc.org/pplacer/demo/p4z1r36.html)
 # is an online version.
-
 guppy fat -c vaginal_16s.refpkg p4z1r36.json
 aptx p4z1r36.xml &
 
@@ -100,7 +116,7 @@ pause
 # reference package is included again to add in taxonomic annotation.
 # [Here](http://matsen.fhcrc.org/pplacer/demo/bv.heat.html) is a version which
 # compares all of the vaginosis-positive samples with the negative ones.
-guppy heat -c vaginal_16s.refpkg/ src/p1z1r2.json src/p1z1r34.json 
+guppy heat -c vaginal_16s.refpkg/ src/p1z1r2.json src/p1z1r34.json &
 aptx p1z1r2.p1z1r34.heat.xml
 
 # `guppy` can its own variant of hierarchical clustering called squash
