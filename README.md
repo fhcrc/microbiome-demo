@@ -22,7 +22,7 @@ You will then need to put pplacer in your
 [path](http://www.linuxheadquarters.com/howto/basic/path.shtml).
 
 
-### [SQLite](http://www.sqlite.org/)
+### SQLite
 
 [SQLite3](http://www.sqlite.org/) is only necessary for one part of the demo.
 It is already installed on recent OS X macs. If you want to install it on an
