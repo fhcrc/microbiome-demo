@@ -6,11 +6,8 @@
 # [shocco](http://rtomayko.github.com/shocco/), the left column will describe
 # what is going on in the right column.
 #
-# It is assumed that you have installed the
-# [pplacer software](http://matsen.fhcrc.org/pplacer/download.html),
-# and that you have java installed. So far, the software is only compiled for
-# mac OS X and linux. A reasonably recent laptop with 2GB of memory should be
-# able to run this code just fine if you don't have too many other things open.
+# It is assumed that java is available and that you have installed `pplacer`
+# and `guppy`. See the README for details.
 
 # For the purposes of this demo, we have a little script function `aptx` to
 # run archaeopteryx from within this script (not necessary if you would rather
@@ -48,7 +45,7 @@ set -o verbose
 # them to be quite useful. The other arguments include `-r` which is our
 # reference alignment, and the anonymous argument, which contains the reads to
 # be placed.
-pplacer -c vaginal_16s.refpkg -r src/refalign.p4z1r36.fasta src/p4z1r36.fasta
+pplacer -c vaginal_16s.refpkg src/p4z1r36.fasta
 pause
 
 # We haven't done the alignment in this tutorial, because that would require

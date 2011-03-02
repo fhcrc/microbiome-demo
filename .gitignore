@@ -3,7 +3,8 @@ my_cluster
 *.rot
 *.trans
 *.sql
-p4z1r36.place
+p4z1r36.json
 p4z1r36.xml
+p4z1r36.class.tab
 pca.xml
 bin/pplacer*
