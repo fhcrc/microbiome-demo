@@ -1,4 +1,4 @@
-#!/bin/bash -eu -o verbose
+#!/bin/bash -eu 
 
 # This is a demonstration for the use of the pplacer suite of programs. It
 # covers the use of placement, visualization, classification, and comparison.
@@ -28,6 +28,9 @@ which guppy > /dev/null 2>&1 || {
 There is a download script in the bin directory for you to use."
   exit 1
 }
+
+# Echo the commands to the terminal.
+set -o verbose
 
 
 # Phylogenetic placement
@@ -71,6 +74,9 @@ pause
 #
 # but in that case there won't be any taxonomic information in the
 # visualizations.
+# [Here](http://matsen.fhcrc.org/pplacer/demo/p4z1r36.html)
+# is an online version.
+
 guppy fat -c vaginal_16s.refpkg p4z1r36.json
 aptx p4z1r36.xml &
 
@@ -79,12 +85,23 @@ aptx p4z1r36.xml &
 # ----------------------
 
 # `kr` is the command to calculate things using the
-# [Kantorovich-Rubinstein metric](http://arxiv.org/abs/1005.1699)
+# [Kantorovich-Rubinstein (KR) metric](http://arxiv.org/abs/1005.1699)
 # which is a generalization of UniFrac. It simply takes in .json files and
 # spits out numbers. You can run it with the `--list-out` option to make
 # tabular output appropriate for R or SQL.
 guppy kr src/*.json
 pause
+
+# The KR metric can be thought of as the amount of work it takes to move the
+# distribution of reads from one collection of samples to another along the
+# edges of the tree. This can be nicely visualized by thickening the branches
+# of the tree in proportion to the reads which get transported through there.
+# To get such a visualization, we use guppy's `heat` subcommand. The
+# reference package is included again to add in taxonomic annotation.
+# [Here](http://matsen.fhcrc.org/pplacer/demo/bv.heat.html) is a version which
+# compares all of the vaginosis-positive samples with the negative ones.
+guppy heat -c vaginal_16s.refpkg/ src/p1z1r2.json src/p1z1r34.json 
+aptx p1z1r2.p1z1r34.heat.xml
 
 # `guppy` can its own variant of hierarchical clustering called squash
 # clustering. One nice thing about squash clustering is that you can see what
@@ -93,21 +110,23 @@ pause
 # `cluster.tre`, which is the clustering tree, and then a subdirectory
 # `mass_trees` which contain all of the mass averages for the internal nodes of
 # the tree.
+# [Here](http://matsen.fhcrc.org/pplacer/demo/clusters_0121.html)
+# is a link to a page showing the clustering of all of the samples.
 guppy squash -c vaginal_16s.refpkg -o squash_out src/*.json
 aptx squash_out/mass_trees/0006.phy.fat.xml &
 aptx squash_out/cluster.tre &
 
-# `guppy` does a special kind of principal components analysis (PCA), called
-# "edge PCA". Edge PCA takes the special structure of phylogenetic placement
-# data into account. Consequently, it is possible to visualize the principal
+# `guppy` does a new kind of principal components analysis (PCA), called "edge
+# PCA". Edge PCA takes the special structure of phylogenetic placement data
+# into account. Consequently, it is possible to visualize the principal
 # component eigenvectors, and it can find consistent differences between
 # samples which may not be so far apart in the tree. The `pca.trans` file
-# contains the samples projected onto principal coordinate axes. You can see an
-# example of edge PCA in our upcoming paper.
+# contains the samples projected onto principal coordinate axes. 
+# [Here](http://matsen.fhcrc.org/pplacer/demo/pca.html) is the version which
+# comes from running all of the samples.
 guppy pca -o pca -c vaginal_16s.refpkg src/*.json
 cat pca.trans
 aptx pca.xml &
-
 
 
 # Classification
