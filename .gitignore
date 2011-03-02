@@ -1,4 +1,4 @@
-my_cluster
+squash_out
 *.edgediff
 *.rot
 *.trans
@@ -8,3 +8,5 @@ p4z1r36.xml
 p4z1r36.class.tab
 pca.xml
 bin/pplacer*
+taxtable.db
+*.sqlite

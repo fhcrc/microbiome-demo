@@ -1,4 +1,4 @@
-#!/bin/bash -eu
+#!/bin/bash -eu -o verbose
 
 # This is a demonstration for the use of the pplacer suite of programs. It
 # covers the use of placement, visualization, classification, and comparison.
@@ -22,15 +22,12 @@ pause() {
   read
 }
 
-# echo commands
-set -o verbose
-
 # Make sure that guppy can be found.
-#which guppy > /dev/null 2>&1 || {
-#  echo "Couldn't find guppy. \
-#There is a download script in the bin directory for you to use."
-#  exit 1
-#}
+which guppy > /dev/null 2>&1 || {
+  echo "Couldn't find guppy. \
+There is a download script in the bin directory for you to use."
+  exit 1
+}
 
 
 # Phylogenetic placement
@@ -45,12 +42,22 @@ set -o verbose
 # them to be quite useful. The other arguments include `-r` which is our
 # reference alignment, and the anonymous argument, which contains the reads to
 # be placed.
-pplacer -c vaginal_16s.refpkg src/p4z1r36.fasta
-pause
+#pplacer -c vaginal_16s.refpkg src/p4z1r36.fasta
+#pause
 
 # We haven't done the alignment in this tutorial, because that would require
 # another external dependency, but there are scripts which appropriately wrap
 # HMMER and Infernal in the latest version of pplacer.
+
+
+# guppy
+# -----
+# `guppy` is our tool for doing everything with phylogenetic placements.  It
+# has a lot of different subcommands, which you can learn about with online
+# help like so. (Note that the `read` in this script is just so that the shell
+# will pause before spitting out the next bunch of text).
+guppy --cmds
+pause
 
 
 # Visualization
@@ -68,6 +75,41 @@ guppy fat -c vaginal_16s.refpkg p4z1r36.json
 aptx p4z1r36.xml &
 
 
+# Statistical comparison
+# ----------------------
+
+# `kr` is the command to calculate things using the
+# [Kantorovich-Rubinstein metric](http://arxiv.org/abs/1005.1699)
+# which is a generalization of UniFrac. It simply takes in .json files and
+# spits out numbers. You can run it with the `--list-out` option to make
+# tabular output appropriate for R or SQL.
+guppy kr src/*.json
+pause
+
+# `guppy` can its own variant of hierarchical clustering called squash
+# clustering. One nice thing about squash clustering is that you can see what
+# the internal nodes of the clustering tree signify. The clustering is done
+# with the `squash` subcommand, which makes a directory containing
+# `cluster.tre`, which is the clustering tree, and then a subdirectory
+# `mass_trees` which contain all of the mass averages for the internal nodes of
+# the tree.
+guppy squash -c vaginal_16s.refpkg -o squash_out src/*.json
+aptx squash_out/mass_trees/0006.phy.fat.xml &
+aptx squash_out/cluster.tre &
+
+# `guppy` does a special kind of principal components analysis (PCA), called
+# "edge PCA". Edge PCA takes the special structure of phylogenetic placement
+# data into account. Consequently, it is possible to visualize the principal
+# component eigenvectors, and it can find consistent differences between
+# samples which may not be so far apart in the tree. The `pca.trans` file
+# contains the samples projected onto principal coordinate axes. You can see an
+# example of edge PCA in our upcoming paper.
+guppy pca -o pca -c vaginal_16s.refpkg src/*.json
+cat pca.trans
+aptx pca.xml &
+
+
+
 # Classification
 # --------------
 
@@ -78,6 +120,12 @@ aptx p4z1r36.xml &
 guppy classify -c vaginal_16s.refpkg p4z1r36.json
 head -n 30 p4z1r36.class.tab
 pause
+
+# The rest of the demo requires sqlite3, so we exit if that's not available.
+which sqlite3 > /dev/null 2>&1 || {
+  echo "No sqlite3, so stopping here."
+  exit 0
+}
 
 # We can quickly explore the classification results by importing them
 # into a sql database. First, we create a table containing the tax_ids
@@ -92,56 +140,12 @@ sqlite3 -header -column taxtable.db "select * from placements limit 10"
 sqlite3 -header -column taxtable.db "select * from taxa limit 10"
 pause
 
-# Now we can use sql statements to explore the results.
+# Now we can use SQL statements to explore the results.
 
 # how many sequences per input file?
 
 # how many sequences were classified to the species level in each input file?
 
-# Statistical comparison
-# ----------------------
-
-# `guppy` is our tool for comparing collections of phylogenetic placements.  It
-# has a lot of different subcommands, which you can learn about with online
-# help like so. (Note that the `read` in this script is just so that the shell
-# will pause before spitting out the next bunch of text).
-guppy --cmds
-pause
-
-# `kr` is the command to calculate things using the
-# [Kantorovich-Rubinstein metric](http://arxiv.org/abs/1005.1699)
-# which is a generalization of UniFrac. It simply takes in .json files and
-# spits out numbers. You can run it with the `--list-out` option to make
-# tabular output appropriate for R or SQL.
-guppy kr src/*.json
-pause
-
-# `guppy` does a special kind of principal components analysis (PCA), called
-# "edge PCA". Edge PCA takes the special structure of phylogenetic placement
-# data into account. Consequently, it is possible to visualize the principal
-# component eigenvectors, and it can find consistent differences between
-# samples which may not be so far apart in the tree. The `pca.trans` file
-# contains the samples projected onto principal coordinate axes. You can see an
-# example of edge PCA in our XXX upcoming paper.
-guppy pca -o pca -c vaginal_16s.refpkg src/*.json
-cat pca.trans
-aptx pca.xml &
-
-# `guppy` can also cluster place files using its own variant of hierarchical
-# clustering called squash clustering. One nice thing about squash clustering
-# is that you can see what the internal nodes of the clustering tree signify.
-# The clustering is done with the `cluster` subcommand, which makes a directory
-# containing `cluster.tre`, which is the clustering tree, and then a
-# subdirectory `mass_trees` which contain all of the mass averages for the
-# internal nodes of the tree.
-guppy cluster -c vaginal_16s.refpkg -o my_cluster src/*.json
-aptx my_cluster/mass_trees/0006.phy.fat.xml my_cluster/cluster.tre
-
-# There is also a way using guppy to collect all of these together into named
-# units to ease visualization of the mass distributions corresponding to
-# internal nodes of cluster trees. Here we just view one of those
-# visualizations.
-aptx src/clusters_0121.xml
 
 # `guppy classify` can also emit .sqlite files, which can be run through
 # `sqlite3` to build a database of placements, which can be correlated with the
