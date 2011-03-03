@@ -53,8 +53,8 @@ set -o verbose
 # them to be quite useful. The other arguments include `-r` which is our
 # reference alignment, and the anonymous argument, which contains the reads to
 # be placed.
-#pplacer -c vaginal_16s.refpkg src/p4z1r36.fasta
-#pause
+pplacer -c vaginal_16s.refpkg src/p4z1r36.fasta
+pause
 
 # We haven't done the alignment in this tutorial, because that would require
 # another external dependency, but there are scripts which appropriately wrap
@@ -116,8 +116,8 @@ pause
 # reference package is included again to add in taxonomic annotation.
 # [Here](http://matsen.fhcrc.org/pplacer/demo/bv.heat.html) is a version which
 # compares all of the vaginosis-positive samples with the negative ones.
-guppy heat -c vaginal_16s.refpkg/ src/p1z1r2.json src/p1z1r34.json &
-aptx p1z1r2.p1z1r34.heat.xml
+guppy heat -c vaginal_16s.refpkg/ src/p1z1r2.json src/p1z1r34.json 
+aptx p1z1r2.p1z1r34.heat.xml &
 
 # `guppy` can its own variant of hierarchical clustering called squash
 # clustering. One nice thing about squash clustering is that you can see what
@@ -179,8 +179,33 @@ pause
 
 # how many sequences per input file?
 
-# how many sequences were classified to the species level in each input file?
+# What is the lineage of a specific sequence?
+sqlite3 -header -column sqlite.db "
+SELECT p.rank,
+       tax_name,
+       likelihood
+FROM placements AS p
+JOIN taxa USING (tax_id)
+JOIN ranks USING (rank)
+WHERE name ='FUM0LCO01DX37Q'
+  AND p.rank = desired_rank
+ORDER BY rank_order
+"
+pause
 
+# ...and another, with much lower confidence in the classification result.
+sqlite3 -header -column sqlite.db "
+SELECT p.rank,
+       tax_name,
+       likelihood
+FROM placements AS p
+JOIN taxa USING (tax_id)
+JOIN ranks USING (rank)
+WHERE name ='GLKT0ZE02HFAHN'
+  AND p.rank = desired_rank
+ORDER BY rank_order
+"
+pause
 
 # `guppy classify` can also emit .sqlite files, which can be run through
 # `sqlite3` to build a database of placements, which can be correlated with the
@@ -207,3 +232,6 @@ sqlite3 -header -column sqlite.db "
     ORDER  BY n_placements
 "
 pause
+
+
+
