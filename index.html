@@ -22,35 +22,66 @@ If you are looking at this file in a web browser after processing with
 <a href="http://rtomayko.github.com/shocco/">shocco</a>, the left column will describe
 what is going on in the right column.</p>
 
-<p>It is assumed that you have installed the
-<a href="http://matsen.fhcrc.org/pplacer/download.html">pplacer software</a>,
-and that you have java installed. So far, the software is only compiled for
-mac OS X and linux. A reasonably recent laptop with 2GB of memory should be
-able to run this code just fine if you don't have too many other things open.</p>
+<p>It is assumed that java is available and that you have installed <code>pplacer</code>
+and <code>guppy</code>. See the <a href="https://github.com/fhcrc/microbiome-demo">README</a>
+for details.</p>
 
 </td><td class=code><div class=highlight><pre>
 <span class="c">#!/bin/bash -eu</span>
 
+
+
 </pre></div></td></tr><tr><td class=docs>
 
-<p>For the purposes of this demo, we have a little script function <code>aptx</code> to
-run archaeopteryx from within this script (not necessary if you would rather
-just use the archaeopteryx user interface).</p>
+<h2>Getting set up (for this demo)</h2>
+
+</td><td class=code><div class=highlight><pre>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>We start with a couple of little functions to make this script run smoothly.
+You can safely ignore them.</p>
+
+</td><td class=code><div class=highlight><pre>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>We have a little script function <code>aptx</code> to run archaeopteryx from within this
+script (you can also open them directly from the archaeopteryx user interface
+if you prefer).</p>
 
 </td><td class=code><div class=highlight><pre>
 aptx<span class="o">()</span> <span class="o">{</span>
-  java -jar bin/forester.jar -c bin/_aptx_configuration_file <span class="nv">$1</span>
+    java -jar bin/forester.jar -c bin/_aptx_configuration_file <span class="nv">$1</span>
 <span class="o">}</span>
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>We also have a little <code>pause</code> function to pause between steps (also ignore).</p>
+<p>A little <code>pause</code> function to pause between steps.</p>
 
 </td><td class=code><div class=highlight><pre>
 pause<span class="o">()</span> <span class="o">{</span>
   <span class="nb">echo</span> <span class="s2">&quot;Please press return to continue...&quot;</span>
   <span class="nb">read</span>
 <span class="o">}</span>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>Make sure that guppy can be found.</p>
+
+</td><td class=code><div class=highlight><pre>
+which guppy &gt; /dev/null 2&gt;&amp;1 <span class="o">||</span> <span class="o">{</span>
+  <span class="nb">echo</span> <span class="s2">&quot;Couldn&#39;t find guppy. \</span>
+<span class="s2">There is a download script in the bin directory for you to use.&quot;</span>
+  <span class="nb">exit </span>1
+<span class="o">}</span>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>Echo the commands to the terminal.</p>
+
+</td><td class=code><div class=highlight><pre>
+<span class="nb">set</span> -o verbose
 
 
 </pre></div></td></tr><tr><td class=docs>
@@ -61,28 +92,47 @@ pause<span class="o">()</span> <span class="o">{</span>
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>This makes p4z1r2.place, which is a "place" file.
-Place files contain information about collections of phylogenetic placements
-on a tree. You may notice that one of the arguments to this command is
+<p>This makes p4z1r2.json, which is a "place" file in JSON format.  Place files
+contain information about collections of phylogenetic placements on a tree.
+You may notice that one of the arguments to this command is
 <code>vaginal_16s.refpkg</code>, which is a "reference package". Reference packages are
 simply an organized collection of files including a reference tree, reference
-alignment, and taxonomic information. They are optional at this point, but we
-have found them to be quite useful. The other arguments include <code>-r</code> which is
-our reference alignment, and the anonymous argument, which contains the reads
-to be placed.</p>
+alignment, and taxonomic information. </p>
 
 </td><td class=code><div class=highlight><pre>
-pplacer -c vaginal_16s.refpkg -r src/refalign.p4z1r36.fasta src/p4z1r36.fasta
+pplacer -c vaginal_16s.refpkg src/p4z1r36.fasta
 pause
+
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>We haven't done the alignment in this
-tutorial, because that would require another external dependency, but there
-are scripts which appropriately wrap HMMER and Infernal in the latest version
-of pplacer.</p>
+<h2>Grand Unified Phylogenetic Placement Yanalyzer (guppy)</h2>
 
 </td><td class=code><div class=highlight><pre>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p><code>guppy</code> is our Swiss army knife for phylogenetic placements.  It has a lot of
+different subcommands, which you can learn about with online help by invoking
+the <code>--cmds</code> option.</p>
+
+</td><td class=code><div class=highlight><pre>
+guppy --cmds
+pause
+
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>These subcommands are used by writing out the name of the subcommand like</p>
+
+<pre><code>guppy SUBCOMMAND [options] [files]
+</code></pre>
+
+<p>For example, we can get help for the <code>fat</code> subcommand.</p>
+
+</td><td class=code><div class=highlight><pre>
+guppy fat --help
+pause
 
 
 </pre></div></td></tr><tr><td class=docs>
@@ -93,19 +143,87 @@ of pplacer.</p>
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>Now run placeviz to make a phyloXML format visualization, and run
-archaeopteryx to look at it. Note that placeviz can be run without the
-reference package specification, e.g.:</p>
+<p>Now run <code>guppy fat</code> to make a phyloXML format visualization, and run
+archaeopteryx to look at it. Note that fat can be run without the reference
+package specification, e.g.:</p>
 
-<pre><code>placeviz p4z1r36.place
+<pre><code>guppy fat p4z1r36.json
 </code></pre>
 
 <p>but in that case there won't be any taxonomic information in the
-visualizations.</p>
+visualizations.
+<a href="http://matsen.fhcrc.org/pplacer/demo/p4z1r36.html">Here</a>
+is an online version.</p>
 
 </td><td class=code><div class=highlight><pre>
-placeviz fat -c vaginal_16s.refpkg p4z1r36.place
-aptx p4z1r36.xml
+guppy fat -c vaginal_16s.refpkg p4z1r36.json
+aptx p4z1r36.xml &amp;
+
+
+</pre></div></td></tr><tr><td class=docs>
+
+<h2>Statistical comparison</h2>
+
+</td><td class=code><div class=highlight><pre>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p><code>kr</code> is the command to calculate things using the
+<a href="http://arxiv.org/abs/1005.1699">Kantorovich-Rubinstein (KR) metric</a>
+which is a generalization of UniFrac. It simply takes in .json files and
+spits the matrix of distances between the corresponding samples. </p>
+
+</td><td class=code><div class=highlight><pre>
+guppy kr src/*.json
+pause
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>The KR metric can be thought of as the amount of work it takes to move the
+distribution of reads from one collection of samples to another along the
+edges of the tree. This can be nicely visualized by thickening the branches
+of the tree in proportion to the reads which get transported through there.
+To get such a visualization, we use guppy's <code>heat</code> subcommand. The
+reference package is included again to add in taxonomic annotation.
+<a href="http://matsen.fhcrc.org/pplacer/demo/bv.heat.html">Here</a> is a version which
+compares all of the vaginosis-positive samples with the negative ones.</p>
+
+</td><td class=code><div class=highlight><pre>
+guppy heat -c vaginal_16s.refpkg/ src/p1z1r2.json src/p1z1r34.json 
+aptx p1z1r2.p1z1r34.heat.xml &amp;
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p><code>guppy</code> can its own variant of hierarchical clustering called squash
+clustering. One nice thing about squash clustering is that you can see what
+the internal nodes of the clustering tree signify. The clustering is done
+with the <code>squash</code> subcommand, which makes a directory containing
+<code>cluster.tre</code>, which is the clustering tree, and then a subdirectory
+<code>mass_trees</code> which contain all of the mass averages for the internal nodes of
+the tree.
+<a href="http://matsen.fhcrc.org/pplacer/demo/clusters_0121.html">Here</a>
+is a link to a page showing the clustering of our vaginal samples.</p>
+
+</td><td class=code><div class=highlight><pre>
+guppy squash -c vaginal_16s.refpkg -o squash_out src/*.json
+aptx squash_out/mass_trees/0006.phy.fat.xml &amp;
+aptx squash_out/cluster.tre &amp;
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p><code>guppy</code> does a new kind of principal components analysis (PCA), called "edge
+PCA". Edge PCA takes the special structure of phylogenetic placement data
+into account. Consequently, it is possible to visualize the principal
+component eigenvectors, and it can find consistent differences between
+samples which may not be so far apart in the tree. The <code>pca.trans</code> file
+contains the samples projected onto principal coordinate axes.
+<a href="http://matsen.fhcrc.org/pplacer/demo/pca.html">Here</a> is the version which
+comes from running all of our vaginal samples.</p>
+
+</td><td class=code><div class=highlight><pre>
+guppy pca -o pca -c vaginal_16s.refpkg src/*.json
+cat pca.trans
+aptx pca.xml &amp;
 
 
 </pre></div></td></tr><tr><td class=docs>
@@ -116,84 +234,88 @@ aptx p4z1r36.xml
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>Next we run placeutil's <code>classify</code> subcommand to classify the reads. The
-columns are as follows: read name, attempted rank for classification, actual
-rank for classification, taxonomic identifier, and confidence.
-We use <code>head</code> here just to get the first 30 lines so that you can look at
-them.</p>
+<p>Next we run guppy's <code>classify</code> subcommand to classify the reads. The columns
+are as follows: read name, attempted rank for classification, actual rank for
+classification, taxonomic identifier, and confidence.  We use <code>head</code> here
+just to get the first 30 lines so that you can look at them.</p>
 
 </td><td class=code><div class=highlight><pre>
-placeutil classify -c vaginal_16s.refpkg p4z1r36.place
-head -n 30 p4z1r36.class.sql
+guppy classify -c vaginal_16s.refpkg p4z1r36.json
+head -n 30 p4z1r36.class.tab
 pause
 
 </pre></div></td></tr><tr><td class=docs>
 
-<h2>Statistical comparison</h2>
+<p>The rest of the demo requires SQLite3, so we exit if that's not available.</p>
 
 </td><td class=code><div class=highlight><pre>
+which sqlite3 &gt; /dev/null 2&gt;&amp;1 <span class="o">||</span> <span class="o">{</span>
+  <span class="nb">echo</span> <span class="s2">&quot;No sqlite3, so stopping here.&quot;</span>
+  <span class="nb">exit </span>0
+<span class="o">}</span>
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p><code>mokaphy</code> is our tool for comparing collections of phylogenetic placements.
-It has a lot of different subcommands, which you can learn about with online
-help like so. (Note that the <code>read</code> in this script is just so that the shell
-will pause before spitting out the next bunch of text).</p>
+<p>We can quickly explore the classification results via SQL by importing them
+into a sqlite database. To do this, we must first create a table containing
+the taxonomic names.</p>
 
 </td><td class=code><div class=highlight><pre>
-mokaphy --cmds
+guppy taxtable -c vaginal_16s.refpkg | sqlite3 taxtable.db
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>One can explore the taxonomic table itself, without reference to placements.</p>
+
+</td><td class=code><div class=highlight><pre>
+sqlite3 -header -column taxtable.db <span class="s2">&quot;SELECT tax_name FROM taxa WHERE rank = &#39;phylum&#39;&quot;</span>
 pause
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p><code>kr</code> is the command to calculate things using the 
-<a href="http://arxiv.org/abs/1005.1699">Kantorovich-Rubinstein metric</a>
-which is a generalization of UniFrac. It simply takes in .place files and
-spits out numbers. You can run it with the <code>--list-out</code> option to make
-tabular output appropriate for R or SQL.</p>
+<p>For placement classifications, <code>guppy classify</code> can emit .sqlite files.</p>
 
 </td><td class=code><div class=highlight><pre>
-mokaphy kr src/*.place
+guppy classify --sqlite -c vaginal_16s.refpkg src/*.json
+cat *.sqlite | sqlite3 taxtable.db
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>Now we can investigate placement classifications using SQL queries. Here we
+ask for the lineage of a specific sequence.</p>
+
+</td><td class=code><div class=highlight><pre>
+sqlite3 -header -column sqlite.db <span class="s2">&quot;</span>
+<span class="s2">SELECT p.rank,</span>
+<span class="s2">       tax_name,</span>
+<span class="s2">       likelihood</span>
+<span class="s2">FROM placements AS p</span>
+<span class="s2">JOIN taxa USING (tax_id)</span>
+<span class="s2">JOIN ranks USING (rank)</span>
+<span class="s2">WHERE name =&#39;FUM0LCO01DX37Q&#39;</span>
+<span class="s2">  AND p.rank = desired_rank</span>
+<span class="s2">ORDER BY rank_order</span>
+<span class="s2">&quot;</span>
 pause
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p><code>mokaphy</code> do a special kind of principal components analysis (PCA), called
-"edge PCA". Edge PCA takes the special structure of phylogenetic placement
-data into account. Consequently, it is possible to visualize the principal
-component eigenvectors, and it can find consistent differences between
-samples which may not be so far apart in the tree. The <code>pca.trans</code> file
-contains the samples projected onto principal coordinate axes. You can 
-see an example of edge PCA in our XXX upcoming paper.</p>
+<p>Here is another example, with less confidence in the classification result.</p>
 
 </td><td class=code><div class=highlight><pre>
-mokaphy pca -o pca -c vaginal_16s.refpkg src/*.place
-cat pca.trans
-aptx pca.xml
+sqlite3 -header -column sqlite.db <span class="s2">&quot;</span>
+<span class="s2">SELECT p.rank,</span>
+<span class="s2">       tax_name,</span>
+<span class="s2">       likelihood</span>
+<span class="s2">FROM placements AS p</span>
+<span class="s2">JOIN taxa USING (tax_id)</span>
+<span class="s2">JOIN ranks USING (rank)</span>
+<span class="s2">WHERE name =&#39;GLKT0ZE02HFAHN&#39;</span>
+<span class="s2">  AND p.rank = desired_rank</span>
+<span class="s2">ORDER BY rank_order</span>
+<span class="s2">&quot;</span>
+pause
 
-</pre></div></td></tr><tr><td class=docs>
-
-<p><code>mokaphy</code> can also cluster place files using its own variant of hierarchical
-clustering called squash clustering. One nice thing about squash clustering
-is that you can see what the internal nodes of the clustering tree signify.
-The clustering is done with the <code>cluster</code> subcommand, which makes a directory
-containing <code>cluster.tre</code>, which is the clustering tree, and then a
-subdirectory <code>mass_trees</code> which contain all of the mass averages for the
-internal nodes of the tree.</p>
-
-</td><td class=code><div class=highlight><pre>
-mokaphy cluster -o my_cluster src/*.place
-aptx my_cluster/mass_trees/0006.phy.fat.xml my_cluster/cluster.tre 
-
-</pre></div></td></tr><tr><td class=docs>
-
-<p>There is also a way using mokaphy to collect all of these together into named
-units to ease visualization of the mass distributions corresponding to
-internal nodes of cluster trees. Here we just view one of those
-visualizations.</p>
-
-</td><td class=code><div class=highlight><pre>
-aptx src/clusters_0121.xml
 
 
 </td><td class=code><div class=highlight><pre>
