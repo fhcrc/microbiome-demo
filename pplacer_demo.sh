@@ -85,6 +85,7 @@ pause
 
 # Now run `guppy fat` to make a phyloXML format visualization, and run
 # archaeopteryx to look at it. Note that fat can be run without the reference
+# package specification, e.g.:
 #
 #     guppy fat p4z1r36.json
 #
@@ -171,11 +172,14 @@ guppy taxtable -c vaginal_16s.refpkg | sqlite3 taxtable.db
 sqlite3 -header -column taxtable.db "SELECT tax_name FROM taxa WHERE rank = 'phylum'"
 pause
 
-# Now we can use SQL statements to explore the results.
+# To populate the database with the placement information, `guppy classify` can
+# also emit .sqlite files.
+guppy classify --sqlite -c vaginal_16s.refpkg src/*.json
+cat *.sqlite | sqlite3 taxtable.db
 
-# how many sequences per input file?
+# And at that point, one can write SQL queries to explore the results.
 
-# What is the lineage of a specific sequence?
+# For example, you could answer "what is the lineage of a specific sequence?"
 sqlite3 -header -column sqlite.db "
 SELECT p.rank,
        tax_name,
@@ -189,7 +193,7 @@ ORDER BY rank_order
 "
 pause
 
-# ...and another, with much lower confidence in the classification result.
+# ...and with another sequence, showing much lower confidence in the classification result.
 sqlite3 -header -column sqlite.db "
 SELECT p.rank,
        tax_name,
@@ -202,27 +206,4 @@ WHERE name ='GLKT0ZE02HFAHN'
 ORDER BY rank_order
 "
 pause
-
-# `guppy classify` can also emit .sqlite files, which can be run through
-# `sqlite3` to build a database of placements, which can be correlated with the
-# taxonomic data via SQL.
-
-guppy classify --sqlite -c vaginal_16s.refpkg src/*.json
-cat *.sqlite | sqlite3 taxtable.db
-
-# And at that point, one can write SQL queries operating on placements and taxa
-# using the sqlite3 database.
-sqlite3 -header -column taxtable.db "
-    SELECT taxa.tax_name,
-           taxa.rank,
-           COUNT(*) AS n_placements
-    FROM   taxa
-           JOIN placements USING (tax_id)
-    GROUP  BY taxa.tax_name,
-              taxa.rank
-    ORDER  BY n_placements DESC
-"
-pause
-
-
 
