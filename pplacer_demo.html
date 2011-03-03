@@ -52,7 +52,7 @@ from the archaeopteryx user interface if you prefer).</p>
 
 </td><td class=code><div class=highlight><pre>
 aptx<span class="o">()</span> <span class="o">{</span>
-    java -jar bin/forester.jar -c bin/_aptx_configuration_file <span class="nv">$1</span> 
+    java -jar bin/forester.jar -c bin/_aptx_configuration_file <span class="nv">$1</span>
 <span class="o">}</span>
 
 </pre></div></td></tr><tr><td class=docs>
@@ -103,8 +103,8 @@ reference alignment, and the anonymous argument, which contains the reads to
 be placed.</p>
 
 </td><td class=code><div class=highlight><pre>
-<span class="c">#pplacer -c vaginal_16s.refpkg src/p4z1r36.fasta</span>
-<span class="c">#pause</span>
+pplacer -c vaginal_16s.refpkg src/p4z1r36.fasta
+pause
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -228,7 +228,7 @@ PCA". Edge PCA takes the special structure of phylogenetic placement data
 into account. Consequently, it is possible to visualize the principal
 component eigenvectors, and it can find consistent differences between
 samples which may not be so far apart in the tree. The <code>pca.trans</code> file
-contains the samples projected onto principal coordinate axes. 
+contains the samples projected onto principal coordinate axes.
 <a href="http://matsen.fhcrc.org/pplacer/demo/pca.html">Here</a> is the version which
 comes from running all of the samples.</p>
 
@@ -268,75 +268,38 @@ which sqlite3 &gt; /dev/null 2&gt;&amp;1 <span class="o">||</span> <span class="
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>We can quickly explore the classification results by importing them
-into a sql database. First, we create a table containing the tax_ids
-and taxonomic names.</p>
+<p>We can quickly explore the classification results via SQL by importing them
+into a sqlite database. To do this, we must first create a table containing
+the taxonomic names.</p>
 
 </td><td class=code><div class=highlight><pre>
 guppy taxtable -c vaginal_16s.refpkg | sqlite3 taxtable.db
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>Next we insert placement and classification results from multiple
-files into our database.</p>
+<p>One can also query against the taxonomic data without needing to import the
+placements at all.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy classify -c vaginal_16s.refpkg --sqlite src/*.json
-cat *.sqlite | sqlite3 taxtable.db
-sqlite3 -header -column taxtable.db <span class="s2">&quot;select * from placements limit 10&quot;</span>
-sqlite3 -header -column taxtable.db <span class="s2">&quot;select * from taxa limit 10&quot;</span>
+sqlite3 -header -column taxtable.db <span class="s2">&quot;SELECT tax_name FROM taxa WHERE rank = &#39;phylum&#39;&quot;</span>
 pause
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>Now we can use SQL statements to explore the results.</p>
-
-</td><td class=code><div class=highlight><pre>
-
-</pre></div></td></tr><tr><td class=docs>
-
-<p>how many sequences per input file?</p>
-
-</td><td class=code><div class=highlight><pre>
-
-</pre></div></td></tr><tr><td class=docs>
-
-<p>how many sequences were classified to the species level in each input file?</p>
-
-</td><td class=code><div class=highlight><pre>
-
-
-</pre></div></td></tr><tr><td class=docs>
-
-<p><code>guppy classify</code> can also emit .sqlite files, which can be run through
-<code>sqlite3</code> to build a database of placements, which can be correlated with the
-taxonomic data via SQL.</p>
+<p>To populate the database with the placement information, <code>guppy classify</code> can
+also emit .sqlite files.</p>
 
 </td><td class=code><div class=highlight><pre>
 guppy classify --sqlite -c vaginal_16s.refpkg src/*.json
+cat *.sqlite | sqlite3 taxtable.db
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p><code>guppy taxtable</code> must first be used to create the schema for the database,
-and populate it with the taxonomic data from the reference package.</p>
+<p>And at that point, one can write SQL queries operating on placements and taxa
+using the sqlite3 database.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy taxtable -c vaginal_16s.refpkg | sqlite3 sqlite.db
-
-</pre></div></td></tr><tr><td class=docs>
-
-<p>After that, the .sqlite files can be used to populate the database with the
-placements.</p>
-
-</td><td class=code><div class=highlight><pre>
-cat *.sqlite | sqlite3 sqlite.db
-
-</pre></div></td></tr><tr><td class=docs>
-
-<p>And at that point, one can write SQL queries against the sqlite3 database.</p>
-
-</td><td class=code><div class=highlight><pre>
-sqlite3 -header -column sqlite.db <span class="s2">&quot;</span>
+sqlite3 -header -column taxtable.db <span class="s2">&quot;</span>
 <span class="s2">    SELECT taxa.tax_name,</span>
 <span class="s2">           taxa.rank,</span>
 <span class="s2">           COUNT(*) AS n_placements</span>
@@ -344,7 +307,7 @@ sqlite3 -header -column sqlite.db <span class="s2">&quot;</span>
 <span class="s2">           JOIN placements USING (tax_id)</span>
 <span class="s2">    GROUP  BY taxa.tax_name,</span>
 <span class="s2">              taxa.rank</span>
-<span class="s2">    ORDER  BY n_placements</span>
+<span class="s2">    ORDER  BY n_placements DESC</span>
 <span class="s2">&quot;</span>
 pause
 
