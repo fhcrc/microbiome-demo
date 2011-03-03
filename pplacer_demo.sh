@@ -1,4 +1,4 @@
-#!/bin/bash -eu 
+#!/bin/bash -eu
 
 # This is a demonstration for the use of the pplacer suite of programs. It
 # covers the use of placement, visualization, classification, and comparison.
@@ -21,7 +21,7 @@
 # run archaeopteryx from within this script (you can also open them directly
 # from the archaeopteryx user interface if you prefer).
 aptx() {
-    java -jar bin/forester.jar -c bin/_aptx_configuration_file $1 
+    java -jar bin/forester.jar -c bin/_aptx_configuration_file $1
 }
 
 # A little `pause` function to pause between steps.
@@ -53,8 +53,8 @@ set -o verbose
 # them to be quite useful. The other arguments include `-r` which is our
 # reference alignment, and the anonymous argument, which contains the reads to
 # be placed.
-#pplacer -c vaginal_16s.refpkg src/p4z1r36.fasta
-#pause
+pplacer -c vaginal_16s.refpkg src/p4z1r36.fasta
+pause
 
 # We haven't done the alignment in this tutorial, because that would require
 # another external dependency, but there are scripts which appropriately wrap
@@ -74,7 +74,7 @@ pause
 # These subcommands are used by writing out the name of the subcommand like
 #
 #     guppy SUBCOMMAND [options] [files]
-# 
+#
 # For example, we can get help for the `fat` subcommand.
 guppy fat --help
 pause
@@ -137,7 +137,7 @@ aptx squash_out/cluster.tre &
 # into account. Consequently, it is possible to visualize the principal
 # component eigenvectors, and it can find consistent differences between
 # samples which may not be so far apart in the tree. The `pca.trans` file
-# contains the samples projected onto principal coordinate axes. 
+# contains the samples projected onto principal coordinate axes.
 # [Here](http://matsen.fhcrc.org/pplacer/demo/pca.html) is the version which
 # comes from running all of the samples.
 guppy pca -o pca -c vaginal_16s.refpkg src/*.json
@@ -162,41 +162,24 @@ which sqlite3 > /dev/null 2>&1 || {
   exit 0
 }
 
-# We can quickly explore the classification results by importing them
-# into a sql database. First, we create a table containing the tax_ids
-# and taxonomic names.
+# We can quickly explore the classification results via SQL by importing them
+# into a sqlite database. To do this, we must first create a table containing
+# the taxonomic names.
 guppy taxtable -c vaginal_16s.refpkg | sqlite3 taxtable.db
 
-# Next we insert placement and classification results from multiple
-# files into our database.
-guppy classify -c vaginal_16s.refpkg --sqlite src/*.json
-cat *.sqlite | sqlite3 taxtable.db
-sqlite3 -header -column taxtable.db "select * from placements limit 10"
-sqlite3 -header -column taxtable.db "select * from taxa limit 10"
+# One can also query against the taxonomic data without needing to import the
+# placements at all.
+sqlite3 -header -column taxtable.db "SELECT tax_name FROM taxa WHERE rank = 'phylum'"
 pause
 
-# Now we can use SQL statements to explore the results.
-
-# how many sequences per input file?
-
-# how many sequences were classified to the species level in each input file?
-
-
-# `guppy classify` can also emit .sqlite files, which can be run through
-# `sqlite3` to build a database of placements, which can be correlated with the
-# taxonomic data via SQL.
+# To populate the database with the placement information, `guppy classify` can
+# also emit .sqlite files.
 guppy classify --sqlite -c vaginal_16s.refpkg src/*.json
+cat *.sqlite | sqlite3 taxtable.db
 
-# `guppy taxtable` must first be used to create the schema for the database,
-# and populate it with the taxonomic data from the reference package.
-guppy taxtable -c vaginal_16s.refpkg | sqlite3 sqlite.db
-
-# After that, the .sqlite files can be used to populate the database with the
-# placements.
-cat *.sqlite | sqlite3 sqlite.db
-
-# And at that point, one can write SQL queries against the sqlite3 database.
-sqlite3 -header -column sqlite.db "
+# And at that point, one can write SQL queries operating on placements and taxa
+# using the sqlite3 database.
+sqlite3 -header -column taxtable.db "
     SELECT taxa.tax_name,
            taxa.rank,
            COUNT(*) AS n_placements
@@ -204,6 +187,6 @@ sqlite3 -header -column sqlite.db "
            JOIN placements USING (tax_id)
     GROUP  BY taxa.tax_name,
               taxa.rank
-    ORDER  BY n_placements
+    ORDER  BY n_placements DESC
 "
 pause
