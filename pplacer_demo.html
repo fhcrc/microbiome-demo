@@ -46,9 +46,9 @@ You can safely ignore them.</p>
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>For the purposes of this demo, we have a little script function <code>aptx</code> to
-run archaeopteryx from within this script (you can also open them directly
-from the archaeopteryx user interface if you prefer).</p>
+<p>We have a little script function <code>aptx</code> to run archaeopteryx from within this
+script (you can also open them directly from the archaeopteryx user interface
+if you prefer).</p>
 
 </td><td class=code><div class=highlight><pre>
 aptx<span class="o">()</span> <span class="o">{</span>
@@ -92,32 +92,21 @@ which guppy &gt; /dev/null 2&gt;&amp;1 <span class="o">||</span> <span class="o"
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>This makes p4z1r2.json, which is a "place" file.  Place files contain
-information about collections of phylogenetic placements on a tree. You may
-notice that one of the arguments to this command is <code>vaginal_16s.refpkg</code>,
-which is a "reference package". Reference packages are simply an organized
-collection of files including a reference tree, reference alignment, and
-taxonomic information. They are optional at this point, but we have found
-them to be quite useful. The other arguments include <code>-r</code> which is our
-reference alignment, and the anonymous argument, which contains the reads to
-be placed.</p>
+<p>This makes p4z1r2.json, which is a "place" file in JSON format.  Place files
+contain information about collections of phylogenetic placements on a tree.
+You may notice that one of the arguments to this command is
+<code>vaginal_16s.refpkg</code>, which is a "reference package". Reference packages are
+simply an organized collection of files including a reference tree, reference
+alignment, and taxonomic information. </p>
 
 </td><td class=code><div class=highlight><pre>
 pplacer -c vaginal_16s.refpkg src/p4z1r36.fasta
 pause
 
-</pre></div></td></tr><tr><td class=docs>
-
-<p>We haven't done the alignment in this tutorial, because that would require
-another external dependency, but there are scripts which appropriately wrap
-HMMER and Infernal in the latest version of pplacer.</p>
-
-</td><td class=code><div class=highlight><pre>
-
 
 </pre></div></td></tr><tr><td class=docs>
 
-<h2>guppy</h2>
+<h2>Grand Unified Phylogenetic Placement Yanalyzer (guppy)</h2>
 
 </td><td class=code><div class=highlight><pre>
 
@@ -182,8 +171,7 @@ aptx p4z1r36.xml &amp;
 <p><code>kr</code> is the command to calculate things using the
 <a href="http://arxiv.org/abs/1005.1699">Kantorovich-Rubinstein (KR) metric</a>
 which is a generalization of UniFrac. It simply takes in .json files and
-spits out numbers. You can run it with the <code>--list-out</code> option to make
-tabular output appropriate for R or SQL.</p>
+spits the matrix of distances between the corresponding samples. </p>
 
 </td><td class=code><div class=highlight><pre>
 guppy kr src/*.json
@@ -201,8 +189,8 @@ reference package is included again to add in taxonomic annotation.
 compares all of the vaginosis-positive samples with the negative ones.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy heat -c vaginal_16s.refpkg/ src/p1z1r2.json src/p1z1r34.json &amp;
-aptx p1z1r2.p1z1r34.heat.xml
+guppy heat -c vaginal_16s.refpkg/ src/p1z1r2.json src/p1z1r34.json 
+aptx p1z1r2.p1z1r34.heat.xml &amp;
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -214,7 +202,7 @@ with the <code>squash</code> subcommand, which makes a directory containing
 <code>mass_trees</code> which contain all of the mass averages for the internal nodes of
 the tree.
 <a href="http://matsen.fhcrc.org/pplacer/demo/clusters_0121.html">Here</a>
-is a link to a page showing the clustering of all of the samples.</p>
+is a link to a page showing the clustering of our vaginal samples.</p>
 
 </td><td class=code><div class=highlight><pre>
 guppy squash -c vaginal_16s.refpkg -o squash_out src/*.json
@@ -230,7 +218,7 @@ component eigenvectors, and it can find consistent differences between
 samples which may not be so far apart in the tree. The <code>pca.trans</code> file
 contains the samples projected onto principal coordinate axes.
 <a href="http://matsen.fhcrc.org/pplacer/demo/pca.html">Here</a> is the version which
-comes from running all of the samples.</p>
+comes from running all of our vaginal samples.</p>
 
 </td><td class=code><div class=highlight><pre>
 guppy pca -o pca -c vaginal_16s.refpkg src/*.json
@@ -258,7 +246,7 @@ pause
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>The rest of the demo requires sqlite3, so we exit if that's not available.</p>
+<p>The rest of the demo requires SQLite3, so we exit if that's not available.</p>
 
 </td><td class=code><div class=highlight><pre>
 which sqlite3 &gt; /dev/null 2&gt;&amp;1 <span class="o">||</span> <span class="o">{</span>
@@ -277,8 +265,7 @@ guppy taxtable -c vaginal_16s.refpkg | sqlite3 taxtable.db
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>One can also query against the taxonomic data without needing to import the
-placements at all.</p>
+<p>One can explore the taxonomic table itself, without reference to placements.</p>
 
 </td><td class=code><div class=highlight><pre>
 sqlite3 -header -column taxtable.db <span class="s2">&quot;SELECT tax_name FROM taxa WHERE rank = &#39;phylum&#39;&quot;</span>
@@ -286,8 +273,7 @@ pause
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>To populate the database with the placement information, <code>guppy classify</code> can
-also emit .sqlite files.</p>
+<p>For placement classifications, <code>guppy classify</code> can emit .sqlite files.</p>
 
 </td><td class=code><div class=highlight><pre>
 guppy classify --sqlite -c vaginal_16s.refpkg src/*.json
@@ -295,21 +281,41 @@ cat *.sqlite | sqlite3 taxtable.db
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>And at that point, one can write SQL queries operating on placements and taxa
-using the sqlite3 database.</p>
+<p>Now we can investigate placement classifications using SQL queries. Here we
+ask for the lineage of a specific sequence.</p>
 
 </td><td class=code><div class=highlight><pre>
-sqlite3 -header -column taxtable.db <span class="s2">&quot;</span>
-<span class="s2">    SELECT taxa.tax_name,</span>
-<span class="s2">           taxa.rank,</span>
-<span class="s2">           COUNT(*) AS n_placements</span>
-<span class="s2">    FROM   taxa</span>
-<span class="s2">           JOIN placements USING (tax_id)</span>
-<span class="s2">    GROUP  BY taxa.tax_name,</span>
-<span class="s2">              taxa.rank</span>
-<span class="s2">    ORDER  BY n_placements DESC</span>
+sqlite3 -header -column sqlite.db <span class="s2">&quot;</span>
+<span class="s2">SELECT p.rank,</span>
+<span class="s2">       tax_name,</span>
+<span class="s2">       likelihood</span>
+<span class="s2">FROM placements AS p</span>
+<span class="s2">JOIN taxa USING (tax_id)</span>
+<span class="s2">JOIN ranks USING (rank)</span>
+<span class="s2">WHERE name =&#39;FUM0LCO01DX37Q&#39;</span>
+<span class="s2">  AND p.rank = desired_rank</span>
+<span class="s2">ORDER BY rank_order</span>
 <span class="s2">&quot;</span>
 pause
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>Here is another example, with less confidence in the classification result.</p>
+
+</td><td class=code><div class=highlight><pre>
+sqlite3 -header -column sqlite.db <span class="s2">&quot;</span>
+<span class="s2">SELECT p.rank,</span>
+<span class="s2">       tax_name,</span>
+<span class="s2">       likelihood</span>
+<span class="s2">FROM placements AS p</span>
+<span class="s2">JOIN taxa USING (tax_id)</span>
+<span class="s2">JOIN ranks USING (rank)</span>
+<span class="s2">WHERE name =&#39;GLKT0ZE02HFAHN&#39;</span>
+<span class="s2">  AND p.rank = desired_rank</span>
+<span class="s2">ORDER BY rank_order</span>
+<span class="s2">&quot;</span>
+pause
+
 
 
 </td><td class=code><div class=highlight><pre>

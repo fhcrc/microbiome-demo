@@ -17,9 +17,9 @@
 # We start with a couple of little functions to make this script run smoothly.
 # You can safely ignore them.
 
-# For the purposes of this demo, we have a little script function `aptx` to
-# run archaeopteryx from within this script (you can also open them directly
-# from the archaeopteryx user interface if you prefer).
+# We have a little script function `aptx` to run archaeopteryx from within this
+# script (you can also open them directly from the archaeopteryx user interface
+# if you prefer).
 aptx() {
     java -jar bin/forester.jar -c bin/_aptx_configuration_file $1
 }
@@ -44,25 +44,18 @@ set -o verbose
 # Phylogenetic placement
 # ----------------------
 
-# This makes p4z1r2.json, which is a "place" file.  Place files contain
-# information about collections of phylogenetic placements on a tree. You may
-# notice that one of the arguments to this command is `vaginal_16s.refpkg`,
-# which is a "reference package". Reference packages are simply an organized
-# collection of files including a reference tree, reference alignment, and
-# taxonomic information. They are optional at this point, but we have found
-# them to be quite useful. The other arguments include `-r` which is our
-# reference alignment, and the anonymous argument, which contains the reads to
-# be placed.
+# This makes p4z1r2.json, which is a "place" file in JSON format.  Place files
+# contain information about collections of phylogenetic placements on a tree.
+# You may notice that one of the arguments to this command is
+# `vaginal_16s.refpkg`, which is a "reference package". Reference packages are
+# simply an organized collection of files including a reference tree, reference
+# alignment, and taxonomic information. 
 pplacer -c vaginal_16s.refpkg src/p4z1r36.fasta
 pause
 
-# We haven't done the alignment in this tutorial, because that would require
-# another external dependency, but there are scripts which appropriately wrap
-# HMMER and Infernal in the latest version of pplacer.
 
-
-# guppy
-# -----
+# Grand Unified Phylogenetic Placement Yanalyzer (guppy)
+# ------------------------------------------------------
 
 # `guppy` is our Swiss army knife for phylogenetic placements.  It has a lot of
 # different subcommands, which you can learn about with online help by invoking
@@ -103,8 +96,7 @@ aptx p4z1r36.xml &
 # `kr` is the command to calculate things using the
 # [Kantorovich-Rubinstein (KR) metric](http://arxiv.org/abs/1005.1699)
 # which is a generalization of UniFrac. It simply takes in .json files and
-# spits out numbers. You can run it with the `--list-out` option to make
-# tabular output appropriate for R or SQL.
+# spits the matrix of distances between the corresponding samples. 
 guppy kr src/*.json
 pause
 
@@ -127,7 +119,7 @@ aptx p1z1r2.p1z1r34.heat.xml &
 # `mass_trees` which contain all of the mass averages for the internal nodes of
 # the tree.
 # [Here](http://matsen.fhcrc.org/pplacer/demo/clusters_0121.html)
-# is a link to a page showing the clustering of all of the samples.
+# is a link to a page showing the clustering of our vaginal samples.
 guppy squash -c vaginal_16s.refpkg -o squash_out src/*.json
 aptx squash_out/mass_trees/0006.phy.fat.xml &
 aptx squash_out/cluster.tre &
@@ -139,7 +131,7 @@ aptx squash_out/cluster.tre &
 # samples which may not be so far apart in the tree. The `pca.trans` file
 # contains the samples projected onto principal coordinate axes.
 # [Here](http://matsen.fhcrc.org/pplacer/demo/pca.html) is the version which
-# comes from running all of the samples.
+# comes from running all of our vaginal samples.
 guppy pca -o pca -c vaginal_16s.refpkg src/*.json
 cat pca.trans
 aptx pca.xml &
@@ -156,7 +148,7 @@ guppy classify -c vaginal_16s.refpkg p4z1r36.json
 head -n 30 p4z1r36.class.tab
 pause
 
-# The rest of the demo requires sqlite3, so we exit if that's not available.
+# The rest of the demo requires SQLite3, so we exit if that's not available.
 which sqlite3 > /dev/null 2>&1 || {
   echo "No sqlite3, so stopping here."
   exit 0
@@ -167,19 +159,16 @@ which sqlite3 > /dev/null 2>&1 || {
 # the taxonomic names.
 guppy taxtable -c vaginal_16s.refpkg | sqlite3 taxtable.db
 
-# One can also query against the taxonomic data without needing to import the
-# placements at all.
+# One can explore the taxonomic table itself, without reference to placements.
 sqlite3 -header -column taxtable.db "SELECT tax_name FROM taxa WHERE rank = 'phylum'"
 pause
 
-# To populate the database with the placement information, `guppy classify` can
-# also emit .sqlite files.
+# For placement classifications, `guppy classify` can emit .sqlite files.
 guppy classify --sqlite -c vaginal_16s.refpkg src/*.json
 cat *.sqlite | sqlite3 taxtable.db
 
-# And at that point, one can write SQL queries to explore the results.
-
-# For example, you could answer "what is the lineage of a specific sequence?"
+# Now we can investigate placement classifications using SQL queries. Here we
+# ask for the lineage of a specific sequence.
 sqlite3 -header -column sqlite.db "
 SELECT p.rank,
        tax_name,
@@ -193,7 +182,7 @@ ORDER BY rank_order
 "
 pause
 
-# ...and with another sequence, showing much lower confidence in the classification result.
+# Here is another example, with less confidence in the classification result.
 sqlite3 -header -column sqlite.db "
 SELECT p.rank,
        tax_name,

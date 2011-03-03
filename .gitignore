@@ -11,3 +11,4 @@ pca.xml
 bin/pplacer*
 taxtable.db
 *.sqlite
+sqlite.db
