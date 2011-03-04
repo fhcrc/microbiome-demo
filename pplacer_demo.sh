@@ -111,19 +111,6 @@ pause
 guppy heat -c vaginal_16s.refpkg/ src/p1z1r2.json src/p1z1r34.json 
 aptx p1z1r2.p1z1r34.heat.xml &
 
-# `guppy` can its own variant of hierarchical clustering called squash
-# clustering. One nice thing about squash clustering is that you can see what
-# the internal nodes of the clustering tree signify. The clustering is done
-# with the `squash` subcommand, which makes a directory containing
-# `cluster.tre`, which is the clustering tree, and then a subdirectory
-# `mass_trees` which contain all of the mass averages for the internal nodes of
-# the tree.
-# [Here](http://matsen.fhcrc.org/pplacer/demo/clusters_0121.html)
-# is a link to a page showing the clustering of our vaginal samples.
-guppy squash -c vaginal_16s.refpkg -o squash_out src/*.json
-aptx squash_out/mass_trees/0006.phy.fat.xml &
-aptx squash_out/cluster.tre &
-
 # `guppy` does a new kind of principal components analysis (PCA), called "edge
 # PCA". Edge PCA takes the special structure of phylogenetic placement data
 # into account. Consequently, it is possible to visualize the principal
@@ -135,6 +122,17 @@ aptx squash_out/cluster.tre &
 guppy pca -o pca -c vaginal_16s.refpkg src/*.json
 cat pca.trans
 aptx pca.xml &
+
+# `guppy` can its own variant of hierarchical clustering called squash
+# clustering. One nice thing about squash clustering is that you can see what
+# the internal nodes of the clustering tree signify. The clustering is done
+# with the `squash` subcommand, which makes a directory containing
+# `cluster.tre`, which is the clustering tree, and then a subdirectory
+# `mass_trees` which contain all of the mass averages for the internal nodes of
+# the tree.
+guppy squash -c vaginal_16s.refpkg -o squash_out src/*.json
+aptx squash_out/mass_trees/0006.phy.fat.xml &
+aptx squash_out/cluster.tre &
 
 
 # Classification
