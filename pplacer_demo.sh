@@ -163,35 +163,39 @@ guppy taxtable -c vaginal_16s.refpkg | sqlite3 taxtable.db
 sqlite3 -header -column taxtable.db "SELECT tax_name FROM taxa WHERE rank = 'phylum'"
 pause
 
-# For placement classifications, `guppy classify` can emit .sqlite files.
+# For placement classifications, `guppy classify` can emit .sqlite
+# files, which contain sql instructions for creating a table of
+# classification results in the database.
 guppy classify --sqlite -c vaginal_16s.refpkg src/*.json
 cat *.sqlite | sqlite3 taxtable.db
 
 # Now we can investigate placement classifications using SQL queries. Here we
 # ask for the lineage of a specific sequence.
-sqlite3 -header -column sqlite.db "
+sqlite3 -header taxtable.db "
 SELECT p.rank,
        tax_name,
        likelihood
 FROM placements AS p
 JOIN taxa USING (tax_id)
 JOIN ranks USING (rank)
-WHERE name ='FUM0LCO01DX37Q'
-  AND p.rank = desired_rank
+WHERE p.rank = desired_rank
+  AND name ='FUM0LCO01DX37Q'
 ORDER BY rank_order
 "
+
 pause
 
-# Here is another example, with less confidence in the classification result.
-sqlite3 -header -column sqlite.db "
+# Here is another example, with somewhat less confidence in the
+# species-level classification result.
+sqlite3 -header taxtable.db "
 SELECT p.rank,
        tax_name,
        likelihood
 FROM placements AS p
 JOIN taxa USING (tax_id)
 JOIN ranks USING (rank)
-WHERE name ='GLKT0ZE02HFAHN'
-  AND p.rank = desired_rank
+WHERE p.rank = desired_rank
+  AND name ='FUM0LCO01A2HOA'
 ORDER BY rank_order
 "
 pause
