@@ -119,6 +119,8 @@ aptx p1z1r2.p1z1r34.heat.xml &
 # contains the samples projected onto principal coordinate axes.
 # [Here](http://matsen.fhcrc.org/pplacer/demo/pca.html) is the version which
 # comes from running all of our vaginal samples.
+# [Here](http://fhcrc.github.com/microbiome-demo/edge_pca.svg) is the
+# corresponding projection of the samples onto the principal components.
 guppy pca -o pca -c vaginal_16s.refpkg src/*.json
 cat pca.trans
 aptx pca.xml &
