@@ -182,7 +182,6 @@ WHERE p.rank = desired_rank
   AND name ='FUM0LCO01DX37Q'
 ORDER BY rank_order
 "
-
 pause
 
 # Here is another example, with somewhat less confidence in the
