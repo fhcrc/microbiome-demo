@@ -194,21 +194,6 @@ aptx p1z1r2.p1z1r34.heat.xml &amp;
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p><code>guppy</code> can its own variant of hierarchical clustering called squash
-clustering. One nice thing about squash clustering is that you can see what
-the internal nodes of the clustering tree signify. The clustering is done
-with the <code>squash</code> subcommand, which makes a directory containing
-<code>cluster.tre</code>, which is the clustering tree, and then a subdirectory
-<code>mass_trees</code> which contain all of the mass averages for the internal nodes of
-the tree.
-
-</td><td class=code><div class=highlight><pre>
-guppy squash -c vaginal_16s.refpkg -o squash_out src/*.json
-aptx squash_out/mass_trees/0006.phy.fat.xml &amp;
-aptx squash_out/cluster.tre &amp;
-
-</pre></div></td></tr><tr><td class=docs>
-
 <p><code>guppy</code> does a new kind of principal components analysis (PCA), called "edge
 PCA". Edge PCA takes the special structure of phylogenetic placement data
 into account. Consequently, it is possible to visualize the principal
@@ -216,12 +201,29 @@ component eigenvectors, and it can find consistent differences between
 samples which may not be so far apart in the tree. The <code>pca.trans</code> file
 contains the samples projected onto principal coordinate axes.
 <a href="http://matsen.fhcrc.org/pplacer/demo/pca.html">Here</a> is the version which
-comes from running all of our vaginal samples.</p>
+comes from running all of our vaginal samples.
+<a href="http://fhcrc.github.com/microbiome-demo/edge_pca.svg">Here</a> is the
+corresponding projection of the samples onto the principal components.</p>
 
 </td><td class=code><div class=highlight><pre>
 guppy pca -o pca -c vaginal_16s.refpkg src/*.json
 cat pca.trans
 aptx pca.xml &amp;
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p><code>guppy</code> can its own variant of hierarchical clustering called squash
+clustering. One nice thing about squash clustering is that you can see what
+the internal nodes of the clustering tree signify. The clustering is done
+with the <code>squash</code> subcommand, which makes a directory containing
+<code>cluster.tre</code>, which is the clustering tree, and then a subdirectory
+<code>mass_trees</code> which contain all of the mass averages for the internal nodes of
+the tree.</p>
+
+</td><td class=code><div class=highlight><pre>
+guppy squash -c vaginal_16s.refpkg -o squash_out src/*.json
+aptx squash_out/mass_trees/0006.phy.fat.xml &amp;
+aptx squash_out/cluster.tre &amp;
 
 
 </pre></div></td></tr><tr><td class=docs>
@@ -271,7 +273,9 @@ pause
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>For placement classifications, <code>guppy classify</code> can emit .sqlite files.</p>
+<p>For placement classifications, <code>guppy classify</code> can emit .sqlite
+files, which contain sql instructions for creating a table of
+classification results in the database.</p>
 
 </td><td class=code><div class=highlight><pre>
 guppy classify --sqlite -c vaginal_16s.refpkg src/*.json
@@ -283,33 +287,34 @@ cat *.sqlite | sqlite3 taxtable.db
 ask for the lineage of a specific sequence.</p>
 
 </td><td class=code><div class=highlight><pre>
-sqlite3 -header -column sqlite.db <span class="s2">&quot;</span>
+sqlite3 -header taxtable.db <span class="s2">&quot;</span>
 <span class="s2">SELECT p.rank,</span>
 <span class="s2">       tax_name,</span>
 <span class="s2">       likelihood</span>
 <span class="s2">FROM placements AS p</span>
 <span class="s2">JOIN taxa USING (tax_id)</span>
 <span class="s2">JOIN ranks USING (rank)</span>
-<span class="s2">WHERE name =&#39;FUM0LCO01DX37Q&#39;</span>
-<span class="s2">  AND p.rank = desired_rank</span>
+<span class="s2">WHERE p.rank = desired_rank</span>
+<span class="s2">  AND name =&#39;FUM0LCO01DX37Q&#39;</span>
 <span class="s2">ORDER BY rank_order</span>
 <span class="s2">&quot;</span>
 pause
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>Here is another example, with less confidence in the classification result.</p>
+<p>Here is another example, with somewhat less confidence in the
+species-level classification result.</p>
 
 </td><td class=code><div class=highlight><pre>
-sqlite3 -header -column sqlite.db <span class="s2">&quot;</span>
+sqlite3 -header taxtable.db <span class="s2">&quot;</span>
 <span class="s2">SELECT p.rank,</span>
 <span class="s2">       tax_name,</span>
 <span class="s2">       likelihood</span>
 <span class="s2">FROM placements AS p</span>
 <span class="s2">JOIN taxa USING (tax_id)</span>
 <span class="s2">JOIN ranks USING (rank)</span>
-<span class="s2">WHERE name =&#39;GLKT0ZE02HFAHN&#39;</span>
-<span class="s2">  AND p.rank = desired_rank</span>
+<span class="s2">WHERE p.rank = desired_rank</span>
+<span class="s2">  AND name =&#39;FUM0LCO01A2HOA&#39;</span>
 <span class="s2">ORDER BY rank_order</span>
 <span class="s2">&quot;</span>
 pause
