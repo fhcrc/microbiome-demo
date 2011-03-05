@@ -49,7 +49,10 @@ set -o verbose
 # You may notice that one of the arguments to this command is
 # `vaginal_16s.refpkg`, which is a "reference package". Reference packages are
 # simply an organized collection of files including a reference tree, reference
-# alignment, and taxonomic information. 
+# alignment, and taxonomic information. We have the beginnings of a 
+# [database](http://microbiome.fhcrc.org/apps/refpkg/) of reference packages
+# and some [software](http://github.com/fhcrc/taxtastic) for putting them 
+# together.
 pplacer -c vaginal_16s.refpkg src/p4z1r36.fasta
 pause
 
