@@ -47,4 +47,7 @@ Noah Hoffman, Aaron Gallagher and Erick Matsen.
 
 ## Acknowledgements
 
-We would like to thank Martin Morgan, Sujatha Srinivasan and David Fredricks for their work in making this possible.
+The data for this demonstration was generated as part of ongoing work at
+the Fred Hutchinson Cancer Research Center on the microbiome of the
+vagina. We would like to thank Martin Morgan, Sujatha Srinivasan and
+David Fredricks for their work and for allowing the data to be used.

@@ -30,7 +30,7 @@ pause() {
   read
 }
 
-# Make sure that guppy can be found.
+# Make sure that `guppy` can be found.
 which guppy > /dev/null 2>&1 || {
   echo "Couldn't find guppy. \
 There is a download script in the bin directory for you to use."
@@ -71,6 +71,7 @@ pause
 #
 #     guppy SUBCOMMAND [options] [files]
 #
+
 # For example, we can get help for the `fat` subcommand.
 guppy fat --help
 pause
@@ -79,8 +80,8 @@ pause
 # Visualization
 # -------------
 
-# Now run `guppy fat` to make a phyloXML format visualization, and run
-# archaeopteryx to look at it. Note that fat can be run without the reference
+# Now run `guppy fat` to make a phyloXML "fat tree" visualization, and run
+# archaeopteryx to look at it. Note that `fat` can be run without the reference
 # package specification, e.g.:
 #
 #     guppy fat p4z1r36.json
@@ -98,46 +99,61 @@ aptx p4z1r36.xml &
 
 # `kr` is the command to calculate things using the
 # [Kantorovich-Rubinstein (KR) metric](http://arxiv.org/abs/1005.1699)
-# which is a generalization of UniFrac. It simply takes in .json files and
-# spits the matrix of distances between the corresponding samples. 
+# which is a generalization of UniFrac. It simply takes in JSON placement files and
+# spits the matrix of distances between the corresponding samples.
 guppy kr src/*.json
 pause
 
 # The KR metric can be thought of as the amount of work it takes to move the
 # distribution of reads from one collection of samples to another along the
-# edges of the tree. This can be nicely visualized by thickening the branches
-# of the tree in proportion to the reads which get transported through there.
-# To get such a visualization, we use guppy's `heat` subcommand. The
-# reference package is included again to add in taxonomic annotation.
-# [Here](http://matsen.fhcrc.org/pplacer/demo/bv.heat.html) is a version which
-# compares all of the vaginosis-positive samples with the negative ones.
-guppy heat -c vaginal_16s.refpkg/ src/p1z1r2.json src/p1z1r34.json 
+# edges of the tree. This can be visualized by thickening the branches of the
+# tree in proportion to the number of reads transported along that branch. To
+# get such a visualization, we use guppy's `heat` subcommand. The reference
+# package is included again to add in taxonomic annotation. Red indicates
+# movement towards the root and blue away from the root.
+# [Here](http://matsen.fhcrc.org/pplacer/demo/bv.heat.html) is a
+# version which compares all of the vaginosis-positive samples with the
+# negative ones.
+guppy heat -c vaginal_16s.refpkg/ src/p1z1r2.json src/p1z1r34.json
 aptx p1z1r2.p1z1r34.heat.xml &
 
-# `guppy` does a new kind of principal components analysis (PCA), called "edge
-# PCA". Edge PCA takes the special structure of phylogenetic placement data
-# into account. Consequently, it is possible to visualize the principal
-# component eigenvectors, and it can find consistent differences between
-# samples which may not be so far apart in the tree. The `pca.trans` file
-# contains the samples projected onto principal coordinate axes.
-# [Here](http://matsen.fhcrc.org/pplacer/demo/pca.html) is the version which
-# comes from running all of our vaginal samples.
-# [Here](http://fhcrc.github.com/microbiome-demo/edge_pca.svg) is the
-# corresponding projection of the samples onto the principal components.
-guppy pca -o pca -c vaginal_16s.refpkg src/*.json
-cat pca.trans
-aptx pca.xml &
+# Phylogenetic placement data has a special structure, and we have developed
+# variants of classical ordination and clustering techniques, called "edge
+# principal components analysis" and "squash clustering" which leverage this
+# special structure. You can read more about these methods
+# [in our paper](http://matsen.fhcrc.org/papers/11MatsenEvansEdgeSquash.pdf).
 
-# `guppy` can its own variant of hierarchical clustering called squash
-# clustering. One nice thing about squash clustering is that you can see what
-# the internal nodes of the clustering tree signify. The clustering is done
-# with the `squash` subcommand, which makes a directory containing
-# `cluster.tre`, which is the clustering tree, and then a subdirectory
-# `mass_trees` which contain all of the mass averages for the internal nodes of
-# the tree.
+# ### Edge principal components analysis
+
+# With edge principal components analysis (edge PCA), it is possible to
+# visualize the principal component axes, and find differences between
+# samples which may only differ in terms of read distributions on closely
+# related taxa. `guppy pca` creates a tree file (here `pca_out.xml`) which
+# shows the principal component axes projected onto the tree.
+# [Here](http://matsen.fhcrc.org/pplacer/demo/pca.html) are the first five
+# principal component axes for the full data set.
+guppy pca -o pca_out -c vaginal_16s.refpkg src/*.json
+aptx pca_out.xml &
+
+# The `pca_out.trans` file has the samples projected onto principal coordinate
+# axes. [Here](http://fhcrc.github.com/microbiome-demo/edge_pca.svg) is the
+# corresponding figure for the full data set.
+cat pca_out.trans
+
+# ### Squash clustering
+
+# `guppy` can also do "squash clustering". One nice thing about squash
+# clustering is that you can see what the internal nodes of the clustering tree
+# signify. The clustering is done with the `squash` subcommand, which makes a
+# directory containing `cluster.tre`, which is the clustering tree, and then a
+# subdirectory `mass_trees` which contain all of the mass averages for the
+# internal nodes of the tree.
 guppy squash -c vaginal_16s.refpkg -o squash_out src/*.json
-aptx squash_out/mass_trees/0006.phy.fat.xml &
 aptx squash_out/cluster.tre &
+
+# We can look at `0006.phy.fat.xml`: the mass distribution for the internal
+# node number 6 in the clustering tree.
+aptx squash_out/mass_trees/0006.phy.fat.xml &
 
 
 # Classification
@@ -151,23 +167,24 @@ guppy classify -c vaginal_16s.refpkg p4z1r36.json
 head -n 30 p4z1r36.class.tab
 pause
 
-# The rest of the demo requires SQLite3, so we exit if that's not available.
+# We can quickly explore the classification results via SQL by importing them
+# into a SQLite3 database. We exit if SQLite3 is not available, and clean up in
+# case the script is getting run for the second time.
 which sqlite3 > /dev/null 2>&1 || {
   echo "No sqlite3, so stopping here."
   exit 0
 }
+rm -f taxtable.db
 
-# We can quickly explore the classification results via SQL by importing them
-# into a sqlite database. To do this, we must first create a table containing
-# the taxonomic names.
+# Create a table containing the taxonomic names.
 guppy taxtable -c vaginal_16s.refpkg | sqlite3 taxtable.db
 
-# One can explore the taxonomic table itself, without reference to placements.
+# Explore the taxonomic table itself, without reference to placements.
 sqlite3 -header -column taxtable.db "SELECT tax_name FROM taxa WHERE rank = 'phylum'"
 pause
 
 # For placement classifications, `guppy classify` can emit .sqlite
-# files, which contain sql instructions for creating a table of
+# files, which contain SQL instructions for creating a table of
 # classification results in the database.
 guppy classify --sqlite -c vaginal_16s.refpkg src/*.json
 cat *.sqlite | sqlite3 taxtable.db
@@ -201,4 +218,8 @@ WHERE p.rank = desired_rank
 ORDER BY rank_order
 "
 pause
+
+# That's it for the demo. For further information, please consult the
+# [pplacer documentation](http://matsen.github.com/pplacer/).
+echo "Thanks!"
 
