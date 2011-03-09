@@ -7,9 +7,9 @@
 # what is going on in the right column.
 #
 # It is assumed that java is available and that you have installed `pplacer`
-# and `guppy`. See the [README](https://github.com/fhcrc/microbiome-demo)
-# for details.
-
+# and `guppy`. See the [README](http://github.com/fhcrc/microbiome-demo)
+# for details. The files for this tutorial can be downloaded as a
+# [zip archive](http://github.com/fhcrc/microbiome-demo/zipball/master).
 
 # Getting set up (for this demo)
 # ------------------------------
