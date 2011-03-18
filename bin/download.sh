@@ -1,15 +1,15 @@
 #!/bin/sh -eu
 
-PREFIX=pplacer_v1.1
+PREFIX=pplacer-v1.1
 
 case `uname -s` in
 Linux)
   echo "Downloading linux binaries..."
-  wget "http://matsen.fhcrc.org/pplacer/builds/${PREFIX}_Linux.2.6.5-7.324-smp.tar.gz"
+  wget "http://matsen.fhcrc.org/pplacer/builds/${PREFIX}-Linux.tar.gz"
   ;;
 Darwin)
   echo "Downloading OS X binaries..."
-  curl -O "http://matsen.fhcrc.org/pplacer/builds/${PREFIX}_Darwin.10.6.0.tar.gz"
+  curl -O "http://matsen.fhcrc.org/pplacer/builds/${PREFIX}-Darwin.tar.gz"
   ;;
 *)
   echo "Your OS is not recognized. You will have to download manually."
