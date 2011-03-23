@@ -8,8 +8,12 @@
 #
 # It is assumed that java is available and that you have installed `pplacer`
 # and `guppy`. See the [README](http://github.com/fhcrc/microbiome-demo)
-# for details. The files for this tutorial can be downloaded as a
-# [zip archive](http://github.com/fhcrc/microbiome-demo/zipball/master).
+# for details.
+#
+# **Download tutorial files:**
+#
+# * [zip archive](http://github.com/fhcrc/microbiome-demo/zipball/master)
+# * [tar archive](http://github.com/fhcrc/microbiome-demo/tarball/master)
 
 # Getting set up (for this demo)
 # ------------------------------
@@ -49,9 +53,9 @@ set -o verbose
 # You may notice that one of the arguments to this command is
 # `vaginal_16s.refpkg`, which is a "reference package". Reference packages are
 # simply an organized collection of files including a reference tree, reference
-# alignment, and taxonomic information. We have the beginnings of a 
+# alignment, and taxonomic information. We have the beginnings of a
 # [database](http://microbiome.fhcrc.org/apps/refpkg/) of reference packages
-# and some [software](http://github.com/fhcrc/taxtastic) for putting them 
+# and some [software](http://github.com/fhcrc/taxtastic) for putting them
 # together.
 pplacer -c vaginal_16s.refpkg src/p4z1r36.fasta
 pause
