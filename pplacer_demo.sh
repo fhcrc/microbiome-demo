@@ -8,8 +8,12 @@
 #
 # It is assumed that java is available and that you have installed `pplacer`
 # and `guppy`. See the [README](http://github.com/fhcrc/microbiome-demo)
-# for details. The files for this tutorial can be downloaded as a
-# [zip archive](http://github.com/fhcrc/microbiome-demo/zipball/master).
+# for details.
+#
+# **Download tutorial files:**
+#
+# * [zip archive](http://github.com/fhcrc/microbiome-demo/zipball/master)
+# * [tar archive](http://github.com/fhcrc/microbiome-demo/tarball/master)
 
 # Getting set up (for this demo)
 # ------------------------------
