@@ -49,9 +49,9 @@ set -o verbose
 # You may notice that one of the arguments to this command is
 # `vaginal_16s.refpkg`, which is a "reference package". Reference packages are
 # simply an organized collection of files including a reference tree, reference
-# alignment, and taxonomic information. We have the beginnings of a 
+# alignment, and taxonomic information. We have the beginnings of a
 # [database](http://microbiome.fhcrc.org/apps/refpkg/) of reference packages
-# and some [software](http://github.com/fhcrc/taxtastic) for putting them 
+# and some [software](http://github.com/fhcrc/taxtastic) for putting them
 # together.
 pplacer -c vaginal_16s.refpkg src/p4z1r36.fasta
 pause
@@ -114,7 +114,7 @@ pause
 # [Here](http://matsen.fhcrc.org/pplacer/demo/bv.heat.html) is a
 # version which compares all of the vaginosis-positive samples with the
 # negative ones.
-guppy heat -c vaginal_16s.refpkg/ src/p1z1r2.json src/p1z1r34.json
+guppy kr_heat -c vaginal_16s.refpkg/ src/p1z1r2.json src/p1z1r34.json
 aptx p1z1r2.p1z1r34.heat.xml &
 
 # Phylogenetic placement data has a special structure, and we have developed
