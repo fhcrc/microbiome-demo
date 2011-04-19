@@ -146,12 +146,15 @@ cat pca_out.trans
 
 # ### Squash clustering
 
-# `guppy` can also do "squash clustering". One nice thing about squash
-# clustering is that you can see what the internal nodes of the clustering tree
-# signify. The clustering is done with the `squash` subcommand, which makes a
-# directory containing `cluster.tre`, which is the clustering tree, and then a
-# subdirectory `mass_trees` which contain all of the mass averages for the
-# internal nodes of the tree.
+# `guppy` can also do "squash clustering". Squash clustering is a type of
+# hierarchical clustering that is designed for use with phylogenetic
+# placements. In short, where UPGMA considers the average of distances between
+# samples, squash clustering considers the distances between averages of
+# samples. One nice thing about squash clustering is that you can see what the
+# internal nodes of the clustering tree signify. The clustering is done with
+# the `squash` subcommand, which makes a directory containing `cluster.tre`,
+# which is the clustering tree, and then a subdirectory `mass_trees` which
+# contain all of the mass averages for the internal nodes of the tree.
 guppy squash -c vaginal_16s.refpkg -o squash_out src/*.json
 aptx squash_out/cluster.tre &
 
