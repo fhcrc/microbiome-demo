@@ -203,7 +203,7 @@ version which compares all of the vaginosis-positive samples with the
 negative ones.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy heat -c vaginal_16s.refpkg/ src/p1z1r2.json src/p1z1r34.json
+guppy kr_heat -c vaginal_16s.refpkg/ src/p1z1r2.json src/p1z1r34.json
 aptx p1z1r2.p1z1r34.heat.xml &amp;
 
 </pre></div></td></tr><tr><td class=docs>
@@ -253,12 +253,15 @@ cat pca_out.trans
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p><code>guppy</code> can also do "squash clustering". One nice thing about squash
-clustering is that you can see what the internal nodes of the clustering tree
-signify. The clustering is done with the <code>squash</code> subcommand, which makes a
-directory containing <code>cluster.tre</code>, which is the clustering tree, and then a
-subdirectory <code>mass_trees</code> which contain all of the mass averages for the
-internal nodes of the tree.</p>
+<p><code>guppy</code> can also do "squash clustering". Squash clustering is a type of
+hierarchical clustering that is designed for use with phylogenetic
+placements. In short, where UPGMA considers the average of distances between
+samples, squash clustering considers the distances between averages of
+samples. One nice thing about squash clustering is that you can see what the
+internal nodes of the clustering tree signify. The clustering is done with
+the <code>squash</code> subcommand, which makes a directory containing <code>cluster.tre</code>,
+which is the clustering tree, and then a subdirectory <code>mass_trees</code> which
+contain all of the mass averages for the internal nodes of the tree.</p>
 
 </td><td class=code><div class=highlight><pre>
 guppy squash -c vaginal_16s.refpkg -o squash_out src/*.json
