@@ -184,7 +184,7 @@ which sqlite3 > /dev/null 2>&1 || {
 rm -f taxtable.db
 
 # Create a table containing the taxonomic names.
-guppy taxtable -c vaginal_16s.refpkg | sqlite3 taxtable.db
+guppy taxtable -c vaginal_16s.refpkg --sqlite taxtable.db
 
 # Explore the taxonomic table itself, without reference to placements.
 sqlite3 -header -column taxtable.db "SELECT tax_name FROM taxa WHERE rank = 'phylum'"
@@ -193,36 +193,37 @@ pause
 # For placement classifications, `guppy classify` can emit .sqlite
 # files, which contain SQL instructions for creating a table of
 # classification results in the database.
-guppy classify --sqlite -c vaginal_16s.refpkg src/*.json
-cat *.sqlite | sqlite3 taxtable.db
+guppy classify --sqlite taxtable.db -c vaginal_16s.refpkg src/*.json
 
 # Now we can investigate placement classifications using SQL queries. Here we
 # ask for the lineage of a specific sequence.
 sqlite3 -header taxtable.db "
-SELECT p.rank,
+SELECT pc.rank,
        tax_name,
        likelihood
-FROM placements AS p
-JOIN taxa USING (tax_id)
-JOIN ranks USING (rank)
-WHERE p.rank = desired_rank
-  AND name ='FUM0LCO01DX37Q'
-ORDER BY rank_order
+FROM   placement_names AS pn
+       JOIN placement_classifications AS pc USING (placement_id)
+       JOIN taxa USING (tax_id)
+       JOIN ranks USING (rank)
+WHERE  pc.rank = desired_rank
+       AND pn.name = 'FUM0LCO01DX37Q'
+ORDER  BY rank_order
 "
 pause
 
 # Here is another example, with somewhat less confidence in the
 # species-level classification result.
 sqlite3 -header taxtable.db "
-SELECT p.rank,
+SELECT pc.rank,
        tax_name,
        likelihood
-FROM placements AS p
-JOIN taxa USING (tax_id)
-JOIN ranks USING (rank)
-WHERE p.rank = desired_rank
-  AND name ='FUM0LCO01A2HOA'
-ORDER BY rank_order
+FROM   placement_names AS pn
+       JOIN placement_classifications AS pc USING (placement_id)
+       JOIN taxa USING (tax_id)
+       JOIN ranks USING (rank)
+WHERE  pc.rank = desired_rank
+       AND pn.name = 'FUM0LCO01A2HOA'
+ORDER  BY rank_order
 "
 pause
 

@@ -24,9 +24,8 @@ what is going on in the right column.</p>
 
 <p>It is assumed that java is available and that you have installed <code>pplacer</code>
 and <code>guppy</code>. See the <a href="http://github.com/fhcrc/microbiome-demo">README</a>
-for details.</p>
-
-<p><strong>Download tutorial files:</strong></p>
+for details. The files for this tutorial can be downloaded as a
+<a href="http://github.com/fhcrc/microbiome-demo/zipball/master">zip archive</a>.</p>
 
 <ul>
 <li><a href="http://github.com/fhcrc/microbiome-demo/zipball/master">zip archive</a></li>
@@ -35,8 +34,7 @@ for details.</p>
 <span class="c">#!/bin/bash -eu</span>
 
 
-</pre></div></td></tr><tr><td class=docs></li>
-</ul>
+</pre></div></td></tr><tr><td class=docs>
 
 <h2>Getting set up (for this demo)</h2>
 
@@ -312,7 +310,7 @@ rm -f taxtable.db
 <p>Create a table containing the taxonomic names.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy taxtable -c vaginal_16s.refpkg | sqlite3 taxtable.db
+guppy taxtable -c vaginal_16s.refpkg --sqlite taxtable.db
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -329,8 +327,7 @@ files, which contain SQL instructions for creating a table of
 classification results in the database.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy classify --sqlite -c vaginal_16s.refpkg src/*.json
-cat *.sqlite | sqlite3 taxtable.db
+guppy classify --sqlite taxtable.db -c vaginal_16s.refpkg src/*.json
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -339,15 +336,16 @@ ask for the lineage of a specific sequence.</p>
 
 </td><td class=code><div class=highlight><pre>
 sqlite3 -header taxtable.db <span class="s2">&quot;</span>
-<span class="s2">SELECT p.rank,</span>
+<span class="s2">SELECT pc.rank,</span>
 <span class="s2">       tax_name,</span>
 <span class="s2">       likelihood</span>
-<span class="s2">FROM placements AS p</span>
-<span class="s2">JOIN taxa USING (tax_id)</span>
-<span class="s2">JOIN ranks USING (rank)</span>
-<span class="s2">WHERE p.rank = desired_rank</span>
-<span class="s2">  AND name =&#39;FUM0LCO01DX37Q&#39;</span>
-<span class="s2">ORDER BY rank_order</span>
+<span class="s2">FROM   placement_names AS pn</span>
+<span class="s2">       JOIN placement_classifications AS pc USING (placement_id)</span>
+<span class="s2">       JOIN taxa USING (tax_id)</span>
+<span class="s2">       JOIN ranks USING (rank)</span>
+<span class="s2">WHERE  pc.rank = desired_rank</span>
+<span class="s2">       AND pn.name = &#39;FUM0LCO01DX37Q&#39;</span>
+<span class="s2">ORDER  BY rank_order</span>
 <span class="s2">&quot;</span>
 pause
 
@@ -358,15 +356,16 @@ species-level classification result.</p>
 
 </td><td class=code><div class=highlight><pre>
 sqlite3 -header taxtable.db <span class="s2">&quot;</span>
-<span class="s2">SELECT p.rank,</span>
+<span class="s2">SELECT pc.rank,</span>
 <span class="s2">       tax_name,</span>
 <span class="s2">       likelihood</span>
-<span class="s2">FROM placements AS p</span>
-<span class="s2">JOIN taxa USING (tax_id)</span>
-<span class="s2">JOIN ranks USING (rank)</span>
-<span class="s2">WHERE p.rank = desired_rank</span>
-<span class="s2">  AND name =&#39;FUM0LCO01A2HOA&#39;</span>
-<span class="s2">ORDER BY rank_order</span>
+<span class="s2">FROM   placement_names AS pn</span>
+<span class="s2">       JOIN placement_classifications AS pc USING (placement_id)</span>
+<span class="s2">       JOIN taxa USING (tax_id)</span>
+<span class="s2">       JOIN ranks USING (rank)</span>
+<span class="s2">WHERE  pc.rank = desired_rank</span>
+<span class="s2">       AND pn.name = &#39;FUM0LCO01A2HOA&#39;</span>
+<span class="s2">ORDER  BY rank_order</span>
 <span class="s2">&quot;</span>
 pause
 
