@@ -24,8 +24,9 @@ what is going on in the right column.</p>
 
 <p>It is assumed that java is available and that you have installed <code>pplacer</code>
 and <code>guppy</code>. See the <a href="http://github.com/fhcrc/microbiome-demo">README</a>
-for details. The files for this tutorial can be downloaded as a
-<a href="http://github.com/fhcrc/microbiome-demo/zipball/master">zip archive</a>.</p>
+for details.</p>
+
+<p><strong>Download tutorial files:</strong></p>
 
 <ul>
 <li><a href="http://github.com/fhcrc/microbiome-demo/zipball/master">zip archive</a></li>
@@ -34,7 +35,8 @@ for details. The files for this tutorial can be downloaded as a
 <span class="c">#!/bin/bash -eu</span>
 
 
-</pre></div></td></tr><tr><td class=docs>
+</pre></div></td></tr><tr><td class=docs></li>
+</ul>
 
 <h2>Getting set up (for this demo)</h2>
 
@@ -193,12 +195,11 @@ pause
 distribution of reads from one collection of samples to another along the
 edges of the tree. This can be visualized by thickening the branches of the
 tree in proportion to the number of reads transported along that branch. To
-get such a visualization, we use guppy's <code>heat</code> subcommand. The reference
+get such a visualization, we use guppy's <code>kr_heat</code> subcommand. The reference
 package is included again to add in taxonomic annotation. Red indicates
 movement towards the root and blue away from the root.
-<a href="http://matsen.fhcrc.org/pplacer/demo/bv.heat.html">Here</a> is a
-version which compares all of the vaginosis-positive samples with the
-negative ones.</p>
+<a href="http://matsen.fhcrc.org/pplacer/demo/bv.heat.html">Here</a> is a version which
+compares all of the vaginosis-positive samples with the negative ones.</p>
 
 </td><td class=code><div class=highlight><pre>
 guppy kr_heat -c vaginal_16s.refpkg/ src/p1z1r2.json src/p1z1r34.json
@@ -231,7 +232,7 @@ shows the principal component axes projected onto the tree.
 principal component axes for the full data set.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy pca -o pca_out -c vaginal_16s.refpkg src/*.json
+guppy pca --prefix pca_out -c vaginal_16s.refpkg src/*.json
 aptx pca_out.xml &amp;
 
 </pre></div></td></tr><tr><td class=docs>
@@ -262,7 +263,8 @@ which is the clustering tree, and then a subdirectory <code>mass_trees</code> wh
 contain all of the mass averages for the internal nodes of the tree.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy squash -c vaginal_16s.refpkg -o squash_out src/*.json
+mkdir squash_out
+guppy squash -c vaginal_16s.refpkg --out-dir squash_out src/*.json
 aptx squash_out/cluster.tre &amp;
 
 </pre></div></td></tr><tr><td class=docs>

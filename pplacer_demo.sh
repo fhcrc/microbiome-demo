@@ -112,12 +112,11 @@ pause
 # distribution of reads from one collection of samples to another along the
 # edges of the tree. This can be visualized by thickening the branches of the
 # tree in proportion to the number of reads transported along that branch. To
-# get such a visualization, we use guppy's `heat` subcommand. The reference
+# get such a visualization, we use guppy's `kr_heat` subcommand. The reference
 # package is included again to add in taxonomic annotation. Red indicates
 # movement towards the root and blue away from the root.
-# [Here](http://matsen.fhcrc.org/pplacer/demo/bv.heat.html) is a
-# version which compares all of the vaginosis-positive samples with the
-# negative ones.
+# [Here](http://matsen.fhcrc.org/pplacer/demo/bv.heat.html) is a version which
+# compares all of the vaginosis-positive samples with the negative ones.
 guppy kr_heat -c vaginal_16s.refpkg/ src/p1z1r2.json src/p1z1r34.json
 aptx p1z1r2.p1z1r34.heat.xml &
 
@@ -136,7 +135,7 @@ aptx p1z1r2.p1z1r34.heat.xml &
 # shows the principal component axes projected onto the tree.
 # [Here](http://matsen.fhcrc.org/pplacer/demo/pca.html) are the first five
 # principal component axes for the full data set.
-guppy pca -o pca_out -c vaginal_16s.refpkg src/*.json
+guppy pca --prefix pca_out -c vaginal_16s.refpkg src/*.json
 aptx pca_out.xml &
 
 # The `pca_out.trans` file has the samples projected onto principal coordinate
@@ -155,7 +154,8 @@ cat pca_out.trans
 # the `squash` subcommand, which makes a directory containing `cluster.tre`,
 # which is the clustering tree, and then a subdirectory `mass_trees` which
 # contain all of the mass averages for the internal nodes of the tree.
-guppy squash -c vaginal_16s.refpkg -o squash_out src/*.json
+mkdir squash_out
+guppy squash -c vaginal_16s.refpkg --out-dir squash_out src/*.json
 aptx squash_out/cluster.tre &
 
 # We can look at `0006.phy.fat.xml`: the mass distribution for the internal
