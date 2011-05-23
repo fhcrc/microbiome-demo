@@ -135,7 +135,7 @@ aptx p1z1r2.p1z1r34.heat.xml &
 # shows the principal component axes projected onto the tree.
 # [Here](http://matsen.fhcrc.org/pplacer/demo/pca.html) are the first five
 # principal component axes for the full data set.
-guppy pca -o pca_out -c vaginal_16s.refpkg src/*.json
+guppy pca --prefix pca_out -c vaginal_16s.refpkg src/*.json
 aptx pca_out.xml &
 
 # The `pca_out.trans` file has the samples projected onto principal coordinate
