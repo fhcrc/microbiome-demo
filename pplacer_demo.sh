@@ -135,7 +135,7 @@ aptx p1z1r2.p1z1r34.heat.xml &
 # shows the principal component axes projected onto the tree.
 # [Here](http://matsen.fhcrc.org/pplacer/demo/pca.html) are the first five
 # principal component axes for the full data set.
-guppy pca --prefix pca_out -c vaginal_16s.refpkg src/*.json
+guppy pca -o pca_out -c vaginal_16s.refpkg src/*.json
 aptx pca_out.xml &
 
 # The `pca_out.trans` file has the samples projected onto principal coordinate
@@ -190,9 +190,8 @@ guppy taxtable -c vaginal_16s.refpkg --sqlite taxtable.db
 sqlite3 -header -column taxtable.db "SELECT tax_name FROM taxa WHERE rank = 'phylum'"
 pause
 
-# For placement classifications, `guppy classify` can emit .sqlite
-# files, which contain SQL instructions for creating a table of
-# classification results in the database.
+# `guppy classify` can build SQLite databases for easy and fast access to
+# results.
 guppy classify --sqlite taxtable.db -c vaginal_16s.refpkg src/*.json
 
 # Now we can investigate placement classifications using SQL queries. Here we
