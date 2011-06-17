@@ -158,9 +158,9 @@ mkdir squash_out
 guppy squash -c vaginal_16s.refpkg --out-dir squash_out src/*.json
 aptx squash_out/cluster.tre &
 
-# We can look at `0006.phy.fat.xml`: the mass distribution for the internal
+# We can look at `6.phy.fat.xml`: the mass distribution for the internal
 # node number 6 in the clustering tree.
-aptx squash_out/mass_trees/0006.phy.fat.xml &
+aptx squash_out/mass_trees/6.phy.fat.xml &
 
 
 # Classification
