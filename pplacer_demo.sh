@@ -184,7 +184,7 @@ which sqlite3 > /dev/null 2>&1 || {
 rm -f taxtable.db
 
 # Create a table containing the taxonomic names.
-guppy taxtable -c vaginal_16s.refpkg --sqlite taxtable.db
+rppr taxtable -c vaginal_16s.refpkg --sqlite taxtable.db
 
 # Explore the taxonomic table itself, without reference to placements.
 sqlite3 -header -column taxtable.db "SELECT tax_name FROM taxa WHERE rank = 'phylum'"
