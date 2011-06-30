@@ -160,6 +160,8 @@ aptx squash_out/cluster.tre &
 
 # We can look at `6.phy.fat.xml`: the mass distribution for the internal
 # node number 6 in the clustering tree.
+# [Here](http://matsen.fhcrc.org/pplacer/demo/squash.html)
+# is an online version.
 aptx squash_out/mass_trees/6.phy.fat.xml &
 
 
