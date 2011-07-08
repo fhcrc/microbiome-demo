@@ -263,7 +263,7 @@ which is the clustering tree, and then a subdirectory <code>mass_trees</code> wh
 contain all of the mass averages for the internal nodes of the tree.</p>
 
 </td><td class=code><div class=highlight><pre>
-mkdir squash_out
+rm -rf squash_out; mkdir squash_out
 guppy squash -c vaginal_16s.refpkg --out-dir squash_out src/*.json
 aptx squash_out/cluster.tre &amp;
 
