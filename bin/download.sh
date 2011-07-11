@@ -21,5 +21,5 @@ tar -xzf ${PREFIX}*.tar.gz
 cat <<EOF
 pplacer and guppy have been downloaded in this directory.
 Now put them in your path, e.g. with:
-export PATH=\$PATH:\`pwd\`/\`echo pplacer_*/\`
+export PATH=\$PATH:\`pwd\`/\`echo pplacer-*/\`
 EOF

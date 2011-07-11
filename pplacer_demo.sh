@@ -154,12 +154,14 @@ cat pca_out.trans
 # the `squash` subcommand, which makes a directory containing `cluster.tre`,
 # which is the clustering tree, and then a subdirectory `mass_trees` which
 # contain all of the mass averages for the internal nodes of the tree.
-mkdir squash_out
+rm -rf squash_out; mkdir squash_out
 guppy squash -c vaginal_16s.refpkg --out-dir squash_out src/*.json
 aptx squash_out/cluster.tre &
 
 # We can look at `6.phy.fat.xml`: the mass distribution for the internal
 # node number 6 in the clustering tree.
+# [Here](http://matsen.fhcrc.org/pplacer/demo/squash.html)
+# is an online version.
 aptx squash_out/mass_trees/6.phy.fat.xml &
 
 
