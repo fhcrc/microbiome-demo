@@ -48,7 +48,7 @@ set -o verbose
 # Phylogenetic placement
 # ----------------------
 
-# This makes p4z1r2.json, which is a "place" file in JSON format.  Place files
+# This makes p4z1r2.jplace, which is a "place" file in JSON format.  Place files
 # contain information about collections of phylogenetic placements on a tree.
 # You may notice that one of the arguments to this command is
 # `vaginal_16s.refpkg`, which is a "reference package". Reference packages are
@@ -88,13 +88,13 @@ pause
 # archaeopteryx to look at it. Note that `fat` can be run without the reference
 # package specification, e.g.:
 #
-#     guppy fat p4z1r36.json
+#     guppy fat p4z1r36.jplace
 #
 # but in that case there won't be any taxonomic information in the
 # visualizations.
 # [Here](http://matsen.fhcrc.org/pplacer/demo/p4z1r36.html)
 # is an online version.
-guppy fat -c vaginal_16s.refpkg p4z1r36.json
+guppy fat -c vaginal_16s.refpkg p4z1r36.jplace
 aptx p4z1r36.xml &
 
 
@@ -105,7 +105,7 @@ aptx p4z1r36.xml &
 # [Kantorovich-Rubinstein (KR) metric](http://arxiv.org/abs/1005.1699)
 # which is a generalization of UniFrac. It simply takes in JSON placement files and
 # spits the matrix of distances between the corresponding samples.
-guppy kr src/*.json
+guppy kr src/*.jplace
 pause
 
 # The KR metric can be thought of as the amount of work it takes to move the
@@ -117,7 +117,7 @@ pause
 # movement towards the root and blue away from the root.
 # [Here](http://matsen.fhcrc.org/pplacer/demo/bv.heat.html) is a version which
 # compares all of the vaginosis-positive samples with the negative ones.
-guppy kr_heat -c vaginal_16s.refpkg/ src/p1z1r2.json src/p1z1r34.json
+guppy kr_heat -c vaginal_16s.refpkg/ src/p1z1r2.jplace src/p1z1r34.jplace
 aptx p1z1r2.p1z1r34.heat.xml &
 
 # Phylogenetic placement data has a special structure, and we have developed
@@ -135,7 +135,7 @@ aptx p1z1r2.p1z1r34.heat.xml &
 # shows the principal component axes projected onto the tree.
 # [Here](http://matsen.fhcrc.org/pplacer/demo/pca.html) are the first five
 # principal component axes for the full data set.
-guppy pca --prefix pca_out -c vaginal_16s.refpkg src/*.json
+guppy pca --prefix pca_out -c vaginal_16s.refpkg src/*.jplace
 aptx pca_out.xml &
 
 # The `pca_out.trans` file has the samples projected onto principal coordinate
@@ -155,7 +155,7 @@ cat pca_out.trans
 # which is the clustering tree, and then a subdirectory `mass_trees` which
 # contain all of the mass averages for the internal nodes of the tree.
 rm -rf squash_out; mkdir squash_out
-guppy squash -c vaginal_16s.refpkg --out-dir squash_out src/*.json
+guppy squash -c vaginal_16s.refpkg --out-dir squash_out src/*.jplace
 aptx squash_out/cluster.tre &
 
 # We can look at `6.phy.fat.xml`: the mass distribution for the internal
@@ -172,7 +172,7 @@ aptx squash_out/mass_trees/6.phy.fat.xml &
 # are as follows: read name, attempted rank for classification, actual rank for
 # classification, taxonomic identifier, and confidence.  We use `head` here
 # just to get the first 30 lines so that you can look at them.
-guppy classify -c vaginal_16s.refpkg p4z1r36.json
+guppy classify -c vaginal_16s.refpkg p4z1r36.jplace
 head -n 30 p4z1r36.class.tab
 pause
 
@@ -194,7 +194,7 @@ pause
 
 # `guppy classify` can build SQLite databases for easy and fast access to
 # results.
-guppy classify --sqlite taxtable.db -c vaginal_16s.refpkg src/*.json
+guppy classify --sqlite taxtable.db -c vaginal_16s.refpkg src/*.jplace
 
 # Now we can investigate placement classifications using SQL queries. Here we
 # ask for the lineage of a specific sequence.
