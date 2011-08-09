@@ -183,22 +183,22 @@ which sqlite3 > /dev/null 2>&1 || {
   echo "No sqlite3, so stopping here."
   exit 0
 }
-rm -f taxtable.db
+rm -f example.db
 
 # Create a table containing the taxonomic names.
-rppr taxtable -c vaginal_16s.refpkg --sqlite taxtable.db
+rppr prep_db -c vaginal_16s.refpkg --sqlite example.db
 
 # Explore the taxonomic table itself, without reference to placements.
-sqlite3 -header -column taxtable.db "SELECT tax_name FROM taxa WHERE rank = 'phylum'"
+sqlite3 -header -column example.db "SELECT tax_name FROM taxa WHERE rank = 'phylum'"
 pause
 
 # `guppy classify` can build SQLite databases for easy and fast access to
 # results.
-guppy classify --sqlite taxtable.db -c vaginal_16s.refpkg src/*.jplace
+guppy classify --sqlite example.db -c vaginal_16s.refpkg src/*.jplace
 
 # Now we can investigate placement classifications using SQL queries. Here we
 # ask for the lineage of a specific sequence.
-sqlite3 -header taxtable.db "
+sqlite3 -header example.db "
 SELECT pc.rank,
        tax_name,
        likelihood
@@ -214,7 +214,7 @@ pause
 
 # Here is another example, with somewhat less confidence in the
 # species-level classification result.
-sqlite3 -header taxtable.db "
+sqlite3 -header example.db "
 SELECT pc.rank,
        tax_name,
        likelihood
