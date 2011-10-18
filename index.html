@@ -97,7 +97,7 @@ which guppy &gt; /dev/null 2&gt;&amp;1 <span class="o">||</span> <span class="o"
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>This makes p4z1r2.json, which is a "place" file in JSON format.  Place files
+<p>This makes p4z1r2.jplace, which is a "place" file in JSON format.  Place files
 contain information about collections of phylogenetic placements on a tree.
 You may notice that one of the arguments to this command is
 <code>vaginal_16s.refpkg</code>, which is a "reference package". Reference packages are
@@ -159,7 +159,7 @@ pause
 archaeopteryx to look at it. Note that <code>fat</code> can be run without the reference
 package specification, e.g.:</p>
 
-<pre><code>guppy fat p4z1r36.json
+<pre><code>guppy fat p4z1r36.jplace
 </code></pre>
 
 <p>but in that case there won't be any taxonomic information in the
@@ -168,7 +168,7 @@ visualizations.
 is an online version.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy fat -c vaginal_16s.refpkg p4z1r36.json
+guppy fat -c vaginal_16s.refpkg p4z1r36.jplace
 aptx p4z1r36.xml &amp;
 
 
@@ -186,7 +186,7 @@ which is a generalization of UniFrac. It simply takes in JSON placement files an
 spits the matrix of distances between the corresponding samples.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy kr src/*.json
+guppy kr src/*.jplace
 pause
 
 </pre></div></td></tr><tr><td class=docs>
@@ -202,7 +202,7 @@ movement towards the root and blue away from the root.
 compares all of the vaginosis-positive samples with the negative ones.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy kr_heat -c vaginal_16s.refpkg/ src/p1z1r2.json src/p1z1r34.json
+guppy kr_heat -c vaginal_16s.refpkg/ src/p1z1r2.jplace src/p1z1r34.jplace
 aptx p1z1r2.p1z1r34.heat.xml &amp;
 
 </pre></div></td></tr><tr><td class=docs>
@@ -232,7 +232,7 @@ shows the principal component axes projected onto the tree.
 principal component axes for the full data set.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy pca --prefix pca_out -c vaginal_16s.refpkg src/*.json
+guppy pca --prefix pca_out -c vaginal_16s.refpkg src/*.jplace
 aptx pca_out.xml &amp;
 
 </pre></div></td></tr><tr><td class=docs>
@@ -264,7 +264,7 @@ contain all of the mass averages for the internal nodes of the tree.</p>
 
 </td><td class=code><div class=highlight><pre>
 rm -rf squash_out; mkdir squash_out
-guppy squash -c vaginal_16s.refpkg --out-dir squash_out src/*.json
+guppy squash -c vaginal_16s.refpkg --out-dir squash_out src/*.jplace
 aptx squash_out/cluster.tre &amp;
 
 </pre></div></td></tr><tr><td class=docs>
@@ -292,7 +292,7 @@ classification, taxonomic identifier, and confidence.  We use <code>head</code> 
 just to get the first 30 lines so that you can look at them.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy classify -c vaginal_16s.refpkg p4z1r36.json
+guppy classify -c vaginal_16s.refpkg p4z1r36.jplace
 head -n 30 p4z1r36.class.tab
 pause
 
@@ -307,21 +307,21 @@ which sqlite3 &gt; /dev/null 2&gt;&amp;1 <span class="o">||</span> <span class="
   <span class="nb">echo</span> <span class="s2">&quot;No sqlite3, so stopping here.&quot;</span>
   <span class="nb">exit </span>0
 <span class="o">}</span>
-rm -f taxtable.db
+rm -f example.db
 
 </pre></div></td></tr><tr><td class=docs>
 
 <p>Create a table containing the taxonomic names.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy taxtable -c vaginal_16s.refpkg --sqlite taxtable.db
+rppr prep_db -c vaginal_16s.refpkg --sqlite example.db
 
 </pre></div></td></tr><tr><td class=docs>
 
 <p>Explore the taxonomic table itself, without reference to placements.</p>
 
 </td><td class=code><div class=highlight><pre>
-sqlite3 -header -column taxtable.db <span class="s2">&quot;SELECT tax_name FROM taxa WHERE rank = &#39;phylum&#39;&quot;</span>
+sqlite3 -header -column example.db <span class="s2">&quot;SELECT tax_name FROM taxa WHERE rank = &#39;phylum&#39;&quot;</span>
 pause
 
 </pre></div></td></tr><tr><td class=docs>
@@ -330,7 +330,7 @@ pause
 results.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy classify --sqlite taxtable.db -c vaginal_16s.refpkg src/*.json
+guppy classify --sqlite example.db -c vaginal_16s.refpkg src/*.jplace
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -338,7 +338,7 @@ guppy classify --sqlite taxtable.db -c vaginal_16s.refpkg src/*.json
 ask for the lineage of a specific sequence.</p>
 
 </td><td class=code><div class=highlight><pre>
-sqlite3 -header taxtable.db <span class="s2">&quot;</span>
+sqlite3 -header example.db <span class="s2">&quot;</span>
 <span class="s2">SELECT pc.rank,</span>
 <span class="s2">       tax_name,</span>
 <span class="s2">       likelihood</span>
@@ -358,7 +358,7 @@ pause
 species-level classification result.</p>
 
 </td><td class=code><div class=highlight><pre>
-sqlite3 -header taxtable.db <span class="s2">&quot;</span>
+sqlite3 -header example.db <span class="s2">&quot;</span>
 <span class="s2">SELECT pc.rank,</span>
 <span class="s2">       tax_name,</span>
 <span class="s2">       likelihood</span>
