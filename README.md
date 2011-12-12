@@ -14,11 +14,12 @@ just fine if you don't have too many other things open.
 
 This demo can be downloaded
 [here](http://github.com/fhcrc/microbiome-demo/zipball/master).
-You will need to download v1.1 pplacer as well. There is a `download.sh`
-script in the bin directory which will get it, or you can visit the
+You will need to download the v1.1 pplacer suite as well.
+There is a `download.sh` script in the bin directory which
+will get it, or you can visit the
 [pplacer website](http://matsen.fhcrc.org/pplacer/).
 
-You will then need to put pplacer and guppy in your
+You will then need to put pplacer, guppy, and rppr in your
 [path](http://www.linuxheadquarters.com/howto/basic/path.shtml).
 
 
