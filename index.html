@@ -31,16 +31,14 @@ for details.</p>
 <ul>
 <li><a href="http://github.com/fhcrc/microbiome-demo/zipball/master">zip archive</a></li>
 <li><a href="http://github.com/fhcrc/microbiome-demo/tarball/master">tar archive</a>
-</td><td class=code><div class=highlight><pre>
-<span class="c">#!/bin/bash -eu</span>
-
-
 </pre></div></td></tr><tr><td class=docs></li>
 </ul>
 
 <h2>Getting set up (for this demo)</h2>
 
 </td><td class=code><div class=highlight><pre>
+<span class="c">#!/bin/bash -eu</span>
+
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -56,13 +54,19 @@ script (you can also open them directly from the archaeopteryx user interface
 if you prefer).</p>
 
 </td><td class=code><div class=highlight><pre>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>A little <code>pause</code> function to pause between steps.</p>
+
+</td><td class=code><div class=highlight><pre>
 aptx<span class="o">()</span> <span class="o">{</span>
     java -jar bin/forester.jar -c bin/_aptx_configuration_file <span class="nv">$1</span>
 <span class="o">}</span>
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>A little <code>pause</code> function to pause between steps.</p>
+<p>Make sure that <code>guppy</code> can be found.</p>
 
 </td><td class=code><div class=highlight><pre>
 pause<span class="o">()</span> <span class="o">{</span>
@@ -72,7 +76,7 @@ pause<span class="o">()</span> <span class="o">{</span>
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>Make sure that <code>guppy</code> can be found.</p>
+<p>Echo the commands to the terminal.</p>
 
 </td><td class=code><div class=highlight><pre>
 which guppy &gt; /dev/null 2&gt;&amp;1 <span class="o">||</span> <span class="o">{</span>
@@ -83,17 +87,11 @@ which guppy &gt; /dev/null 2&gt;&amp;1 <span class="o">||</span> <span class="o"
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>Echo the commands to the terminal.</p>
+<h2>Phylogenetic placement</h2>
 
 </td><td class=code><div class=highlight><pre>
 <span class="nb">set</span> -o verbose
 
-
-</pre></div></td></tr><tr><td class=docs>
-
-<h2>Phylogenetic placement</h2>
-
-</td><td class=code><div class=highlight><pre>
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -108,15 +106,15 @@ and some <a href="http://github.com/fhcrc/taxtastic">software</a> for putting th
 together.</p>
 
 </td><td class=code><div class=highlight><pre>
-pplacer -c vaginal_16s.refpkg src/p4z1r36.fasta
-pause
-
 
 </pre></div></td></tr><tr><td class=docs>
 
 <h2>Grand Unified Phylogenetic Placement Yanalyzer (guppy)</h2>
 
 </td><td class=code><div class=highlight><pre>
+pplacer -c vaginal_16s.refpkg src/p4z1r36.fasta
+pause
+
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -125,9 +123,6 @@ different subcommands, which you can learn about with online help by invoking
 the <code>--cmds</code> option.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy --cmds
-pause
-
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -137,21 +132,24 @@ pause
 </code></pre>
 
 </td><td class=code><div class=highlight><pre>
+guppy --cmds
+pause
+
 
 </pre></div></td></tr><tr><td class=docs>
 
 <p>For example, we can get help for the <code>fat</code> subcommand.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy fat --help
-pause
-
 
 </pre></div></td></tr><tr><td class=docs>
 
 <h2>Visualization</h2>
 
 </td><td class=code><div class=highlight><pre>
+guppy fat --help
+pause
+
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -168,15 +166,15 @@ visualizations.
 is an online version.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy fat -c vaginal_16s.refpkg p4z1r36.jplace
-aptx p4z1r36.xml &amp;
-
 
 </pre></div></td></tr><tr><td class=docs>
 
 <h2>Statistical comparison</h2>
 
 </td><td class=code><div class=highlight><pre>
+guppy fat -c vaginal_16s.refpkg p4z1r36.jplace
+aptx p4z1r36.xml &amp;
+
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -186,8 +184,6 @@ which is a generalization of UniFrac. It simply takes in JSON placement files an
 spits the matrix of distances between the corresponding samples.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy kr src/*.jplace
-pause
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -202,8 +198,8 @@ movement towards the root and blue away from the root.
 compares all of the vaginosis-positive samples with the negative ones.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy kr_heat -c vaginal_16s.refpkg/ src/p1z1r2.jplace src/p1z1r34.jplace
-aptx p1z1r2.p1z1r34.heat.xml &amp;
+guppy kr src/*.jplace
+pause
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -214,6 +210,8 @@ special structure. You can read more about these methods
 <a href="http://matsen.fhcrc.org/papers/11MatsenEvansEdgeSquash.pdf">in our paper</a>.</p>
 
 </td><td class=code><div class=highlight><pre>
+guppy kr_heat -c vaginal_16s.refpkg/ src/p1z1r2.jplace src/p1z1r34.jplace
+aptx p1z1r2.p1z1r34.heat.xml &amp;
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -232,8 +230,6 @@ shows the principal component axes projected onto the tree.
 principal component axes for the full data set.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy pca --prefix pca_out -c vaginal_16s.refpkg src/*.jplace
-aptx pca_out.xml &amp;
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -242,13 +238,15 @@ axes. <a href="http://fhcrc.github.com/microbiome-demo/edge_pca.svg">Here</a> is
 corresponding figure for the full data set.</p>
 
 </td><td class=code><div class=highlight><pre>
-cat pca_out.trans
+guppy pca --prefix pca_out -c vaginal_16s.refpkg src/*.jplace
+aptx pca_out.xml &amp;
 
 </pre></div></td></tr><tr><td class=docs>
 
 <h3>Squash clustering</h3>
 
 </td><td class=code><div class=highlight><pre>
+cat pca_out.trans
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -263,9 +261,6 @@ which is the clustering tree, and then a subdirectory <code>mass_trees</code> wh
 contain all of the mass averages for the internal nodes of the tree.</p>
 
 </td><td class=code><div class=highlight><pre>
-rm -rf squash_out; mkdir squash_out
-guppy squash -c vaginal_16s.refpkg --out-dir squash_out src/*.jplace
-aptx squash_out/cluster.tre &amp;
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -275,14 +270,17 @@ node number 6 in the clustering tree.
 is an online version.</p>
 
 </td><td class=code><div class=highlight><pre>
-aptx squash_out/mass_trees/6.phy.fat.xml &amp;
-
+rm -rf squash_out; mkdir squash_out
+guppy squash -c vaginal_16s.refpkg --out-dir squash_out src/*.jplace
+aptx squash_out/cluster.tre &amp;
 
 </pre></div></td></tr><tr><td class=docs>
 
 <h2>Classification</h2>
 
 </td><td class=code><div class=highlight><pre>
+aptx squash_out/mass_trees/6.phy.fat.xml &amp;
+
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -292,15 +290,21 @@ classification, taxonomic identifier, and confidence.  We use <code>head</code> 
 just to get the first 30 lines so that you can look at them.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy classify -c vaginal_16s.refpkg p4z1r36.jplace
-head -n 30 p4z1r36.class.tab
-pause
 
 </pre></div></td></tr><tr><td class=docs>
 
 <p>We can quickly explore the classification results via SQL by importing them
 into a SQLite3 database. We exit if SQLite3 is not available, and clean up in
 case the script is getting run for the second time.</p>
+
+</td><td class=code><div class=highlight><pre>
+guppy classify -c vaginal_16s.refpkg p4z1r36.jplace
+head -n 30 p4z1r36.class.tab
+pause
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>Create a table containing the taxonomic names.</p>
 
 </td><td class=code><div class=highlight><pre>
 which sqlite3 &gt; /dev/null 2&gt;&amp;1 <span class="o">||</span> <span class="o">{</span>
@@ -311,18 +315,10 @@ rm -f example.db
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>Create a table containing the taxonomic names.</p>
-
-</td><td class=code><div class=highlight><pre>
-rppr prep_db -c vaginal_16s.refpkg --sqlite example.db
-
-</pre></div></td></tr><tr><td class=docs>
-
 <p>Explore the taxonomic table itself, without reference to placements.</p>
 
 </td><td class=code><div class=highlight><pre>
-sqlite3 -header -column example.db <span class="s2">&quot;SELECT tax_name FROM taxa WHERE rank = &#39;phylum&#39;&quot;</span>
-pause
+rppr prep_db -c vaginal_16s.refpkg --sqlite example.db
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -330,12 +326,21 @@ pause
 results.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy classify --sqlite example.db -c vaginal_16s.refpkg src/*.jplace
+sqlite3 -header -column example.db <span class="s2">&quot;SELECT tax_name FROM taxa WHERE rank = &#39;phylum&#39;&quot;</span>
+pause
 
 </pre></div></td></tr><tr><td class=docs>
 
 <p>Now we can investigate placement classifications using SQL queries. Here we
 ask for the lineage of a specific sequence.</p>
+
+</td><td class=code><div class=highlight><pre>
+guppy classify --sqlite example.db -c vaginal_16s.refpkg src/*.jplace
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>Here is another example, with somewhat less confidence in the
+species-level classification result.</p>
 
 </td><td class=code><div class=highlight><pre>
 sqlite3 -header example.db <span class="s2">&quot;</span>
@@ -354,8 +359,8 @@ pause
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>Here is another example, with somewhat less confidence in the
-species-level classification result.</p>
+<p>That's it for the demo. For further information, please consult the
+<a href="http://matsen.github.com/pplacer/">pplacer documentation</a>.</p>
 
 </td><td class=code><div class=highlight><pre>
 sqlite3 -header example.db <span class="s2">&quot;</span>
@@ -374,21 +379,13 @@ pause
 
 </pre></div></td></tr><tr><td class=docs>
 
-<p>That's it for the demo. For further information, please consult the
-<a href="http://matsen.github.com/pplacer/">pplacer documentation</a>.</p>
-
 </td><td class=code><div class=highlight><pre>
 <span class="nb">echo</span> <span class="s2">&quot;Thanks!&quot;</span>
 
 
 
-</td><td class=code><div class=highlight><pre>
 </pre></div></td></tr><tr><td class=docs>
-
-</pre></div></td></tr><tr><td class=docs>
-</td><td class=code><div class=highlight><pre>
-
-</pre></div></td></tr><tr><td class=docs></td><td class='code'></td></tr>
+</td><td class=code><div class=highlight><pre></td><td class='code'></td></tr>
     </tbody>
     </table>
 </div>
