@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-eqiv='content-type' content='text/html;charset=utf-8'>
+    <title>pplacer_demo.sh</title>
+    <link rel=stylesheet href="src/docco.css">
+</head>
+<body>
+<div id=container>
+    <div id=background></div>
+    <table cellspacing=0 cellpadding=0>
+    <thead>
+      <tr>
+        <th class=docs><h1>pplacer_demo.sh</h1></th>
+        <th class=code></th>
+      </tr>
+    </thead>
+    <tbody>
+        <tr><td class='docs'><p>This is a demonstration for the use of the pplacer suite of programs. It
+covers the use of placement, visualization, classification, and comparison.
+If you are looking at this file in a web browser after processing with
+<a href="http://rtomayko.github.com/shocco/">shocco</a>, the left column will describe
+what is going on in the right column.</p>
+
+<p>It is assumed that java is available and that you have installed <code>pplacer</code>
+and <code>guppy</code>. See the <a href="http://github.com/fhcrc/microbiome-demo">README</a>
+for details.</p>
+
+<p><strong>Download tutorial files:</strong></p>
+
+<ul>
+<li><a href="http://github.com/fhcrc/microbiome-demo/zipball/master">zip archive</a></li>
+<li><a href="http://github.com/fhcrc/microbiome-demo/tarball/master">tar archive</a>
+</td><td class=code><div class=highlight><pre>
+<span class="c">#!/bin/bash -eu</span>
+
+
+</pre></div></td></tr><tr><td class=docs></li>
+</ul>
+
+<h2>Getting set up (for this demo)</h2>
+
+</td><td class=code><div class=highlight><pre>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>We start with a couple of little functions to make this script run smoothly.
+You can safely ignore them.</p>
+
+</td><td class=code><div class=highlight><pre>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>We have a little script function <code>aptx</code> to run archaeopteryx from within this
+script (you can also open them directly from the archaeopteryx user interface
+if you prefer).</p>
+
+</td><td class=code><div class=highlight><pre>
+aptx<span class="o">()</span> <span class="o">{</span>
+    java -jar bin/forester.jar -c bin/_aptx_configuration_file <span class="nv">$1</span>
+<span class="o">}</span>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>A little <code>pause</code> function to pause between steps.</p>
+
+</td><td class=code><div class=highlight><pre>
+pause<span class="o">()</span> <span class="o">{</span>
+  <span class="nb">echo</span> <span class="s2">&quot;Please press return to continue...&quot;</span>
+  <span class="nb">read</span>
+<span class="o">}</span>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>Make sure that <code>guppy</code> can be found.</p>
+
+</td><td class=code><div class=highlight><pre>
+which guppy &gt; /dev/null 2&gt;&amp;1 <span class="o">||</span> <span class="o">{</span>
+  <span class="nb">echo</span> <span class="s2">&quot;Couldn&#39;t find guppy. \</span>
+<span class="s2">There is a download script in the bin directory for you to use.&quot;</span>
+  <span class="nb">exit </span>1
+<span class="o">}</span>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>Echo the commands to the terminal.</p>
+
+</td><td class=code><div class=highlight><pre>
+<span class="nb">set</span> -o verbose
+
+
+</pre></div></td></tr><tr><td class=docs>
+
+<h2>Phylogenetic placement</h2>
+
+</td><td class=code><div class=highlight><pre>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>This makes p4z1r2.jplace, which is a "place" file in JSON format.  Place files
+contain information about collections of phylogenetic placements on a tree.
+You may notice that one of the arguments to this command is
+<code>vaginal_16s.refpkg</code>, which is a "reference package". Reference packages are
+simply an organized collection of files including a reference tree, reference
+alignment, and taxonomic information. We have the beginnings of a
+<a href="http://microbiome.fhcrc.org/apps/refpkg/">database</a> of reference packages
+and some <a href="http://github.com/fhcrc/taxtastic">software</a> for putting them
+together.</p>
+
+</td><td class=code><div class=highlight><pre>
+pplacer -c vaginal_16s.refpkg src/p4z1r36.fasta
+pause
+
+
+</pre></div></td></tr><tr><td class=docs>
+
+<h2>Grand Unified Phylogenetic Placement Yanalyzer (guppy)</h2>
+
+</td><td class=code><div class=highlight><pre>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p><code>guppy</code> is our Swiss army knife for phylogenetic placements.  It has a lot of
+different subcommands, which you can learn about with online help by invoking
+the <code>--cmds</code> option.</p>
+
+</td><td class=code><div class=highlight><pre>
+guppy --cmds
+pause
+
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>These subcommands are used by writing out the name of the subcommand like</p>
+
+<pre><code>guppy SUBCOMMAND [options] [files]
+</code></pre>
+
+</td><td class=code><div class=highlight><pre>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>For example, we can get help for the <code>fat</code> subcommand.</p>
+
+</td><td class=code><div class=highlight><pre>
+guppy fat --help
+pause
+
+
+</pre></div></td></tr><tr><td class=docs>
+
+<h2>Visualization</h2>
+
+</td><td class=code><div class=highlight><pre>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>Now run <code>guppy fat</code> to make a phyloXML "fat tree" visualization, and run
+archaeopteryx to look at it. Note that <code>fat</code> can be run without the reference
+package specification, e.g.:</p>
+
+<pre><code>guppy fat p4z1r36.jplace
+</code></pre>
+
+<p>but in that case there won't be any taxonomic information in the
+visualizations.
+<a href="http://matsen.fhcrc.org/pplacer/demo/p4z1r36.html">Here</a>
+is an online version.</p>
+
+</td><td class=code><div class=highlight><pre>
+guppy fat -c vaginal_16s.refpkg p4z1r36.jplace
+aptx p4z1r36.xml &amp;
+
+
+</pre></div></td></tr><tr><td class=docs>
+
+<h2>Statistical comparison</h2>
+
+</td><td class=code><div class=highlight><pre>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p><code>kr</code> is the command to calculate things using the
+<a href="http://arxiv.org/abs/1005.1699">Kantorovich-Rubinstein (KR) metric</a>
+which is a generalization of UniFrac. It simply takes in JSON placement files and
+spits the matrix of distances between the corresponding samples.</p>
+
+</td><td class=code><div class=highlight><pre>
+guppy kr src/*.jplace
+pause
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>The KR metric can be thought of as the amount of work it takes to move the
+distribution of reads from one collection of samples to another along the
+edges of the tree. This can be visualized by thickening the branches of the
+tree in proportion to the number of reads transported along that branch. To
+get such a visualization, we use guppy's <code>kr_heat</code> subcommand. The reference
+package is included again to add in taxonomic annotation. Red indicates
+movement towards the root and blue away from the root.
+<a href="http://matsen.fhcrc.org/pplacer/demo/bv.heat.html">Here</a> is a version which
+compares all of the vaginosis-positive samples with the negative ones.</p>
+
+</td><td class=code><div class=highlight><pre>
+guppy kr_heat -c vaginal_16s.refpkg/ src/p1z1r2.jplace src/p1z1r34.jplace
+aptx p1z1r2.p1z1r34.heat.xml &amp;
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>Phylogenetic placement data has a special structure, and we have developed
+variants of classical ordination and clustering techniques, called "edge
+principal components analysis" and "squash clustering" which leverage this
+special structure. You can read more about these methods
+<a href="http://matsen.fhcrc.org/papers/11MatsenEvansEdgeSquash.pdf">in our paper</a>.</p>
+
+</td><td class=code><div class=highlight><pre>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<h3>Edge principal components analysis</h3>
+
+</td><td class=code><div class=highlight><pre>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>With edge principal components analysis (edge PCA), it is possible to
+visualize the principal component axes, and find differences between
+samples which may only differ in terms of read distributions on closely
+related taxa. <code>guppy pca</code> creates a tree file (here <code>pca_out.xml</code>) which
+shows the principal component axes projected onto the tree.
+<a href="http://matsen.fhcrc.org/pplacer/demo/pca.html">Here</a> are the first five
+principal component axes for the full data set.</p>
+
+</td><td class=code><div class=highlight><pre>
+guppy pca --prefix pca_out -c vaginal_16s.refpkg src/*.jplace
+aptx pca_out.xml &amp;
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>The <code>pca_out.trans</code> file has the samples projected onto principal coordinate
+axes. <a href="http://fhcrc.github.com/microbiome-demo/edge_pca.svg">Here</a> is the
+corresponding figure for the full data set.</p>
+
+</td><td class=code><div class=highlight><pre>
+cat pca_out.trans
+
+</pre></div></td></tr><tr><td class=docs>
+
+<h3>Squash clustering</h3>
+
+</td><td class=code><div class=highlight><pre>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p><code>guppy</code> can also do "squash clustering". Squash clustering is a type of
+hierarchical clustering that is designed for use with phylogenetic
+placements. In short, where UPGMA considers the average of distances between
+samples, squash clustering considers the distances between averages of
+samples. One nice thing about squash clustering is that you can see what the
+internal nodes of the clustering tree signify. The clustering is done with
+the <code>squash</code> subcommand, which makes a directory containing <code>cluster.tre</code>,
+which is the clustering tree, and then a subdirectory <code>mass_trees</code> which
+contain all of the mass averages for the internal nodes of the tree.</p>
+
+</td><td class=code><div class=highlight><pre>
+rm -rf squash_out; mkdir squash_out
+guppy squash -c vaginal_16s.refpkg --out-dir squash_out src/*.jplace
+aptx squash_out/cluster.tre &amp;
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>We can look at <code>6.phy.fat.xml</code>: the mass distribution for the internal
+node number 6 in the clustering tree.
+<a href="http://matsen.fhcrc.org/pplacer/demo/squash.html">Here</a>
+is an online version.</p>
+
+</td><td class=code><div class=highlight><pre>
+aptx squash_out/mass_trees/6.phy.fat.xml &amp;
+
+
+</pre></div></td></tr><tr><td class=docs>
+
+<h2>Classification</h2>
+
+</td><td class=code><div class=highlight><pre>
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>Next we run guppy's <code>classify</code> subcommand to classify the reads. The columns
+are as follows: read name, attempted rank for classification, actual rank for
+classification, taxonomic identifier, and confidence.  We use <code>head</code> here
+just to get the first 30 lines so that you can look at them.</p>
+
+</td><td class=code><div class=highlight><pre>
+guppy classify -c vaginal_16s.refpkg p4z1r36.jplace
+head -n 30 p4z1r36.class.tab
+pause
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>We can quickly explore the classification results via SQL by importing them
+into a SQLite3 database. We exit if SQLite3 is not available, and clean up in
+case the script is getting run for the second time.</p>
+
+</td><td class=code><div class=highlight><pre>
+which sqlite3 &gt; /dev/null 2&gt;&amp;1 <span class="o">||</span> <span class="o">{</span>
+  <span class="nb">echo</span> <span class="s2">&quot;No sqlite3, so stopping here.&quot;</span>
+  <span class="nb">exit </span>0
+<span class="o">}</span>
+rm -f example.db
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>Create a table containing the taxonomic names.</p>
+
+</td><td class=code><div class=highlight><pre>
+rppr prep_db -c vaginal_16s.refpkg --sqlite example.db
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>Explore the taxonomic table itself, without reference to placements.</p>
+
+</td><td class=code><div class=highlight><pre>
+sqlite3 -header -column example.db <span class="s2">&quot;SELECT tax_name FROM taxa WHERE rank = &#39;phylum&#39;&quot;</span>
+pause
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p><code>guppy classify</code> can build SQLite databases for easy and fast access to
+results.</p>
+
+</td><td class=code><div class=highlight><pre>
+guppy classify --sqlite example.db -c vaginal_16s.refpkg src/*.jplace
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>Now we can investigate placement classifications using SQL queries. Here we
+ask for the lineage of a specific sequence.</p>
+
+</td><td class=code><div class=highlight><pre>
+sqlite3 -header example.db <span class="s2">&quot;</span>
+<span class="s2">SELECT pc.rank,</span>
+<span class="s2">       tax_name,</span>
+<span class="s2">       likelihood</span>
+<span class="s2">FROM   placement_names AS pn</span>
+<span class="s2">       JOIN placement_classifications AS pc USING (placement_id)</span>
+<span class="s2">       JOIN taxa USING (tax_id)</span>
+<span class="s2">       JOIN ranks USING (rank)</span>
+<span class="s2">WHERE  pc.rank = desired_rank</span>
+<span class="s2">       AND pn.name = &#39;FUM0LCO01DX37Q&#39;</span>
+<span class="s2">ORDER  BY rank_order</span>
+<span class="s2">&quot;</span>
+pause
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>Here is another example, with somewhat less confidence in the
+species-level classification result.</p>
+
+</td><td class=code><div class=highlight><pre>
+sqlite3 -header example.db <span class="s2">&quot;</span>
+<span class="s2">SELECT pc.rank,</span>
+<span class="s2">       tax_name,</span>
+<span class="s2">       likelihood</span>
+<span class="s2">FROM   placement_names AS pn</span>
+<span class="s2">       JOIN placement_classifications AS pc USING (placement_id)</span>
+<span class="s2">       JOIN taxa USING (tax_id)</span>
+<span class="s2">       JOIN ranks USING (rank)</span>
+<span class="s2">WHERE  pc.rank = desired_rank</span>
+<span class="s2">       AND pn.name = &#39;FUM0LCO01A2HOA&#39;</span>
+<span class="s2">ORDER  BY rank_order</span>
+<span class="s2">&quot;</span>
+pause
+
+</pre></div></td></tr><tr><td class=docs>
+
+<p>That's it for the demo. For further information, please consult the
+<a href="http://matsen.github.com/pplacer/">pplacer documentation</a>.</p>
+
+</td><td class=code><div class=highlight><pre>
+<span class="nb">echo</span> <span class="s2">&quot;Thanks!&quot;</span>
+
+
+
+</pre></div></td></tr><tr><td class=docs>
+
+</td><td class=code><div class=highlight><pre>
+
+</pre></div></td></tr><tr><td class=docs></td><td class='code'></td></tr>
+    </tbody>
+    </table>
+</div>
+</body>
+</html>
