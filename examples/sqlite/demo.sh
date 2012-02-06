@@ -13,7 +13,7 @@ sqlite3 -header -column example.db "SELECT tax_name FROM taxa WHERE rank = 'phyl
 
 # `guppy classify` can build SQLite databases for easy and fast access to
 # results.
-guppy classify --sqlite example.db -c $SRC/vaginal_16s.refpkg $SRC/*.jplace
+guppy classify --mrca-class --sqlite example.db -c $SRC/vaginal_16s.refpkg $SRC/*.jplace
 
 # Now we can investigate placement classifications using SQL queries. Here we
 # ask for the lineage of a specific sequence.
