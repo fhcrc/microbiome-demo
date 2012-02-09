@@ -7,4 +7,6 @@ command -v aptx >/dev/null || {
     }
 }
 
+cd $(dirname $0)
+
 set -v
