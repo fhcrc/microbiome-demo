@@ -115,7 +115,7 @@ pause
 # get such a visualization, we use guppy's `kr_heat` subcommand. The reference
 # package is included again to add in taxonomic annotation. Red indicates
 # movement towards the root and blue away from the root.
-# [Here](http://matsen.fhcrc.org/pplacer/demo/bv.heat.html) is a version which
+# [Here](http://matsen.fhcrc.org/pplacer/demo/bv_heat.html) is a version which
 # compares all of the vaginosis-positive samples with the negative ones.
 guppy kr_heat -c vaginal_16s.refpkg/ src/p1z1r2.jplace src/p1z1r34.jplace
 aptx p1z1r2.p1z1r34.heat.xml &
