@@ -32,13 +32,13 @@ rppr prep_db $refpkg --sqlite test.db --best-as-bayes && rm test.db
 rppr prep_db $refpkg --sqlite test.db && rm test.db
 
 # Test `guppy classify`.
-guppy classify $refpkg p4z1r36.jplace
+guppy classify $refpkg p4z1r36.jplace >/dev/null
 guppy classify $refpkg p4z1r36.jplace -o p4z1r36.tab
 guppy classify $refpkg p4z1r36.jplace --prefix test_ -o p4z1r36.tab
 guppy classify $refpkg p4z1r36.jplace --out-dir test -o p4z1r36.tab
 guppy classify $refpkg p4z1r36.jplace --prefix test_ --out-dir test -o p4z1r36.tab
-guppy classify $refpkg --csv p4z1r36.jplace
-guppy classify $refpkg --pp p4z1r36.jplace
+guppy classify $refpkg --csv p4z1r36.jplace -o p4z1r36.csv
+guppy classify $refpkg --pp p4z1r36.jplace -o p4z1r36.tab
 
 rm -f test.db && rppr prep_db $refpkg --sqlite test.db
 guppy classify $refpkg --sqlite test.db p4z1r36.jplace
