@@ -1,4 +1,4 @@
-: ${SRC:=$MICROBIOME_ROOT/src}
+: ${SRC:=$MICROBIOME_ROOT/src${ALTSRC:+/$ALTSRC}}
 : ${BIN:=$MICROBIOME_ROOT/bin}
 
 command -v aptx >/dev/null || {
