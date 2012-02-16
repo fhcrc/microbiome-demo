@@ -1,0 +1,33 @@
+{
+    "files": {
+        "phylo_model": "tmp2a0QMn", 
+        "taxonomy": "gg_73_otus_4feb2011.taxonomy", 
+        "tree": "tmpWjV0wC", 
+        "aln_fasta": "gg_73_otus_4feb2011_aligned.fasta", 
+        "seq_info": "gg_73_otus_4feb2011.seqmap.csv", 
+        "tree_stats": "gg_73_otus_4feb2011.log"
+    }, 
+    "rollback": null, 
+    "log": [
+        "Stripped refpkg (removed 1 files)", 
+        "Rerooting refpkg", 
+        "Stripped refpkg (removed 0 files)", 
+        "Loaded initial files into empty refpkg"
+    ], 
+    "metadata": {
+        "package_version": "1.0", 
+        "locus": "16S", 
+        "create_date": "2011-10-31 10:44:03", 
+        "format_version": "1.1", 
+        "author": "cmccoy"
+    }, 
+    "rollforward": null, 
+    "md5": {
+        "phylo_model": "1368a23f0d4e20341811dfea6bd2447d", 
+        "taxonomy": "f76c125d4914b3d683b62ed3cf963462", 
+        "tree": "e4419e040e2a857052b5c377480a532e", 
+        "aln_fasta": "9835e8e45b88af826e26a411536bcfa4", 
+        "seq_info": "97c1b9eb2f6761e8c58cd7e37460a60e", 
+        "tree_stats": "72696f5211793f40d3201dc9ab36ce12"
+    }
+}
