@@ -96,7 +96,7 @@ rppr voronoi --leaves 5 p4z1r36.jplace -v
 rppr voronoi --leaves 5 p4z1r36.jplace -t trimmed.xml
 rppr voronoi --leaves 5 p4z1r36.jplace -t trimmed.xml --node-numbers
 rppr voronoi --leaves 5 p4z1r36.jplace -t trimmed.xml $refpkg
-rppr voronoi --leaves 647 p4z1r36.jplace --algorithm greedy
+rppr voronoi --leaves 50 p4z1r36.jplace --algorithm greedy
 #XXX: skipping this for now because it takes way too long to run
 #rppr voronoi --leaves 1 p4z1r36.jplace --algorithm force
 rppr voronoi --leaves 5 p4z1r36.jplace --all-eclds-file eclds.csv

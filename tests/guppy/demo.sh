@@ -216,7 +216,7 @@ guppy pca --prefix pca_ --node-numbers $all_placefiles
 guppy pca --prefix pca_ --width-factor 2 $all_placefiles
 guppy pca --prefix pca_ --gray-black $all_placefiles
 guppy pca --prefix pca_ --min-width 2 $all_placefiles
-guppy pca --prefix pca_ --write-n 10 $all_placefiles
+guppy pca --prefix pca_ --write-n 4 $all_placefiles
 guppy pca --prefix pca_ --scale $all_placefiles
 guppy pca --prefix pca_ --symmv $all_placefiles
 guppy pca --prefix pca_ --kappa 0 $all_placefiles
