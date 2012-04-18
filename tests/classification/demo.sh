@@ -27,7 +27,6 @@ refpkg="-c $SRC/vaginal_16s.refpkg"
 rppr prep_db $refpkg --sqlite test.db --default-cutoff 0.80 && rm test.db
 rppr prep_db $refpkg --sqlite test.db --default-bayes-cutoff 2 && rm test.db
 rppr prep_db $refpkg --sqlite test.db --default-multiclass-min 0.3 && rm test.db
-rppr prep_db $refpkg --sqlite test.db --default-multiclass-sum 0.7 && rm test.db
 rppr prep_db $refpkg --sqlite test.db --best-as-bayes && rm test.db
 rppr prep_db $refpkg --sqlite test.db && rm test.db
 

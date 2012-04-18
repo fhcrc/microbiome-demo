@@ -222,6 +222,9 @@ guppy pca --prefix pca_ --symmv $all_placefiles
 guppy pca --prefix pca_ --kappa 0 $all_placefiles
 guppy pca --prefix pca_ --kappa 0.5 $all_placefiles
 guppy pca --prefix pca_ --kappa 1 $all_placefiles
+guppy pca --prefix pca_ --rep-edges 0.3 $all_placefiles
+guppy pca --prefix pca_ --rep-edges 0.5 $all_placefiles
+guppy pca --prefix pca_ --epsilon 1e-4 $all_placefiles
 
 guppy pca --prefix pca_ $all_split
 
@@ -253,6 +256,9 @@ guppy splitify all.jplace --prefix test_ --out-dir test -o all.xml
 guppy splitify --kappa 0 all.jplace
 guppy splitify --kappa 0.5 all.jplace
 guppy splitify --kappa 1 all.jplace
+guppy splitify --rep-edges 0.3 all.jplace
+guppy splitify --rep-edges 0.5 all.jplace
+guppy splitify --epsilon 1e-4 all.jplace
 
 guppy splitify p4z1r36.jplace
 guppy splitify --pp p4z1r36.jplace
