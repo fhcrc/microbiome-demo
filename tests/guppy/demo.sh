@@ -12,8 +12,8 @@ rm -f *.jplace
 # Prepare some useful things.
 guppy merge $SRC/*.jplace -o all.jplace
 pplacer -j 4 -p -c $SRC/vaginal_16s.refpkg $SRC/p4z1r36.fasta
-#guppy trim all.jplace -o all-trimmed.jplace
-#guppy trim p4z1r36.jplace -o p4z1r36-trimmed.jplace
+guppy trim all.jplace -o all-trimmed.jplace
+guppy trim p4z1r36.jplace -o p4z1r36-trimmed.jplace
 mkdir -p test
 
 # Set some useful variables.
@@ -54,8 +54,8 @@ guppy fat $p4z1r36_two
 guppy fat $p4z1r36_four
 guppy fat $p4z1r36_four -o out.xml
 
-#guppy fat all-trimmed.jplace
-#guppy fat $refpkg all-trimmed.jplace
+guppy fat all-trimmed.jplace
+guppy fat $refpkg all-trimmed.jplace
 
 # Test `guppy heat`.
 #XXX: todo
@@ -175,9 +175,9 @@ guppy kr --pp $p4z1r36_four
 guppy kr --point-mass $p4z1r36_four
 guppy kr --pp --point-mass $p4z1r36_four
 
-#guppy kr $p4z1r36_two_trimmed
-#guppy kr $p4z1r36_four_trimmed
-#guppy kr $refpkg $p4z1r36_four_trimmed
+guppy kr $p4z1r36_two_trimmed
+guppy kr $p4z1r36_four_trimmed
+guppy kr $refpkg $p4z1r36_four_trimmed
 
 # Test `guppy kr_heat`.
 guppy kr_heat $two_placefiles
@@ -203,8 +203,8 @@ guppy kr_heat --pp $p4z1r36_two
 guppy kr_heat --point-mass $p4z1r36_two
 guppy kr_heat --pp --point-mass $p4z1r36_two
 
-#guppy kr_heat $p4z1r36_two_trimmed
-#guppy kr_heat $refpkg $p4z1r36_two_trimmed
+guppy kr_heat $p4z1r36_two_trimmed
+guppy kr_heat $refpkg $p4z1r36_two_trimmed
 
 # Test `guppy pca`.
 guppy pca --prefix pca_ $all_placefiles
@@ -233,8 +233,8 @@ guppy pca --prefix pca_ --pp $p4z1r36_four
 guppy pca --prefix pca_ --point-mass $p4z1r36_four
 guppy pca --prefix pca_ --pp --point-mass $p4z1r36_four
 
-#guppy pca --prefix pca_ $p4z1r36_four_trimmed
-#guppy pca --prefix pca_ $refpkg $p4z1r36_four_trimmed
+guppy pca --prefix pca_ $p4z1r36_four_trimmed
+guppy pca --prefix pca_ $refpkg $p4z1r36_four_trimmed
 
 # Test `guppy rarefact`.
 guppy rarefact all.jplace
@@ -287,8 +287,8 @@ guppy squash --prefix squash_ --pp $p4z1r36_four
 guppy squash --prefix squash_ --point-mass $p4z1r36_four
 guppy squash --prefix squash_ --pp --point-mass $p4z1r36_four
 
-#guppy squash --prefix squash_ $p4z1r36_four_trimmed
-#guppy squash --prefix squash_ $refpkg $p4z1r36_four_trimmed
+guppy squash --prefix squash_ $p4z1r36_four_trimmed
+guppy squash --prefix squash_ $refpkg $p4z1r36_four_trimmed
 
 # `guppy classify` is tested in `tests/classification/demo.sh`.
 
@@ -323,6 +323,7 @@ guppy diplac all.jplace --prefix test_ --out-dir test -o all.csv
 guppy diplac --no-csv all.jplace
 guppy diplac --min-distance 0.2 all.jplace
 guppy diplac --max-matches 10 all.jplace
+guppy diplac --no-collapse all.jplace
 
 guppy diplac p4z1r36.jplace
 guppy diplac --pp p4z1r36.jplace
@@ -430,6 +431,18 @@ guppy ograph all.jplace --prefix test_ --out-dir test -o out.abc
 guppy ograph p4z1r36.jplace -o out.abc
 guppy ograph --pp p4z1r36.jplace -o out.abc
 
+# Test `guppy rarefy`.
+guppy rarefy -n 5 p4z1r36.jplace -o out.jplace
+guppy rarefy -n 5 p4z1r36.jplace --prefix test_ -o out.jplace
+guppy rarefy -n 5 p4z1r36.jplace --out-dir test -o out.jplace
+guppy rarefy -n 5 p4z1r36.jplace --prefix test_ --out-dir test -o out.jplace
+guppy rarefy -n 10 p4z1r36.jplace -o out.jplace
+guppy rarefy -n 5 --seed 42 p4z1r36.jplace -o out.jplace
+
+guppy rarefy -n 5 $all_split -o out.jplace
+guppy rarefy -n 5 $p4z1r36_two -o out.jplace
+guppy rarefy -n 5 $p4z1r36_four -o out.jplace
+
 # Test `guppy redup`.
 #XXX: todo
 
@@ -448,3 +461,34 @@ guppy round --prefix round_ $p4z1r36_four
 
 # Test `guppy to_json`.
 #XXX: todo
+
+# Test `guppy trim`.
+guppy trim p4z1r36.jplace -o out.jplace
+guppy trim p4z1r36.jplace --prefix test_ -o out.jplace
+guppy trim p4z1r36.jplace --out-dir test -o out.jplace
+guppy trim p4z1r36.jplace --prefix test_ --out-dir test -o out.jplace
+guppy trim --min-path-mass 0.05 p4z1r36.jplace -o out.jplace
+guppy trim --discarded discarded.tab p4z1r36.jplace -o out.jplace
+guppy trim --rewrite-discarded-mass p4z1r36.jplace -o out.jplace
+
+guppy trim $all_split -o out.jplace
+guppy trim $p4z1r36_two -o out.jplace
+guppy trim $p4z1r36_four -o out.jplace
+guppy trim --pp $p4z1r36_four -o out.jplace
+guppy trim --point-mass $p4z1r36_four -o out.jplace
+guppy trim --pp --point-mass $p4z1r36_four -o out.jplace
+
+# Test `guppy unifrac`.
+guppy unifrac $all_placefiles
+guppy unifrac $all_placefiles -o all.tab
+guppy unifrac $all_placefiles --prefix test_ -o all.tab
+guppy unifrac $all_placefiles --out-dir test -o all.tab
+guppy unifrac $all_placefiles --prefix test_ --out-dir test -o all.tab
+guppy unifrac --list-out $all_placefiles
+guppy unifrac --csv $all_placefiles
+
+guppy unifrac $p4z1r36_two
+guppy unifrac $p4z1r36_four
+guppy unifrac --pp $p4z1r36_four
+guppy unifrac --point-mass $p4z1r36_four
+guppy unifrac --pp --point-mass $p4z1r36_four

@@ -35,6 +35,7 @@ rppr convexify $refpkg -t discord.xml --node-numbers
 rppr convexify $refpkg --cut-seqs cut.csv
 rppr convexify $refpkg --alternates alternates.csv
 rppr convexify $refpkg --alternates alternates.csv --check-all-ranks
+rppr convexify $refpkg --alternates alternates.csv --all-alternates
 rppr convexify $refpkg --cutoff 3
 rppr convexify $refpkg --limit-rank genus
 rppr convexify $refpkg --limit-rank genus --limit-rank species
@@ -53,7 +54,8 @@ rppr info $refpkg -o all.tab
 rppr info $refpkg --prefix test_ -o all.tab
 rppr info $refpkg --out-dir test -o all.tab
 rppr info $refpkg --prefix test_ --out-dir test -o all.tab
-rppr info $refpkg --csv
+rppr info $refpkg --taxonomic
+rppr info $refpkg --taxonomic --csv
 
 # Test `rppr pdprune`.
 #XXX: todo (maybe?)
@@ -98,14 +100,19 @@ rppr voronoi --leaves 5 p4z1r36.jplace -t trimmed.xml
 rppr voronoi --leaves 5 p4z1r36.jplace -t trimmed.xml --node-numbers
 rppr voronoi --leaves 5 p4z1r36.jplace -t trimmed.xml $refpkg
 rppr voronoi --leaves 50 p4z1r36.jplace --algorithm greedy
+rppr voronoi --leaves 5 p4z1r36.jplace --algorithm pam
 #XXX: skipping this for now because it takes way too long to run
 #rppr voronoi --leaves 1 p4z1r36.jplace --algorithm force
-rppr voronoi --leaves 5 p4z1r36.jplace --all-eclds-file eclds.csv
+rppr voronoi --leaves 5 p4z1r36.jplace --all-adcls-file eclds.csv
 rppr voronoi --leaves 5 p4z1r36.jplace --log log.csv
 rppr voronoi --leaves 5 p4z1r36.jplace --leaf-mass 0
 rppr voronoi --leaves 5 p4z1r36.jplace --leaf-mass 0.5
 rppr voronoi --leaves 5 p4z1r36.jplace --leaf-mass 0.75
 rppr voronoi --leaves 5 p4z1r36.jplace --leaf-mass 1
+#XXX: add tests for --always-include
+
+rppr voronoi --max-adcl 0.5 p4z1r36.jplace
+rppr voronoi --leaves 5 --max-adcl 0.5 p4z1r36.jplace
 
 rppr voronoi --leaves 5 --pp p4z1r36.jplace
 rppr voronoi --leaves 5 --point-mass p4z1r36.jplace
@@ -123,6 +130,7 @@ rppr vorotree --leaves 5 $tree -v
 rppr vorotree --leaves 5 $tree -t trimmed.xml
 rppr vorotree --leaves 5 $tree -t trimmed.xml --node-numbers
 rppr vorotree --leaves 50 $tree --algorithm greedy
-rppr vorotree --leaves 5 $tree --all-eclds-file eclds.csv
+rppr vorotree --leaves 5 $tree --algorithm pam
+rppr vorotree --leaves 5 $tree --all-adcls-file eclds.csv
 rppr vorotree --leaves 5 $tree --log log.csv
 rppr vorotree --leaves 5 $tree --query-seqs S001903884,S002166618,S000805616
