@@ -459,6 +459,19 @@ guppy round --prefix round_ $all_split
 guppy round --prefix round_ $p4z1r36_two
 guppy round --prefix round_ $p4z1r36_four
 
+# Test `guppy to_csv`.
+guppy to_csv all.jplace
+guppy to_csv all.jplace -o all.tab
+guppy to_csv all.jplace --prefix test_ -o all.tab
+guppy to_csv all.jplace --out-dir test -o all.tab
+guppy to_csv all.jplace --prefix test_ --out-dir test -o all.tab
+guppy to_csv --csv all.jplace
+
+guppy to_csv p4z1r36.jplace
+guppy to_csv $all_split
+guppy to_csv $p4z1r36_two
+guppy to_csv $p4z1r36_four
+
 # Test `guppy to_json`.
 #XXX: todo
 
