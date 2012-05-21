@@ -329,17 +329,17 @@ guppy diplac p4z1r36.jplace
 guppy diplac --pp p4z1r36.jplace
 
 # Test `guppy distmat`.
-guppy distmat all.jplace
+guppy distmat all.jplace >/dev/null
 guppy distmat all.jplace -o all.tab
 guppy distmat all.jplace --prefix test_ -o all.tab
 guppy distmat all.jplace --out-dir test -o all.tab
 guppy distmat all.jplace --prefix test_ --out-dir test -o all.tab
 
-guppy distmat $all_split
+guppy distmat $all_split >/dev/null
 guppy distmat $all_split -o all.tab
 
-guppy distmat $p4z1r36_two
-guppy distmat $p4z1r36_four
+guppy distmat $p4z1r36_two >/dev/null
+guppy distmat $p4z1r36_four >/dev/null
 
 # Test `guppy filter`.
 guppy filter all.jplace -o out.jplace
@@ -460,17 +460,17 @@ guppy round --prefix round_ $p4z1r36_two
 guppy round --prefix round_ $p4z1r36_four
 
 # Test `guppy to_csv`.
-guppy to_csv all.jplace
+guppy to_csv all.jplace >/dev/null
 guppy to_csv all.jplace -o all.tab
 guppy to_csv all.jplace --prefix test_ -o all.tab
 guppy to_csv all.jplace --out-dir test -o all.tab
 guppy to_csv all.jplace --prefix test_ --out-dir test -o all.tab
-guppy to_csv --csv all.jplace
+guppy to_csv --no-csv all.jplace >/dev/null
 
-guppy to_csv p4z1r36.jplace
-guppy to_csv $all_split
-guppy to_csv $p4z1r36_two
-guppy to_csv $p4z1r36_four
+guppy to_csv p4z1r36.jplace >/dev/null
+guppy to_csv $all_split >/dev/null
+guppy to_csv $p4z1r36_two >/dev/null
+guppy to_csv $p4z1r36_four >/dev/null
 
 # Test `guppy to_json`.
 #XXX: todo
