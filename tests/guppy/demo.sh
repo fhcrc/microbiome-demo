@@ -314,19 +314,19 @@ guppy demulti --prefix demulti_ p4z1r36.jplace
 guppy demulti --prefix demulti_ $p4z1r36_two
 guppy demulti --prefix demulti_ $p4z1r36_four
 
-# Test `guppy diplac`.
-guppy diplac all.jplace
-guppy diplac all.jplace -o all.csv
-guppy diplac all.jplace --prefix test_ -o all.csv
-guppy diplac all.jplace --out-dir test -o all.csv
-guppy diplac all.jplace --prefix test_ --out-dir test -o all.csv
-guppy diplac --no-csv all.jplace
-guppy diplac --min-distance 0.2 all.jplace
-guppy diplac --max-matches 10 all.jplace
-guppy diplac --no-collapse all.jplace
+# Test `guppy adcl`.
+guppy adcl all.jplace
+guppy adcl all.jplace -o all.csv
+guppy adcl all.jplace --prefix test_ -o all.csv
+guppy adcl all.jplace --out-dir test -o all.csv
+guppy adcl all.jplace --prefix test_ --out-dir test -o all.csv
+guppy adcl --no-csv all.jplace
+guppy adcl --min-distance 0.2 all.jplace
+guppy adcl --max-matches 10 all.jplace
+guppy adcl --no-collapse all.jplace
 
-guppy diplac p4z1r36.jplace
-guppy diplac --pp p4z1r36.jplace
+guppy adcl p4z1r36.jplace
+guppy adcl --pp p4z1r36.jplace
 
 # Test `guppy distmat`.
 guppy distmat all.jplace >/dev/null

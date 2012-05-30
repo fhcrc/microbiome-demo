@@ -57,6 +57,60 @@ rppr info $refpkg --prefix test_ --out-dir test -o all.tab
 rppr info $refpkg --taxonomic
 rppr info $refpkg --taxonomic --csv
 
+# Test `rppr min_adcl`.
+rppr min_adcl --leaves 5 p4z1r36.jplace
+rppr min_adcl --leaves 10 p4z1r36.jplace
+rppr min_adcl --leaves 5 p4z1r36.jplace -o all.csv
+rppr min_adcl --leaves 5 p4z1r36.jplace --prefix test_ -o all.csv
+rppr min_adcl --leaves 5 p4z1r36.jplace --out-dir test -o all.csv
+rppr min_adcl --leaves 5 p4z1r36.jplace --prefix test_ --out-dir test -o all.csv
+rppr min_adcl --leaves 5 p4z1r36.jplace --no-csv
+rppr min_adcl --leaves 5 p4z1r36.jplace -v
+rppr min_adcl --leaves 5 p4z1r36.jplace -t trimmed.xml
+rppr min_adcl --leaves 5 p4z1r36.jplace -t trimmed.xml --node-numbers
+rppr min_adcl --leaves 5 p4z1r36.jplace -t trimmed.xml $refpkg
+rppr min_adcl --leaves 50 p4z1r36.jplace --algorithm greedy
+rppr min_adcl --leaves 5 p4z1r36.jplace --algorithm pam
+#XXX: skipping this for now because it takes way too long to run
+#rppr min_adcl --leaves 1 p4z1r36.jplace --algorithm force
+rppr min_adcl --leaves 5 p4z1r36.jplace --all-adcls-file eclds.csv
+rppr min_adcl --leaves 5 p4z1r36.jplace --log log.csv
+rppr min_adcl --leaves 5 p4z1r36.jplace --leaf-mass 0
+rppr min_adcl --leaves 5 p4z1r36.jplace --leaf-mass 0.5
+rppr min_adcl --leaves 5 p4z1r36.jplace --leaf-mass 0.75
+rppr min_adcl --leaves 5 p4z1r36.jplace --leaf-mass 1
+rppr min_adcl --leaves 5 p4z1r36.jplace --seed 0
+rppr min_adcl --leaves 5 p4z1r36.jplace --seed 1
+rppr min_adcl --leaves 5 p4z1r36.jplace --seed 2
+#XXX: add tests for --always-include
+
+rppr min_adcl --max-adcl 0.5 p4z1r36.jplace
+rppr min_adcl --leaves 5 --max-adcl 0.5 p4z1r36.jplace
+
+rppr min_adcl --leaves 5 --pp p4z1r36.jplace
+rppr min_adcl --leaves 5 --point-mass p4z1r36.jplace
+rppr min_adcl --leaves 5 --pp --point-mass p4z1r36.jplace
+
+# Test `rppr min_adcl_tree`.
+rppr min_adcl_tree --leaves 5 $tree
+rppr min_adcl_tree --leaves 10 $tree
+rppr min_adcl_tree --leaves 5 $tree -o all.csv
+rppr min_adcl_tree --leaves 5 $tree --prefix test_ -o all.csv
+rppr min_adcl_tree --leaves 5 $tree --out-dir test -o all.csv
+rppr min_adcl_tree --leaves 5 $tree --prefix test_ --out-dir test -o all.csv
+rppr min_adcl_tree --leaves 5 $tree --no-csv
+rppr min_adcl_tree --leaves 5 $tree -v
+rppr min_adcl_tree --leaves 5 $tree -t trimmed.xml
+rppr min_adcl_tree --leaves 5 $tree -t trimmed.xml --node-numbers
+rppr min_adcl_tree --leaves 50 $tree --algorithm greedy
+rppr min_adcl_tree --leaves 5 $tree --algorithm pam
+rppr min_adcl_tree --leaves 5 $tree --all-adcls-file eclds.csv
+rppr min_adcl_tree --leaves 5 $tree --log log.csv
+rppr min_adcl_tree --leaves 5 $tree --query-seqs S001903884,S002166618,S000805616
+rppr min_adcl_tree --leaves 5 $tree --seed 0
+rppr min_adcl_tree --leaves 5 $tree --seed 1
+rppr min_adcl_tree --leaves 5 $tree --seed 2
+
 # Test `rppr pdprune`.
 #XXX: todo (maybe?)
 
@@ -86,51 +140,3 @@ rppr reroot $refpkg -o all.xml
 rppr reroot $refpkg --prefix test_ -o all.xml
 rppr reroot $refpkg --out-dir test -o all.xml
 rppr reroot $refpkg --prefix test_ --out-dir test -o all.xml
-
-# Test `rppr voronoi`.
-rppr voronoi --leaves 5 p4z1r36.jplace
-rppr voronoi --leaves 10 p4z1r36.jplace
-rppr voronoi --leaves 5 p4z1r36.jplace -o all.csv
-rppr voronoi --leaves 5 p4z1r36.jplace --prefix test_ -o all.csv
-rppr voronoi --leaves 5 p4z1r36.jplace --out-dir test -o all.csv
-rppr voronoi --leaves 5 p4z1r36.jplace --prefix test_ --out-dir test -o all.csv
-rppr voronoi --leaves 5 p4z1r36.jplace --no-csv
-rppr voronoi --leaves 5 p4z1r36.jplace -v
-rppr voronoi --leaves 5 p4z1r36.jplace -t trimmed.xml
-rppr voronoi --leaves 5 p4z1r36.jplace -t trimmed.xml --node-numbers
-rppr voronoi --leaves 5 p4z1r36.jplace -t trimmed.xml $refpkg
-rppr voronoi --leaves 50 p4z1r36.jplace --algorithm greedy
-rppr voronoi --leaves 5 p4z1r36.jplace --algorithm pam
-#XXX: skipping this for now because it takes way too long to run
-#rppr voronoi --leaves 1 p4z1r36.jplace --algorithm force
-rppr voronoi --leaves 5 p4z1r36.jplace --all-adcls-file eclds.csv
-rppr voronoi --leaves 5 p4z1r36.jplace --log log.csv
-rppr voronoi --leaves 5 p4z1r36.jplace --leaf-mass 0
-rppr voronoi --leaves 5 p4z1r36.jplace --leaf-mass 0.5
-rppr voronoi --leaves 5 p4z1r36.jplace --leaf-mass 0.75
-rppr voronoi --leaves 5 p4z1r36.jplace --leaf-mass 1
-#XXX: add tests for --always-include
-
-rppr voronoi --max-adcl 0.5 p4z1r36.jplace
-rppr voronoi --leaves 5 --max-adcl 0.5 p4z1r36.jplace
-
-rppr voronoi --leaves 5 --pp p4z1r36.jplace
-rppr voronoi --leaves 5 --point-mass p4z1r36.jplace
-rppr voronoi --leaves 5 --pp --point-mass p4z1r36.jplace
-
-# Test `rppr vorotree`.
-rppr vorotree --leaves 5 $tree
-rppr vorotree --leaves 10 $tree
-rppr vorotree --leaves 5 $tree -o all.csv
-rppr vorotree --leaves 5 $tree --prefix test_ -o all.csv
-rppr vorotree --leaves 5 $tree --out-dir test -o all.csv
-rppr vorotree --leaves 5 $tree --prefix test_ --out-dir test -o all.csv
-rppr vorotree --leaves 5 $tree --no-csv
-rppr vorotree --leaves 5 $tree -v
-rppr vorotree --leaves 5 $tree -t trimmed.xml
-rppr vorotree --leaves 5 $tree -t trimmed.xml --node-numbers
-rppr vorotree --leaves 50 $tree --algorithm greedy
-rppr vorotree --leaves 5 $tree --algorithm pam
-rppr vorotree --leaves 5 $tree --all-adcls-file eclds.csv
-rppr vorotree --leaves 5 $tree --log log.csv
-rppr vorotree --leaves 5 $tree --query-seqs S001903884,S002166618,S000805616
