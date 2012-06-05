@@ -7,10 +7,11 @@ set -eu
 # Create and populate the classification database.
 rm -f example.db
 rppr prep_db -c $SRC/vaginal_16s.refpkg --sqlite example.db
-guppy classify --mrca-class --sqlite example.db -c $SRC/vaginal_16s.refpkg $SRC/*.jplace
+guppy classify --mrca-class --sqlite example.db \
+    -c $SRC/vaginal_16s.refpkg $SRC/*.jplace
 
 # The normal case for multiclass is that the rank of classification is the same
-# as the desired rank of classification (the want_rank).
+# as the desired rank of classification (the `want_rank`).
 sqlite3 -header -line example.db "
 SELECT tax_name,
        rank,
@@ -36,8 +37,8 @@ WHERE  want_rank = 'species'
 
 # In this particular case, there is insufficient bayes evidence at the species
 # rank. Bayes factor filtering will filter out any classifications which are at
-# ranks below the most specific rank with a bayes_factor value below a
-# particular cutoff (specified by --bayes-cutoff). The default bayes_factor
+# ranks below the most specific rank with a `bayes_factor` value below a
+# particular cutoff (specified by `--bayes-cutoff`). The default `bayes_factor`
 # cutoff is 1.
 sqlite3 -header -line -nullvalue NULL example.db "
 SELECT rank,
@@ -51,8 +52,8 @@ WHERE  placement_id = '5'
 # It's also possible that there are multiple classifications for a sequence at
 # a particular rank. These are shown because there is sufficient bayes evidence
 # at the species rank. Classifications which have a likelihood of below a
-# particular value (specified by --multiclass-min) are still filtered out. The
-# default minimum likelihood value is 0.2.
+# particular value (specified by `--multiclass-min`) are still filtered out.
+# The default minimum likelihood value is 0.2.
 sqlite3 -header -line example.db "
 SELECT tax_name,
        rank,

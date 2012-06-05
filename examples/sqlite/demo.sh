@@ -9,11 +9,13 @@ rm -f example.db
 rppr prep_db -c $SRC/vaginal_16s.refpkg --sqlite example.db
 
 # Explore the taxonomic table itself, without reference to placements.
-sqlite3 -header -column example.db "SELECT tax_name FROM taxa WHERE rank = 'phylum'"
+sqlite3 -header -column example.db \
+    "SELECT tax_name FROM taxa WHERE rank = 'phylum'"
 
 # `guppy classify` can build SQLite databases for easy and fast access to
 # results.
-guppy classify --mrca-class --sqlite example.db -c $SRC/vaginal_16s.refpkg $SRC/*.jplace
+guppy classify --mrca-class --sqlite example.db \
+    -c $SRC/vaginal_16s.refpkg $SRC/*.jplace
 
 # Now we can investigate placement classifications using SQL queries. Here we
 # ask for the lineage of a specific sequence.
