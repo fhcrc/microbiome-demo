@@ -24,7 +24,8 @@ pplacer --verbosity 0 $refpkg $SRC/p4z1r36.fasta
 pplacer --verbosity 2 $refpkg $SRC/p4z1r36.fasta >/dev/null
 pplacer --mmap-file pplacer.mmap $refpkg $SRC/p4z1r36.fasta
 pplacer --mrca-class $refpkg $SRC/p4z1r36.fasta
-pplacer --fantasy $refpkg $SRC/p4z1r36.fasta
+pplacer --fantasy 0.1 $refpkg $SRC/p4z1r36.fasta
+pplacer --fantasy 0.2 $refpkg $SRC/p4z1r36.fasta
 
 # These tests can only be run without an $ALTSRC set.
 if [ "x$ALTSRC" = "x" ]; then
