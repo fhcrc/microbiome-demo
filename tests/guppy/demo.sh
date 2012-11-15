@@ -164,13 +164,13 @@ guppy kr -s 2 --seed 2 $all_placefiles
 guppy kr -s 2 --density $all_placefiles
 #XXX: revisit this eventually
 #guppy kr -s 2 --gaussian $all_placefiles
-guppy kr $refpkg $all_placefiles
 
 guppy kr $all_split
 guppy kr $all_split -o all.kr
 
 guppy kr $p4z1r36_two
 guppy kr $p4z1r36_four
+guppy kr $refpkg $p4z1r36_four
 guppy kr --pp $p4z1r36_four
 guppy kr --point-mass $p4z1r36_four
 guppy kr --pp --point-mass $p4z1r36_four
