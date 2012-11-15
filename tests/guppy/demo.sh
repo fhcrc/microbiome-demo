@@ -276,13 +276,13 @@ guppy squash --prefix squash_ --width-factor 2 $all_placefiles
 guppy squash --prefix squash_ --seed 2 $all_placefiles
 guppy squash --prefix squash_ --normalize tree-length $all_placefiles
 guppy squash --prefix squash_ --bootstrap 2 $all_placefiles
-guppy squash --prefix squash_ $refpkg --tax-cluster unit $all_placefiles
-guppy squash --prefix squash_ $refpkg --tax-cluster inv $all_placefiles
 guppy squash --prefix squash_ --pre-round $all_placefiles
 
 guppy squash --prefix squash_ $all_split
 
 guppy squash --prefix squash_ $p4z1r36_four
+guppy squash --prefix squash_ $refpkg --tax-cluster unit $p4z1r36_four
+guppy squash --prefix squash_ $refpkg --tax-cluster inv $p4z1r36_four
 guppy squash --prefix squash_ --pp $p4z1r36_four
 guppy squash --prefix squash_ --point-mass $p4z1r36_four
 guppy squash --prefix squash_ --pp --point-mass $p4z1r36_four
