@@ -172,8 +172,7 @@ aptx squash_out/mass_trees/6.phy.fat.xml &
 # are as follows: read name, attempted rank for classification, actual rank for
 # classification, taxonomic identifier, and confidence.  We use `head` here
 # just to get the first 30 lines so that you can look at them.
-guppy classify --mrca-class -c vaginal_16s.refpkg p4z1r36.jplace
-head -n 30 p4z1r36.class.tab
+guppy classify --mrca-class -c vaginal_16s.refpkg p4z1r36.jplace | head -n 30
 pause
 
 # We can quickly explore the classification results via SQL by importing them
@@ -231,4 +230,3 @@ pause
 # That's it for the demo. For further information, please consult the
 # [pplacer documentation](http://matsen.github.com/pplacer/).
 echo "Thanks!"
-
