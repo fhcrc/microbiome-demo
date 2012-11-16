@@ -346,7 +346,6 @@ guppy filter all.jplace -o out.jplace
 guppy filter all.jplace --prefix test_ -o out.jplace
 guppy filter all.jplace --out-dir test -o out.jplace
 guppy filter all.jplace --prefix test_ --out-dir test -o out.jplace
-guppy filter -Vr all.jplace -o out.jplace
 guppy filter -Vr -Ir GLKT0ZE02G all.jplace -o out.jplace
 guppy filter -Vr -Ir GLKT0ZE02G -Ir GLKT0ZE02I all.jplace -o out.jplace
 guppy filter -Er GLKT0ZE02G all.jplace -o out.jplace
