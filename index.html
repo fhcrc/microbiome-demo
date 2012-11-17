@@ -292,8 +292,7 @@ classification, taxonomic identifier, and confidence.  We use <code>head</code> 
 just to get the first 30 lines so that you can look at them.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy classify -c vaginal_16s.refpkg p4z1r36.jplace
-head -n 30 p4z1r36.class.tab
+guppy classify --mrca-class -c vaginal_16s.refpkg p4z1r36.jplace | head -n 30
 pause
 
 </pre></div></td></tr><tr><td class=docs>
@@ -330,7 +329,7 @@ pause
 results.</p>
 
 </td><td class=code><div class=highlight><pre>
-guppy classify --sqlite example.db -c vaginal_16s.refpkg src/*.jplace
+guppy classify --mrca-class --sqlite example.db -c vaginal_16s.refpkg src/*.jplace
 
 </pre></div></td></tr><tr><td class=docs>
 
@@ -379,7 +378,6 @@ pause
 
 </td><td class=code><div class=highlight><pre>
 <span class="nb">echo</span> <span class="s2">&quot;Thanks!&quot;</span>
-
 
 
 </pre></div></td></tr><tr><td class=docs>
