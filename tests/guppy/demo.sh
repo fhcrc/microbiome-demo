@@ -136,9 +136,9 @@ guppy fpd all.jplace --prefix test_ -o all.tab
 guppy fpd all.jplace --out-dir test -o all.tab
 guppy fpd all.jplace --prefix test_ --out-dir test -o all.tab
 guppy fpd --include-pendant all.jplace
-guppy fpd --kappa 0.5 all.jplace
-guppy fpd --kappa 0.5 --kappa 0.75 all.jplace
-guppy fpd --kappa 0.5,0.75 all.jplace
+guppy fpd --theta 0.5 all.jplace
+guppy fpd --theta 0.5 --theta 0.75 all.jplace
+guppy fpd --theta 0.5,0.75 all.jplace
 guppy fpd --csv all.jplace
 
 guppy fpd $all_split
