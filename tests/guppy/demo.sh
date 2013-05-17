@@ -136,9 +136,9 @@ guppy fpd all.jplace --prefix test_ -o all.tab
 guppy fpd all.jplace --out-dir test -o all.tab
 guppy fpd all.jplace --prefix test_ --out-dir test -o all.tab
 guppy fpd --include-pendant all.jplace
-guppy fpd --kappa 0.5 all.jplace
-guppy fpd --kappa 0.5 --kappa 0.75 all.jplace
-guppy fpd --kappa 0.5,0.75 all.jplace
+guppy fpd --theta 0.5 all.jplace
+guppy fpd --theta 0.5 --theta 0.75 all.jplace
+guppy fpd --theta 0.5,0.75 all.jplace
 guppy fpd --csv all.jplace
 
 guppy fpd $all_split
@@ -206,35 +206,35 @@ guppy kr_heat --pp --point-mass $p4z1r36_two
 guppy kr_heat $p4z1r36_two_trimmed
 guppy kr_heat $refpkg $p4z1r36_two_trimmed
 
-# Test `guppy pca`.
-guppy pca --prefix pca_ $all_placefiles
-guppy pca --prefix pca_ --out-dir test $all_placefiles
-guppy pca --prefix pca_ --min-fat .5 $all_placefiles
-guppy pca --prefix pca_ --min-fat 0 $all_placefiles
-guppy pca --prefix pca_ --total-width 500 $all_placefiles
-guppy pca --prefix pca_ --node-numbers $all_placefiles
-guppy pca --prefix pca_ --width-factor 2 $all_placefiles
-guppy pca --prefix pca_ --gray-black $all_placefiles
-guppy pca --prefix pca_ --min-width 2 $all_placefiles
-guppy pca --prefix pca_ --write-n 4 $all_placefiles
-guppy pca --prefix pca_ --scale $all_placefiles
-guppy pca --prefix pca_ --symmv $all_placefiles
-guppy pca --prefix pca_ --kappa 0 $all_placefiles
-guppy pca --prefix pca_ --kappa 0.5 $all_placefiles
-guppy pca --prefix pca_ --kappa 1 $all_placefiles
-guppy pca --prefix pca_ --rep-edges 0.3 $all_placefiles
-guppy pca --prefix pca_ --rep-edges 0.5 $all_placefiles
-guppy pca --prefix pca_ --epsilon 1e-4 $all_placefiles
+# Test `guppy epca`.
+guppy epca --prefix pca_ $all_placefiles
+guppy epca --prefix pca_ --out-dir test $all_placefiles
+guppy epca --prefix pca_ --min-fat .5 $all_placefiles
+guppy epca --prefix pca_ --min-fat 0 $all_placefiles
+guppy epca --prefix pca_ --total-width 500 $all_placefiles
+guppy epca --prefix pca_ --node-numbers $all_placefiles
+guppy epca --prefix pca_ --width-factor 2 $all_placefiles
+guppy epca --prefix pca_ --gray-black $all_placefiles
+guppy epca --prefix pca_ --min-width 2 $all_placefiles
+guppy epca --prefix pca_ --write-n 4 $all_placefiles
+guppy epca --prefix pca_ --scale $all_placefiles
+guppy epca --prefix pca_ --symmv $all_placefiles
+guppy epca --prefix pca_ --kappa 0 $all_placefiles
+guppy epca --prefix pca_ --kappa 0.5 $all_placefiles
+guppy epca --prefix pca_ --kappa 1 $all_placefiles
+guppy epca --prefix pca_ --rep-edges 0.3 $all_placefiles
+guppy epca --prefix pca_ --rep-edges 0.5 $all_placefiles
+guppy epca --prefix pca_ --epsilon 1e-4 $all_placefiles
 
-guppy pca --prefix pca_ $all_split
+guppy epca --prefix pca_ $all_split
 
-guppy pca --prefix pca_ $p4z1r36_four
-guppy pca --prefix pca_ --pp $p4z1r36_four
-guppy pca --prefix pca_ --point-mass $p4z1r36_four
-guppy pca --prefix pca_ --pp --point-mass $p4z1r36_four
+guppy epca --prefix pca_ $p4z1r36_four
+guppy epca --prefix pca_ --pp $p4z1r36_four
+guppy epca --prefix pca_ --point-mass $p4z1r36_four
+guppy epca --prefix pca_ --pp --point-mass $p4z1r36_four
 
-guppy pca --prefix pca_ $p4z1r36_four_trimmed
-guppy pca --prefix pca_ $refpkg $p4z1r36_four_trimmed
+guppy epca --prefix pca_ $p4z1r36_four_trimmed
+guppy epca --prefix pca_ $refpkg $p4z1r36_four_trimmed
 
 # Test `guppy rarefact`.
 guppy rarefact all.jplace
