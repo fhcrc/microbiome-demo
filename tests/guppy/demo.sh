@@ -296,13 +296,12 @@ guppy squash --prefix squash_ $refpkg $p4z1r36_four_trimmed
 #XXX: todo (maybe?)
 
 # Test `guppy compress`.
-guppy compress --cutoff 1.75 all.jplace -o out.jplace
-guppy compress --cutoff 1.75 all.jplace --prefix test_ -o out.jplace
-guppy compress --cutoff 1.75 all.jplace --out-dir test -o out.jplace
-guppy compress --cutoff 1.75 all.jplace --prefix test_ --out-dir test -o out.jplace
-guppy compress --cutoff 1.75 --discard-below .3 all.jplace -o out.jplace
-
 guppy compress --cutoff 1.75 p4z1r36.jplace -o out.jplace
+guppy compress --cutoff 1.75 p4z1r36.jplace --prefix test_ -o out.jplace
+guppy compress --cutoff 1.75 p4z1r36.jplace --out-dir test -o out.jplace
+guppy compress --cutoff 1.75 p4z1r36.jplace --prefix test_ --out-dir test -o out.jplace
+guppy compress --cutoff 1.75 --discard-below .3 p4z1r36.jplace -o out.jplace
+
 guppy compress --cutoff 1.75 --pp p4z1r36.jplace -o out.jplace
 
 # Test `guppy demulti`.
