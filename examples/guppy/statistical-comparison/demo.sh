@@ -36,11 +36,11 @@ aptx p1z1r2.p1z1r34.heat.xml
 # With edge principal components analysis (edge PCA), it is possible to
 # visualize the principal component axes, and find differences between
 # samples which may only differ in terms of read distributions on closely
-# related taxa. `guppy pca` creates a tree file (here `pca_out.xml`) which
+# related taxa. `guppy epca` creates a tree file (here `pca_out.xml`) which
 # shows the principal component axes projected onto the tree.
 # [Here](http://matsen.fhcrc.org/pplacer/demo/pca.html) are the first five
 # principal component axes for the full data set.
-guppy pca --prefix pca_out -c $SRC/vaginal_16s.refpkg $SRC/*.jplace
+guppy epca --prefix pca_out -c $SRC/vaginal_16s.refpkg $SRC/*.jplace
 aptx pca_out.xml
 
 # The `pca_out.trans` file has the samples projected onto principal coordinate
