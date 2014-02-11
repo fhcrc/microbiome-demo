@@ -18,29 +18,27 @@ guppy classify --mrca-class --sqlite example.db -c $SRC/vaginal_16s.refpkg $SRC/
 # Now we can investigate placement classifications using SQL queries. Here we
 # ask for the lineage of a specific sequence.
 sqlite3 -header example.db "
-SELECT pc.rank,
+SELECT rank,
        tax_name,
        likelihood
 FROM   placement_names AS pn
-       JOIN placement_classifications AS pc USING (placement_id)
+       JOIN placement_classifications USING (placement_id)
        JOIN taxa USING (tax_id)
        JOIN ranks USING (rank)
-WHERE  pc.rank = desired_rank
-       AND pn.name = 'FUM0LCO01DX37Q'
+WHERE  pn.name = 'FUM0LCO01DX37Q'
 ORDER  BY rank_order
 "
 
 # Here is another example, with somewhat less confidence in the
 # species-level classification result.
 sqlite3 -header example.db "
-SELECT pc.rank,
+SELECT rank,
        tax_name,
        likelihood
 FROM   placement_names AS pn
-       JOIN placement_classifications AS pc USING (placement_id)
+       JOIN placement_classifications USING (placement_id)
        JOIN taxa USING (tax_id)
        JOIN ranks USING (rank)
-WHERE  pc.rank = desired_rank
-       AND pn.name = 'FUM0LCO01A2HOA'
+WHERE  pn.name = 'FUM0LCO01A2HOA'
 ORDER  BY rank_order
 "
